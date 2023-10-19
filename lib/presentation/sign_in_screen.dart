@@ -114,22 +114,28 @@ class _SignInScreenState extends State<SignInScreen> {
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
                       IconButton(
-                        iconSize: 50,
                         onPressed: () {},
-                        icon: const Icon(Icons.facebook),
-                        color: Colors.blue,
+                        icon: SvgPicture.asset(
+                          'assets/facebook-logo.svg',
+                          width: 50,
+                          height: 50,
+                        ),
                       ),
                       IconButton(
-                        iconSize: 50,
                         onPressed: () {},
-                        icon: const Icon(Icons.facebook),
-                        color: Colors.blue,
+                        icon: SvgPicture.asset(
+                          'assets/google-logo.svg',
+                          width: 50,
+                          height: 50,
+                        ),
                       ),
                       IconButton(
-                        iconSize: 50,
                         onPressed: () {},
-                        icon: const Icon(Icons.facebook),
-                        color: Colors.blue,
+                        icon: SvgPicture.asset(
+                          'assets/facebook-logo.svg',
+                          width: 50,
+                          height: 50,
+                        ),
                       ),
                     ],
                   ),
