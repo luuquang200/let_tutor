@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:let_tutor/presentation/sign_in_screen.dart';
+import 'package:let_tutor/presentation/tutor_list_screen.dart';
 
 void main() {
   runApp(const MyApp());
@@ -35,7 +36,7 @@ class MyApp extends StatelessWidget {
         ),
         useMaterial3: true,
       ),
-      home: const SignInScreen(),
+      home: const TutorListScreen(),
     );
   }
 }
