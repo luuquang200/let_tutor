@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:let_tutor/presentation/widgets/tutor_information_card.dart';
 
 class TutorListScreen extends StatefulWidget {
   const TutorListScreen({Key? key}) : super(key: key);
@@ -168,9 +169,25 @@ class _TutorListScreenState extends State<TutorListScreen> {
                         child: const Text('Reset Filters'),
                       ),
                     ),
+                    Container(
+                      height: 600, // Set a fixed height for the container
+                      child: ListView.builder(
+                        shrinkWrap: true,
+                        scrollDirection: Axis.vertical,
+                        itemCount: 6,
+                        itemBuilder: (context, index) {
+                          return Column(
+                            children: [
+                              const TutorInformationCard(),
+                              SizedBox(height: 16),
+                            ],
+                          );
+                        },
+                      ),
+                    )
                   ],
                 ),
-              )
+              ),
             ],
           ),
         ));
