@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/svg.dart';
+import 'package:intl/intl.dart';
 import 'package:let_tutor/presentation/widgets/tutor_information_card.dart';
 
 class TutorListScreen extends StatefulWidget {
@@ -22,7 +24,11 @@ class _TutorListScreenState extends State<TutorListScreen> {
     'TOEFL',
     'TOEIC'
   ];
+  final dateController = TextEditingController();
   int selectedSpecialityIndex = 0;
+  List<String> listNationalities = <String>['Vietnamese', 'Foreigner'];
+  final startTimeController = TextEditingController();
+  final endTimeController = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
@@ -77,41 +83,65 @@ class _TutorListScreenState extends State<TutorListScreen> {
                     const Padding(
                       padding: EdgeInsets.symmetric(vertical: 5),
                       child:
-                          Text('Find a tutor', style: TextStyle(fontSize: 24)),
+                          Text('Find a tutor', style: TextStyle(fontSize: 36)),
                     ),
-                    const Row(
+                    Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
-                        SizedBox(
+                        const SizedBox(
                             width: 220,
-                            height: 50,
+                            // height: 50,
                             child: TextField(
                               decoration: InputDecoration(
+                                prefixIcon: Icon(
+                                  Icons.type_specimen_outlined,
+                                  color: Colors.indigo,
+                                ),
                                 hintText: 'Enter a tutor name',
                                 hintStyle: TextStyle(
                                   color: Color(0xFFB0B0B0),
                                 ),
                                 border: OutlineInputBorder(
-                                    borderSide: BorderSide(color: Colors.grey),
-                                    borderRadius:
-                                        BorderRadius.all(Radius.circular(8))),
+                                  borderSide:
+                                      BorderSide(color: Colors.red, width: 2.0),
+                                ),
                               ),
                             )),
                         SizedBox(
-                            width: 150,
-                            height: 50,
-                            child: TextField(
-                              decoration: InputDecoration(
-                                hintText: 'Select tutor nationality',
-                                hintStyle: TextStyle(
-                                  color: Color(0xFFB0B0B0),
+                          width: 160,
+                          // height: 50,
+                          child: DropdownButtonFormField<String>(
+                            decoration: const InputDecoration(
+                              border: OutlineInputBorder(
+                                borderSide: BorderSide(
+                                  color: Colors.black,
+                                  width: 2,
                                 ),
-                                border: OutlineInputBorder(
-                                    borderSide: BorderSide(color: Colors.grey),
-                                    borderRadius:
-                                        BorderRadius.all(Radius.circular(8))),
                               ),
-                            )),
+                            ),
+                            isExpanded: true,
+                            value: listNationalities.first,
+                            items: listNationalities
+                                .map<DropdownMenuItem<String>>((String value) {
+                              return DropdownMenuItem<String>(
+                                value: value,
+                                child: Row(
+                                  children: <Widget>[
+                                    SvgPicture.asset(
+                                      'assets/flags/$value.svg',
+                                      width: 24,
+                                      height: 24,
+                                    ),
+                                    SizedBox(width: 10),
+                                    Text(value),
+                                  ],
+                                ),
+                              );
+                            }).toList(),
+                            onChanged: (String? value) {},
+                            style: TextStyle(color: Colors.black),
+                          ),
+                        )
                       ],
                     ),
                     const Padding(
@@ -119,19 +149,93 @@ class _TutorListScreenState extends State<TutorListScreen> {
                       child: Text('Select available tutoring time:',
                           style: TextStyle(fontSize: 18)),
                     ),
-                    const Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    Row(
                       children: [
-                        SizedBox(
-                          width: 250,
-                          child: TextField(),
+                        Expanded(
+                          child: TextField(
+                            decoration: const InputDecoration(
+                              prefixIcon: Icon(Icons.calendar_today),
+                              hintText: 'dd/MM/yyyy',
+                              hintStyle: TextStyle(
+                                color: Color(0xFFB0B0B0),
+                              ),
+                              border: OutlineInputBorder(),
+                            ),
+                            controller: dateController,
+                            readOnly: true,
+                            onTap: () async {
+                              DateTime? selectedDate = await showDatePicker(
+                                context: context,
+                                initialDate: DateTime.now(),
+                                firstDate: DateTime(1900),
+                                lastDate: DateTime(2100),
+                              );
+                              if (selectedDate != null) {
+                                dateController.text = DateFormat('dd/MM/yyyy')
+                                    .format(selectedDate);
+                              }
+                            },
+                          ),
                         ),
-                        SizedBox(
-                          width: 100,
-                          child: TextField(),
-                        )
                       ],
                     ),
+                    const SizedBox(height: 16),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Expanded(
+                          child: TextField(
+                            controller: startTimeController,
+                            decoration: const InputDecoration(
+                              prefixIcon: Icon(Icons.access_time),
+                              hintText: 'Start time',
+                              hintStyle: TextStyle(
+                                color: Color(0xFFB0B0B0),
+                              ),
+                              border: OutlineInputBorder(),
+                            ),
+                            readOnly: true,
+                            onTap: () async {
+                              TimeOfDay? selectedTime = await showTimePicker(
+                                context: context,
+                                initialTime: TimeOfDay.now(),
+                                helpText: 'Select start time',
+                              );
+                              if (selectedTime != null && mounted) {
+                                startTimeController.text =
+                                    selectedTime.format(context);
+                              }
+                            },
+                          ),
+                        ),
+                        const SizedBox(width: 10),
+                        Expanded(
+                            child: TextField(
+                          controller: endTimeController,
+                          decoration: const InputDecoration(
+                            prefixIcon: Icon(Icons.timelapse),
+                            hintText: 'End time',
+                            hintStyle: TextStyle(
+                              color: Color(0xFFB0B0B0),
+                            ),
+                            border: OutlineInputBorder(),
+                          ),
+                          readOnly: true,
+                          onTap: () async {
+                            TimeOfDay? selectedTime = await showTimePicker(
+                              context: context,
+                              initialTime: TimeOfDay.now(),
+                              helpText: 'Select end time',
+                            );
+                            if (selectedTime != null && mounted) {
+                              endTimeController.text =
+                                  selectedTime.format(context);
+                            }
+                          },
+                        )),
+                      ],
+                    ),
+                    const SizedBox(height: 16),
                     Padding(
                       padding: const EdgeInsets.symmetric(vertical: 8),
                       child: Wrap(
