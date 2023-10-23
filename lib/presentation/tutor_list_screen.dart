@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:intl/intl.dart';
+import 'package:let_tutor/presentation/styles/custom_text_style.dart';
 import 'package:let_tutor/presentation/widgets/tutor_information_card.dart';
 
 class TutorListScreen extends StatefulWidget {
@@ -81,9 +82,11 @@ class _TutorListScreenState extends State<TutorListScreen> {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     const Padding(
-                      padding: EdgeInsets.symmetric(vertical: 5),
-                      child:
-                          Text('Find a tutor', style: TextStyle(fontSize: 36)),
+                      padding: EdgeInsets.symmetric(vertical: 10),
+                      child: Text(
+                        'Find a tutor',
+                        style: CustomTextStyle.headlineMedium,
+                      ),
                     ),
                     Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -93,10 +96,7 @@ class _TutorListScreenState extends State<TutorListScreen> {
                             // height: 50,
                             child: TextField(
                               decoration: InputDecoration(
-                                prefixIcon: Icon(
-                                  Icons.type_specimen_outlined,
-                                  color: Colors.indigo,
-                                ),
+                                prefixIcon: Icon(Icons.type_specimen_outlined),
                                 hintText: 'Enter a tutor name',
                                 hintStyle: TextStyle(
                                   color: Color(0xFFB0B0B0),
@@ -132,7 +132,7 @@ class _TutorListScreenState extends State<TutorListScreen> {
                                       width: 24,
                                       height: 24,
                                     ),
-                                    SizedBox(width: 10),
+                                    const SizedBox(width: 10),
                                     Text(value),
                                   ],
                                 ),
@@ -147,7 +147,7 @@ class _TutorListScreenState extends State<TutorListScreen> {
                     const Padding(
                       padding: EdgeInsets.symmetric(vertical: 12),
                       child: Text('Select available tutoring time:',
-                          style: TextStyle(fontSize: 18)),
+                          style: CustomTextStyle.headlineMedium),
                     ),
                     Row(
                       children: [
@@ -236,6 +236,9 @@ class _TutorListScreenState extends State<TutorListScreen> {
                       ],
                     ),
                     const SizedBox(height: 16),
+                    const Text('Select speciality:',
+                        style: CustomTextStyle.headlineMedium),
+                    const SizedBox(height: 8),
                     Padding(
                       padding: const EdgeInsets.symmetric(vertical: 8),
                       child: Wrap(
@@ -244,20 +247,24 @@ class _TutorListScreenState extends State<TutorListScreen> {
                         children: List<Widget>.generate(
                           specialities.length,
                           (index) => ChoiceChip(
-                            label: Text(specialities[index]),
-                            selectedColor: Theme.of(context).primaryColor,
-                            checkmarkColor: Colors.white,
-                            labelStyle: TextStyle(
-                              color: selectedSpecialityIndex == index
-                                  ? Colors.white
-                                  : Colors.black,
+                            label: Text(
+                              specialities[index],
+                              style: TextStyle(
+                                color: selectedSpecialityIndex == index
+                                    ? Theme.of(context).primaryColor
+                                    : Colors.black54,
+                              ),
                             ),
+                            checkmarkColor: Theme.of(context).primaryColor,
+                            backgroundColor: const Color(0xFFE4E6EB),
+                            selectedColor: const Color(0xFFDDEAFF),
                             selected: selectedSpecialityIndex == index,
                             onSelected: (bool selected) {
                               setState(() {
                                 selectedSpecialityIndex = index;
                               });
                             },
+                            side: BorderSide.none,
                           ),
                         ),
                       ),
@@ -268,13 +275,19 @@ class _TutorListScreenState extends State<TutorListScreen> {
                         onPressed: () {
                           setState(() {
                             selectedSpecialityIndex = 0;
+                            dateController.clear();
                           });
                         },
+                        style: OutlinedButton.styleFrom(
+                          side: const BorderSide(
+                              color: Color(0xFF0058C6), width: 1),
+                        ),
                         child: const Text('Reset Filters'),
                       ),
                     ),
+                    const SizedBox(height: 8),
                     Container(
-                      height: 600, // Set a fixed height for the container
+                      height: 600,
                       child: ListView.builder(
                         shrinkWrap: true,
                         scrollDirection: Axis.vertical,
