@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:let_tutor/routes.dart';
 
 class SignInScreen extends StatefulWidget {
   const SignInScreen({Key? key}) : super(key: key);
@@ -38,12 +39,14 @@ class _SignInScreenState extends State<SignInScreen> {
                   ),
                   const TextField(
                     decoration: InputDecoration(
+                      prefixIcon:
+                          Icon(Icons.mail, size: 26, color: Color(0xFF0058C6)),
                       hintText: 'mail@example.com',
                       hintStyle: TextStyle(
                         color: Color(0xFFB0B0B0),
                       ),
                       border: OutlineInputBorder(
-                          borderSide: BorderSide(color: Colors.grey),
+                          borderSide: BorderSide(color: Color(0xFFB0B0B0)),
                           borderRadius: BorderRadius.all(Radius.circular(8))),
                     ),
                   ),
@@ -59,6 +62,9 @@ class _SignInScreenState extends State<SignInScreen> {
                   ),
                   const TextField(
                     decoration: InputDecoration(
+                      prefixIcon:
+                          Icon(Icons.lock, size: 26, color: Color(0xFF0058C6)),
+                      hintText: '*****',
                       border: OutlineInputBorder(
                           borderSide: BorderSide(color: Colors.grey),
                           borderRadius: BorderRadius.all(Radius.circular(8))),
@@ -67,8 +73,7 @@ class _SignInScreenState extends State<SignInScreen> {
                   TextButton(
                     onPressed: () {},
                     style: TextButton.styleFrom(
-                      padding:
-                          const EdgeInsets.only(top: 20, bottom: 10, left: 0),
+                      padding: const EdgeInsets.only(top: 20, bottom: 15),
                     ),
                     child: const Text(
                       'Forgot Password?',
@@ -79,10 +84,13 @@ class _SignInScreenState extends State<SignInScreen> {
                   SizedBox(
                     width: double.infinity,
                     child: ElevatedButton(
-                        onPressed: () {},
+                        onPressed: () {
+                          Routes.navigateToReplacement(
+                              context, Routes.tutorListScreen);
+                        },
                         style: ButtonStyle(
                           padding: MaterialStateProperty.all(
-                            const EdgeInsets.symmetric(vertical: 12),
+                            const EdgeInsets.symmetric(vertical: 16),
                           ),
                           backgroundColor: MaterialStateProperty.all<Color>(
                               const Color(0xFF0058C6)),
