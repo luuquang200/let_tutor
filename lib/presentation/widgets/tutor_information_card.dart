@@ -22,6 +22,7 @@ class TutorInformationCard extends StatelessWidget {
               onPressed: () {},
               icon: const Icon(
                 Icons.favorite_border_outlined,
+                color: Color(0xFF0058C6),
               ),
             ),
           ),
@@ -52,8 +53,11 @@ class TutorInformationCard extends StatelessWidget {
                         Row(
                             children: List<Widget>.generate(
                           5,
-                          (index) =>
-                              const Icon(Icons.star, color: Colors.amber),
+                          (index) => const Icon(
+                            Icons.star,
+                            color: Colors.amber,
+                            size: 14,
+                          ),
                         ))
 
                         // Rating star
@@ -72,34 +76,64 @@ class TutorInformationCard extends StatelessWidget {
                 SizedBox(
                   height: 16,
                 ),
-                Wrap(
+                const Wrap(
                   spacing: 8,
                   runSpacing: 8,
                   children: [
                     Chip(
-                      label: Text("IELTS"),
+                      backgroundColor: Color(0xFFDDEAFF),
+                      side: BorderSide.none,
+                      label: Text(
+                        "IELTS",
+                        style:
+                            TextStyle(fontSize: 14, color: Color(0xFF0058C6)),
+                      ),
                     ),
                     Chip(
-                      label: Text("TOEFL"),
+                      backgroundColor: Color(0xFFDDEAFF),
+                      side: BorderSide.none,
+                      label: Text(
+                        "TOEFL",
+                        style:
+                            TextStyle(fontSize: 14, color: Color(0xFF0058C6)),
+                      ),
                     ),
                     Chip(
-                      label: Text("TOEIC"),
+                      backgroundColor: Color(0xFFDDEAFF),
+                      side: BorderSide.none,
+                      label: Text(
+                        "TOEIC",
+                        style:
+                            TextStyle(fontSize: 14, color: Color(0xFF0058C6)),
+                      ),
                     ),
                     Chip(
-                      label: Text("GRE"),
+                      backgroundColor: Color(0xFFDDEAFF),
+                      side: BorderSide.none,
+                      label: Text(
+                        "GRE",
+                        style:
+                            TextStyle(fontSize: 14, color: Color(0xFF0058C6)),
+                      ),
                     ),
                     Chip(
-                      label: Text("GMAT"),
+                      backgroundColor: Color(0xFFDDEAFF),
+                      side: BorderSide.none,
+                      label: Text(
+                        "GMAT",
+                        style:
+                            TextStyle(fontSize: 14, color: Color(0xFF0058C6)),
+                      ),
                     ),
                   ],
                 ),
-                SizedBox(
+                const SizedBox(
                   height: 10,
                 ),
 
-                Text(
+                const Text(
                     'I am passionate about running and fitness, I often compete in trail/mountain running events and I love pushing myself. I am training to one day take part in ultra-endurance events. I also enjoy watching rugby on the weekends, reading and watching podcasts on Youtube. My most memorable life experience would be living in and traveling around Southeast Asia.'),
-                SizedBox(
+                const SizedBox(
                   height: 44,
                 ),
               ],
