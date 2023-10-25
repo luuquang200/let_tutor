@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:let_tutor/presentation/styles/custom_chip.dart';
 import 'package:let_tutor/presentation/styles/custom_text_style.dart';
+import 'package:let_tutor/presentation/widgets/icon_text_button.dart';
 import 'package:let_tutor/presentation/widgets/specialities.dart';
 
 class TutorDetail extends StatefulWidget {
@@ -61,26 +62,23 @@ class _TutorDetailState extends State<TutorDetail> {
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
               children: [
-                GestureDetector(
+                IconTextButton(
+                  icon: Icons.favorite_outline,
+                  text: 'Favorite',
+                  color: Theme.of(context).primaryColor,
                   onTap: () {},
-                  child: const Column(
-                    children: [Icon(Icons.favorite_outline), Text('Favorite')],
-                  ),
                 ),
-                GestureDetector(
+                IconTextButton(
+                  icon: Icons.report_outlined,
+                  text: 'Report',
+                  color: Theme.of(context).primaryColor,
                   onTap: () {},
-                  child: const Column(
-                    children: [Icon(Icons.report_outlined), Text('Report')],
-                  ),
                 ),
-                GestureDetector(
+                IconTextButton(
+                  icon: Icons.rate_review_outlined,
+                  text: 'Review',
+                  color: Theme.of(context).primaryColor,
                   onTap: () {},
-                  child: const Column(
-                    children: [
-                      Icon(Icons.rate_review_outlined),
-                      Text('Review')
-                    ],
-                  ),
                 ),
               ],
             ),
@@ -138,19 +136,51 @@ class _TutorDetailState extends State<TutorDetail> {
               style: CustomTextStyle.headlineMedium,
             ),
             _suggestedCourses(),
+
+            //Interests
+            const SizedBox(
+              height: 16,
+            ),
+            const Text(
+              'Interests',
+              style: CustomTextStyle.headlineMedium,
+            ),
+            Padding(
+                padding: const EdgeInsets.only(left: 10), child: _interests()),
+
+            //Teaching experience
+            const SizedBox(
+              height: 16,
+            ),
+            const Text(
+              'Teaching Experience',
+              style: CustomTextStyle.headlineMedium,
+            ),
+            Padding(
+                padding: const EdgeInsets.only(left: 10),
+                child: _teachingExperience()),
+
+            // booking button
+            const SizedBox(
+              height: 16,
+            ),
+            _bookingButton(),
           ],
         ),
       ),
     );
   }
 
-  Widget _suggestedCourses() {
+  _suggestedCourses() {
     return ListView.builder(
       shrinkWrap: true,
       itemCount: 1,
       itemBuilder: (context, index) {
         return Row(
           children: [
+            const SizedBox(
+              width: 10,
+            ),
             const Text(
               'Life in the Internet Age:',
               style: TextStyle(fontWeight: FontWeight.bold),
@@ -165,6 +195,41 @@ class _TutorDetailState extends State<TutorDetail> {
           ],
         );
       },
+    );
+  }
+
+  _interests() {
+    return const Text(
+        'I loved the weather, the scenery and the laid-back lifestyle of the locals.');
+  }
+
+  _teachingExperience() {
+    return const Text(
+        'I have more than 10 years of teaching english experience');
+  }
+
+  _bookingButton() {
+    return SizedBox(
+      width: double.infinity,
+      child: ElevatedButton(
+          onPressed: () {},
+          style: ButtonStyle(
+            padding: MaterialStateProperty.all(
+              const EdgeInsets.symmetric(vertical: 16),
+            ),
+            backgroundColor:
+                MaterialStateProperty.all<Color>(const Color(0xFF0058C6)),
+            shape: MaterialStateProperty.all<RoundedRectangleBorder>(
+              RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(8),
+              ),
+            ),
+          ),
+          child: const Text('Book Now',
+              style: TextStyle(
+                  color: Color(0xFFFFFFFF),
+                  fontSize: 20,
+                  fontWeight: FontWeight.bold))),
     );
   }
 }
