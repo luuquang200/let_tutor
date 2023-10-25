@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:let_tutor/presentation/booking_screen.dart';
 import 'package:let_tutor/presentation/sign_in_screen.dart';
 import 'package:let_tutor/presentation/tutor_detail.dart';
 import 'package:let_tutor/presentation/tutor_list_screen.dart';
@@ -7,6 +8,7 @@ class Routes {
   static const String signInScreen = '/sign_in_screen';
   static const String tutorListScreen = '/tutor_list_screen';
   static const String tutorDetail = '/tutor_detail';
+  static const String bookingScreen = '/booking_screen';
 
   static Route<dynamic> generateRoute(RouteSettings settings) {
     switch (settings.name) {
@@ -16,6 +18,8 @@ class Routes {
         return MaterialPageRoute(builder: (_) => const TutorListScreen());
       case tutorDetail:
         return MaterialPageRoute(builder: (_) => const TutorDetail());
+      case bookingScreen:
+        return MaterialPageRoute(builder: (_) => const BookingScreen());
       default:
         return MaterialPageRoute(builder: (_) => const UnknownScreen());
     }

@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:let_tutor/presentation/styles/custom_button.dart';
 import 'package:let_tutor/presentation/styles/custom_chip.dart';
 import 'package:let_tutor/presentation/styles/custom_text_style.dart';
 import 'package:let_tutor/presentation/widgets/icon_text_button.dart';
 import 'package:let_tutor/presentation/widgets/specialities.dart';
+import 'package:let_tutor/routes.dart';
 
 class TutorDetail extends StatefulWidget {
   const TutorDetail({Key? key}) : super(key: key);
@@ -209,27 +211,11 @@ class _TutorDetailState extends State<TutorDetail> {
   }
 
   _bookingButton() {
-    return SizedBox(
-      width: double.infinity,
-      child: ElevatedButton(
-          onPressed: () {},
-          style: ButtonStyle(
-            padding: MaterialStateProperty.all(
-              const EdgeInsets.symmetric(vertical: 16),
-            ),
-            backgroundColor:
-                MaterialStateProperty.all<Color>(const Color(0xFF0058C6)),
-            shape: MaterialStateProperty.all<RoundedRectangleBorder>(
-              RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(8),
-              ),
-            ),
-          ),
-          child: const Text('Book Now',
-              style: TextStyle(
-                  color: Color(0xFFFFFFFF),
-                  fontSize: 20,
-                  fontWeight: FontWeight.bold))),
+    return CustomButton(
+      text: 'Book this tutor',
+      onPressed: () {
+        Navigator.pushNamed(context, Routes.bookingScreen);
+      },
     );
   }
 }
