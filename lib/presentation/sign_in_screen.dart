@@ -85,8 +85,7 @@ class _SignInScreenState extends State<SignInScreen> {
                     width: double.infinity,
                     child: ElevatedButton(
                         onPressed: () {
-                          Routes.navigateToReplacement(
-                              context, Routes.tutorListScreen);
+                          Routes.navigateToReplacement(context, Routes.home);
                         },
                         style: ButtonStyle(
                           padding: MaterialStateProperty.all(

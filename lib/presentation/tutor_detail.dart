@@ -18,8 +18,8 @@ class _TutorDetailState extends State<TutorDetail> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Tutor Detail'),
-      ),
+          title: Text('Tutor Detail', style: CustomTextStyle.topHeadline),
+          iconTheme: IconThemeData(color: Theme.of(context).primaryColor)),
       body: SingleChildScrollView(
         padding: const EdgeInsets.symmetric(vertical: 8, horizontal: 16),
         child: Column(

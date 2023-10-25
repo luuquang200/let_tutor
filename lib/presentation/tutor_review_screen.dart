@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:let_tutor/presentation/styles/custom_text_style.dart';
 import 'package:let_tutor/presentation/widgets/review_card.dart';
 
 class TutorReviewScreen extends StatefulWidget {
@@ -13,7 +14,12 @@ class _TutorReviewScreenState extends State<TutorReviewScreen> {
   Widget build(BuildContext context) {
     return SafeArea(
       child: Scaffold(
-        appBar: AppBar(title: const Text('Tutor Review')),
+        appBar: AppBar(
+            title: Text(
+              'Tutor Review',
+              style: CustomTextStyle.topHeadline,
+            ),
+            iconTheme: IconThemeData(color: Theme.of(context).primaryColor)),
         body: SingleChildScrollView(
           child: Padding(
               padding: const EdgeInsets.symmetric(horizontal: 16),

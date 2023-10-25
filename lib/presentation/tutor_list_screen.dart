@@ -34,88 +34,83 @@ class _TutorListScreenState extends State<TutorListScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        appBar: AppBar(
-          title: const Text('Tutor'),
-          backgroundColor: Colors.white,
-        ),
         body: SingleChildScrollView(
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              _buildUpcomingLesson(),
-              Container(
-                padding:
-                    const EdgeInsets.symmetric(horizontal: 20, vertical: 8),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          _buildUpcomingLesson(),
+          Container(
+            padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 8),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                const Padding(
+                    padding: EdgeInsets.symmetric(vertical: 10),
+                    child: Text(
+                      'Find a tutor',
+                      style: CustomTextStyle.headlineMedium,
+                    )),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
-                    const Padding(
-                        padding: EdgeInsets.symmetric(vertical: 10),
-                        child: Text(
-                          'Find a tutor',
-                          style: CustomTextStyle.headlineMedium,
-                        )),
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        SizedBox(width: 220, child: _searchByName()),
-                        SizedBox(width: 160, child: _selectNationality())
-                      ],
-                    ),
-                    const Padding(
-                      padding: EdgeInsets.symmetric(vertical: 12),
-                      child: Text('Select available tutoring time:',
-                          style: CustomTextStyle.headlineMedium),
-                    ),
-                    Row(
-                      children: [Expanded(child: _selectAvailableDate())],
-                    ),
-                    const SizedBox(height: 16),
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        Expanded(
-                          child: _selectStartTime(),
-                        ),
-                        const SizedBox(width: 10),
-                        Expanded(child: _selectEndTime()),
-                      ],
-                    ),
-                    const SizedBox(height: 16),
-                    const Text('Select speciality:',
-                        style: CustomTextStyle.headlineMedium),
-                    const SizedBox(height: 8),
-                    Padding(
-                      padding: const EdgeInsets.symmetric(vertical: 8),
-                      child: _specialitiesChips(),
-                    ),
-                    Padding(
-                      padding: const EdgeInsets.symmetric(vertical: 8),
-                      child: _buttonResetFilter(),
-                    ),
-                    const SizedBox(height: 8),
-                    SizedBox(
-                      height: 600,
-                      child: ListView.builder(
-                        shrinkWrap: true,
-                        scrollDirection: Axis.vertical,
-                        itemCount: 6,
-                        itemBuilder: (context, index) {
-                          return const Column(
-                            children: [
-                              TutorInformationCard(),
-                              SizedBox(height: 16),
-                            ],
-                          );
-                        },
-                      ),
-                    )
+                    SizedBox(width: 220, child: _searchByName()),
+                    SizedBox(width: 160, child: _selectNationality())
                   ],
                 ),
-              ),
-            ],
+                const Padding(
+                  padding: EdgeInsets.symmetric(vertical: 12),
+                  child: Text('Select available tutoring time:',
+                      style: CustomTextStyle.headlineMedium),
+                ),
+                Row(
+                  children: [Expanded(child: _selectAvailableDate())],
+                ),
+                const SizedBox(height: 16),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Expanded(
+                      child: _selectStartTime(),
+                    ),
+                    const SizedBox(width: 10),
+                    Expanded(child: _selectEndTime()),
+                  ],
+                ),
+                const SizedBox(height: 16),
+                const Text('Select speciality:',
+                    style: CustomTextStyle.headlineMedium),
+                const SizedBox(height: 8),
+                Padding(
+                  padding: const EdgeInsets.symmetric(vertical: 8),
+                  child: _specialitiesChips(),
+                ),
+                Padding(
+                  padding: const EdgeInsets.symmetric(vertical: 8),
+                  child: _buttonResetFilter(),
+                ),
+                const SizedBox(height: 8),
+                SizedBox(
+                  height: 600,
+                  child: ListView.builder(
+                    shrinkWrap: true,
+                    scrollDirection: Axis.vertical,
+                    itemCount: 6,
+                    itemBuilder: (context, index) {
+                      return const Column(
+                        children: [
+                          TutorInformationCard(),
+                          SizedBox(height: 16),
+                        ],
+                      );
+                    },
+                  ),
+                )
+              ],
+            ),
           ),
-        ));
+        ],
+      ),
+    ));
   }
 
   Widget _buildUpcomingLesson() {
