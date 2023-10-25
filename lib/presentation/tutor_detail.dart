@@ -80,7 +80,9 @@ class _TutorDetailState extends State<TutorDetail> {
                   icon: Icons.rate_review_outlined,
                   text: 'Review',
                   color: Theme.of(context).primaryColor,
-                  onTap: () {},
+                  onTap: () {
+                    Navigator.pushNamed(context, Routes.tutorReviewScreen);
+                  },
                 ),
               ],
             ),
