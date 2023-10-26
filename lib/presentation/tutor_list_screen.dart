@@ -155,6 +155,7 @@ class _TutorListScreenState extends State<TutorListScreen> {
             width: 2,
           ),
         ),
+        contentPadding: EdgeInsets.symmetric(vertical: 16.0),
       ),
       isExpanded: true,
       value: listNationalities.first,
@@ -163,10 +164,11 @@ class _TutorListScreenState extends State<TutorListScreen> {
           value: value,
           child: Row(
             children: <Widget>[
+              const SizedBox(width: 10),
               SvgPicture.asset(
                 'assets/flags/$value.svg',
-                width: 24,
-                height: 24,
+                width: 20,
+                height: 20,
               ),
               const SizedBox(width: 10),
               Text(value),
@@ -188,8 +190,9 @@ class _TutorListScreenState extends State<TutorListScreen> {
           color: Color(0xFFB0B0B0),
         ),
         border: OutlineInputBorder(
-          borderSide: BorderSide(color: Colors.red, width: 2.0),
+          borderSide: BorderSide(color: Colors.red, width: 1.0),
         ),
+        contentPadding: EdgeInsets.symmetric(vertical: 16.0),
       ),
     );
   }
@@ -203,6 +206,7 @@ class _TutorListScreenState extends State<TutorListScreen> {
           color: Color(0xFFB0B0B0),
         ),
         border: OutlineInputBorder(),
+        contentPadding: EdgeInsets.symmetric(vertical: 16.0),
       ),
       controller: dateController,
       readOnly: true,
@@ -230,6 +234,7 @@ class _TutorListScreenState extends State<TutorListScreen> {
           color: Color(0xFFB0B0B0),
         ),
         border: OutlineInputBorder(),
+        contentPadding: EdgeInsets.symmetric(vertical: 16.0),
       ),
       readOnly: true,
       onTap: () async {
@@ -255,6 +260,7 @@ class _TutorListScreenState extends State<TutorListScreen> {
           color: Color(0xFFB0B0B0),
         ),
         border: OutlineInputBorder(),
+        contentPadding: EdgeInsets.symmetric(vertical: 16.0),
       ),
       readOnly: true,
       onTap: () async {

@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:intl/intl.dart';
 import 'package:let_tutor/presentation/styles/custom_text_style.dart';
 
 class ReviewCard extends StatelessWidget {

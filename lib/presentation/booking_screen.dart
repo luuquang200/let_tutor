@@ -156,20 +156,12 @@ class _BookingScreenState extends State<BookingScreen> {
             Padding(
                 padding: const EdgeInsets.only(left: 10), child: timePicker()),
             const SizedBox(height: 16),
-            // balanceInformation(),
-            // const SizedBox(height: 16),
-            // priceInformation(),
-            // const SizedBox(height: 16),
+            balanceInformation(),
+            const SizedBox(height: 16),
+            priceInformation(),
+            const SizedBox(height: 16),
             Expanded(
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.end,
-                children: [
-                  balanceInformation(),
-                  const SizedBox(height: 16),
-                  priceInformation(),
-                  const SizedBox(height: 16),
-                ],
-              ),
+              child: Container(),
             ),
             bookButton(),
           ],

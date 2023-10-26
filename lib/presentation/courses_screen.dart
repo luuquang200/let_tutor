@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:let_tutor/presentation/styles/custom_text_style.dart';
+import 'package:let_tutor/presentation/widgets/course_card.dart';
 
 class CoursesScreen extends StatefulWidget {
   const CoursesScreen({super.key});
@@ -115,21 +115,34 @@ class _CoursesScreenState extends State<CoursesScreen> {
             visible: visibilityFilter,
             child: Column(
               children: [
-                levelFilter(),
+                _levelFilter(),
                 const SizedBox(
                   height: 8,
                 ),
-                categoriesFilter(),
+                _categoriesFilter(),
                 const SizedBox(
                   height: 8,
                 ),
-                sortLevel(),
+                _sortLevel(),
                 const SizedBox(
                   height: 8,
-                )
+                ),
               ],
             ),
-          )
+          ),
+          const SizedBox(height: 8),
+          Expanded(
+            child: ListView.builder(
+              shrinkWrap: true,
+              scrollDirection: Axis.vertical,
+              itemCount: 10,
+              itemBuilder: (context, index) {
+                return Padding(
+                    padding: const EdgeInsets.symmetric(vertical: 8),
+                    child: CourseCard());
+              },
+            ),
+          ),
         ],
       ),
     );
@@ -140,19 +153,39 @@ class _CoursesScreenState extends State<CoursesScreen> {
       padding: const EdgeInsets.all(16),
       child: Column(
         children: [
-          TextField(
-            decoration: InputDecoration(
-              contentPadding: const EdgeInsets.only(right: 24),
-              hintStyle: TextStyle(color: Colors.grey[400]),
-              hintText: 'search e-books',
-              prefixIcon: const Icon(Icons.search),
-              border: const OutlineInputBorder(
-                  borderSide: BorderSide(color: Colors.grey, width: 2),
-                  borderRadius: BorderRadius.all(Radius.circular(10))),
+          _filterBar(),
+          const SizedBox(height: 8),
+          Visibility(
+            visible: visibilityFilter,
+            child: Column(
+              children: [
+                _levelFilter(),
+                const SizedBox(
+                  height: 8,
+                ),
+                _categoriesFilter(),
+                const SizedBox(
+                  height: 8,
+                ),
+                _sortLevel(),
+                const SizedBox(
+                  height: 8,
+                ),
+              ],
             ),
           ),
           Expanded(
-            child: Text('Ebooks'),
+            child: ListView.builder(
+              shrinkWrap: true,
+              scrollDirection: Axis.vertical,
+              itemCount: 10,
+              itemBuilder: (context, index) {
+                return GestureDetector(
+                  onTap: () {},
+                  child: CourseCard(),
+                );
+              },
+            ),
           ),
         ],
       ),
@@ -194,7 +227,7 @@ class _CoursesScreenState extends State<CoursesScreen> {
     );
   }
 
-  Widget levelFilter() {
+  Widget _levelFilter() {
     return DropdownButton<String>(
       isExpanded: true,
       value: _selectedLevel,
@@ -215,7 +248,7 @@ class _CoursesScreenState extends State<CoursesScreen> {
     );
   }
 
-  categoriesFilter() {
+  _categoriesFilter() {
     return DropdownButton<String>(
       isExpanded: true,
       value: _selectedCategory,
@@ -236,7 +269,7 @@ class _CoursesScreenState extends State<CoursesScreen> {
     );
   }
 
-  sortLevel() {
+  _sortLevel() {
     return DropdownButton<String>(
       isExpanded: true,
       value: _selectedSortLevel,
