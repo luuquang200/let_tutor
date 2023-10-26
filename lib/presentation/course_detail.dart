@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:let_tutor/presentation/styles/custom_button.dart';
 import 'package:let_tutor/presentation/styles/custom_text_style.dart';
+import 'package:let_tutor/presentation/tutor_detail.dart';
+import 'package:let_tutor/routes.dart';
 
 class CourseDetail extends StatefulWidget {
   const CourseDetail({super.key});
@@ -77,6 +79,13 @@ class _CourseDetailState extends State<CourseDetail> {
   Widget _sectionTitle(BuildContext context, String sectionTitle) {
     return Row(
       children: [
+        const SizedBox(
+          width: 16,
+          child: Divider(height: 1, color: Color.fromARGB(255, 200, 197, 197)),
+        ),
+        const SizedBox(
+          width: 16,
+        ),
         Text(sectionTitle, style: CustomTextStyle.headlineLarge),
         const SizedBox(
           width: 16,
@@ -171,7 +180,9 @@ class _CourseDetailState extends State<CourseDetail> {
       itemCount: listOfTopics.length,
       itemBuilder: (context, index) {
         return GestureDetector(
-          onTap: () {},
+          onTap: () {
+            Routes.navigateTo(context, Routes.topicDetail);
+          },
           child: Padding(
             padding: const EdgeInsets.symmetric(vertical: 6, horizontal: 8),
             child: Card(
@@ -192,7 +203,11 @@ class _CourseDetailState extends State<CourseDetail> {
         children: [
           Text('Keegan', style: CustomTextStyle.headlineMedium),
           const SizedBox(width: 16),
-          TextButton(onPressed: () {}, child: const Text('More Info')),
+          TextButton(
+              onPressed: () {
+                Routes.navigateTo(context, Routes.tutorDetail);
+              },
+              child: const Text('More Info')),
         ],
       ),
     );

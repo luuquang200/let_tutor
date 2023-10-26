@@ -213,11 +213,12 @@ class _TutorDetailState extends State<TutorDetail> {
   }
 
   _bookingButton() {
-    return CustomButton(
-      text: 'Book this tutor',
-      onPressed: () {
-        Navigator.pushNamed(context, Routes.bookingScreen);
-      },
-    );
+    return CustomElevatedButton(
+        text: 'Book this tutor',
+        height: 50,
+        radius: 8,
+        onPressed: () {
+          Navigator.pushNamed(context, Routes.bookingScreen);
+        });
   }
 }

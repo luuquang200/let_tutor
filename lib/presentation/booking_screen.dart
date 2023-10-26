@@ -136,7 +136,8 @@ class _BookingScreenState extends State<BookingScreen> {
   }
 
   Widget bookButton() {
-    return CustomButton(text: 'Book now', onPressed: () {});
+    return CustomElevatedButton(
+        text: 'Book now', height: 50, radius: 8, onPressed: () {});
   }
 
   @override
