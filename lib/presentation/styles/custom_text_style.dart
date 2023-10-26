@@ -24,4 +24,10 @@ class CustomTextStyle {
     fontWeight: FontWeight.bold,
     color: Color(0xFF0058C6),
   );
+
+  static const TextStyle titleLarge = TextStyle(
+    fontSize: 26,
+    fontWeight: FontWeight.bold,
+    color: Colors.black,
+  );
 }

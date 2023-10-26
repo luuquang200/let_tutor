@@ -40,3 +40,39 @@ class CustomButton extends StatelessWidget {
     );
   }
 }
+
+class CustomElevatedButton extends StatelessWidget {
+  final String text;
+  final double height;
+  final double radius;
+  final VoidCallback onPressed;
+
+  const CustomElevatedButton({
+    super.key,
+    required this.text,
+    required this.height,
+    required this.radius,
+    required this.onPressed,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return ElevatedButton(
+      style: ElevatedButton.styleFrom(
+        backgroundColor: const Color(0xFF0058C6),
+        minimumSize: Size(double.infinity, height),
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(radius),
+        ),
+      ),
+      onPressed: onPressed,
+      child: Text(
+        text,
+        style: const TextStyle(
+          color: Colors.white,
+          fontSize: 20,
+        ),
+      ),
+    );
+  }
+}

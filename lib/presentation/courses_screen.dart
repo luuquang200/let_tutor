@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:let_tutor/presentation/widgets/course_card.dart';
+import 'package:let_tutor/routes.dart';
 
 class CoursesScreen extends StatefulWidget {
   const CoursesScreen({super.key});
@@ -137,9 +138,12 @@ class _CoursesScreenState extends State<CoursesScreen> {
               scrollDirection: Axis.vertical,
               itemCount: 10,
               itemBuilder: (context, index) {
-                return Padding(
-                    padding: const EdgeInsets.symmetric(vertical: 8),
-                    child: CourseCard());
+                return GestureDetector(
+                  onTap: () {
+                    Routes.navigateTo(context, Routes.courseDetail);
+                  },
+                  child: CourseCard(),
+                );
               },
             ),
           ),
