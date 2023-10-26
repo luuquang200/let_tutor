@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:let_tutor/presentation/courses_screen.dart';
 import 'package:let_tutor/presentation/styles/custom_text_style.dart';
 import 'package:let_tutor/presentation/tutor_list_screen.dart';
 
@@ -12,8 +13,8 @@ class Home extends StatefulWidget {
 class _HomeState extends State<Home> {
   List<Widget> screens = [
     const TutorListScreen(),
-    const TutorListScreen(),
-    const TutorListScreen(),
+    const CoursesScreen(),
+    const CoursesScreen(),
     const TutorListScreen(),
   ];
   List<String> screenTitle = ['Tutors', 'Schedule', 'Courses', 'Settings'];
