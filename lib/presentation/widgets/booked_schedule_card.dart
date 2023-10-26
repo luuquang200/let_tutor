@@ -8,7 +8,6 @@ class BookedScheduleCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    String request = '';
     return Card(
       elevation: 8,
       margin: const EdgeInsets.symmetric(vertical: 8),
@@ -125,7 +124,7 @@ class BookedScheduleCard extends StatelessWidget {
     return Expanded(
       child: TextButton(
         onPressed: () {
-          // Navigator.pushNamed(context, Routes.videoCall);
+          Routes.navigateTo(context, Routes.videoCallScreen);
         },
         child: const Text(
           'Go to meeting',
