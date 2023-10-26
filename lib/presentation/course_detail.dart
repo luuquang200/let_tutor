@@ -80,15 +80,15 @@ class _CourseDetailState extends State<CourseDetail> {
     return Row(
       children: [
         const SizedBox(
-          width: 16,
+          width: 20,
           child: Divider(height: 1, color: Color.fromARGB(255, 200, 197, 197)),
         ),
         const SizedBox(
-          width: 16,
+          width: 10,
         ),
         Text(sectionTitle, style: CustomTextStyle.headlineLarge),
         const SizedBox(
-          width: 16,
+          width: 10,
         ),
         const Expanded(
           child: Divider(height: 1, color: Color.fromARGB(255, 200, 197, 197)),

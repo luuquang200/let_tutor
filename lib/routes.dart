@@ -3,6 +3,7 @@ import 'package:let_tutor/presentation/booking_screen.dart';
 import 'package:let_tutor/presentation/course_detail.dart';
 import 'package:let_tutor/presentation/courses_screen.dart';
 import 'package:let_tutor/presentation/home.dart';
+import 'package:let_tutor/presentation/schedule_screen.dart';
 import 'package:let_tutor/presentation/sign_in_screen.dart';
 import 'package:let_tutor/presentation/topic_detail.dart';
 import 'package:let_tutor/presentation/tutor_detail.dart';
@@ -19,6 +20,7 @@ class Routes {
   static const String coursesScreen = '/courses_screen';
   static const String courseDetail = '/course_detail';
   static const String topicDetail = '/topic_detail';
+  static const String scheduleScreen = '/schedule_screen';
 
   static Route<dynamic> generateRoute(RouteSettings settings) {
     switch (settings.name) {
@@ -40,6 +42,8 @@ class Routes {
         return MaterialPageRoute(builder: (_) => const CourseDetail());
       case topicDetail:
         return MaterialPageRoute(builder: (_) => const TopicDetail());
+      case scheduleScreen:
+        return MaterialPageRoute(builder: (_) => const ScheduleSceen());
       default:
         return MaterialPageRoute(builder: (_) => const UnknownScreen());
     }
