@@ -46,9 +46,6 @@ class _BookingScreenState extends State<BookingScreen> {
     );
     if (selectedHour != null) {
       setState(() {
-        // final hourParts = selectedHour.split(' - ');
-        // final hour = hourParts[0];
-        // final minute = hourParts[1].split(':')[0];
         _selectedTime = selectedHour;
       });
     }
@@ -137,7 +134,100 @@ class _BookingScreenState extends State<BookingScreen> {
 
   Widget bookButton() {
     return CustomElevatedButton(
-        text: 'Book now', height: 50, radius: 8, onPressed: () {});
+        text: 'Book now',
+        height: 50,
+        radius: 8,
+        onPressed: () {
+          _showConfirmDialog(context);
+        });
+  }
+
+  void _showConfirmDialog(BuildContext context) {
+    final textController =
+        TextEditingController(); // controller để lấy giá trị của TextField
+    showDialog(
+      context: context,
+      builder: (context) => AlertDialog(
+        title: const Text('Confirm Booking'),
+        content: Column(
+          mainAxisSize: MainAxisSize.min,
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Text(
+                  'Booking Date:',
+                ),
+                Text(
+                  '${DateFormat('E, d MMM yyyy').format(_selectedDate)}',
+                  style: TextStyle(color: Color(0xFF0058C6)),
+                ),
+              ],
+            ),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Text(
+                  'Lesson Time: :',
+                ),
+                Text(
+                  '$_selectedTime',
+                  style: TextStyle(color: Color(0xFF0058C6)),
+                ),
+              ],
+            ),
+            const Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Text(
+                  'Balance:',
+                ),
+                Text(
+                  '9664 lessons left',
+                  style: TextStyle(color: Color(0xFF0058C6)),
+                ),
+              ],
+            ),
+            const Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Text(
+                  'Price:',
+                ),
+                Text(
+                  '1 lesson',
+                  style: TextStyle(color: Color(0xFF0058C6)),
+                ),
+              ],
+            ),
+            const SizedBox(height: 8),
+            Text('Request for Tutor:'),
+            const SizedBox(height: 8),
+            TextField(
+              controller: textController,
+              decoration: InputDecoration(
+                hintText: 'Enter your request here',
+                border: OutlineInputBorder(),
+              ),
+              maxLines: 5,
+            ),
+          ],
+        ),
+        actions: [
+          TextButton(
+            onPressed: () => Navigator.pop(context),
+            child: const Text('Cancel', style: TextStyle(color: Colors.red)),
+          ),
+          TextButton(
+            onPressed: () {
+              Navigator.pop(context);
+            },
+            child: const Text('Book'),
+          ),
+        ],
+      ),
+    );
   }
 
   @override

@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/svg.dart';
+import 'package:let_tutor/presentation/styles/custom_text_style.dart';
 import 'package:let_tutor/routes.dart';
 
 class TutorInformationCard extends StatelessWidget {
@@ -41,18 +43,37 @@ class TutorInformationCard extends StatelessWidget {
                       children: [
                         // Avatar
                         const CircleAvatar(
-                          backgroundColor: Colors.indigo,
-                          child: Text('AB'),
+                          backgroundImage:
+                              AssetImage('assets/tutor_avatar.jpg'),
+                          radius: 44,
                         ),
                         const SizedBox(
-                          width: 8,
+                          width: 18,
                         ),
                         Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
                             // Name
-                            Text("Adelia Rice"),
-                            Text("France"),
+                            Text(
+                              "Adelia Rice",
+                              style: CustomTextStyle.headlineLarge,
+                            ),
+                            const SizedBox(height: 2),
+                            Row(
+                              children: [
+                                SvgPicture.asset(
+                                  'assets/flags/Foreigner.svg',
+                                  width: 20,
+                                  height: 20,
+                                ),
+                                SizedBox(width: 10),
+                                Text(
+                                  'United States',
+                                  style: CustomTextStyle.bodyRegular,
+                                ),
+                              ],
+                            ),
+                            const SizedBox(height: 2),
                             // row
                             Row(
                                 children: List<Widget>.generate(
@@ -60,7 +81,7 @@ class TutorInformationCard extends StatelessWidget {
                               (index) => const Icon(
                                 Icons.star,
                                 color: Colors.amber,
-                                size: 14,
+                                size: 18,
                               ),
                             ))
                           ],

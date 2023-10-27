@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/svg.dart';
 import 'package:let_tutor/presentation/styles/custom_button.dart';
 import 'package:let_tutor/presentation/styles/custom_chip.dart';
 import 'package:let_tutor/presentation/styles/custom_text_style.dart';
@@ -40,7 +41,20 @@ class _TutorDetailState extends State<TutorDetail> {
                   children: [
                     // Name
                     Text("Adelia Rice", style: CustomTextStyle.headlineLarge),
-                    Text("France", style: const TextStyle(fontSize: 18)),
+                    Row(
+                      children: [
+                        SvgPicture.asset(
+                          'assets/flags/Foreigner.svg',
+                          width: 20,
+                          height: 20,
+                        ),
+                        SizedBox(width: 10),
+                        Text(
+                          'United States',
+                          style: CustomTextStyle.bodyRegular,
+                        ),
+                      ],
+                    ),
                     // row
                     Row(
                         children: List<Widget>.generate(
@@ -74,7 +88,9 @@ class _TutorDetailState extends State<TutorDetail> {
                   icon: Icons.report_outlined,
                   text: 'Report',
                   color: Theme.of(context).primaryColor,
-                  onTap: () {},
+                  onTap: () {
+                    _showReportDialog();
+                  },
                 ),
                 IconTextButton(
                   icon: Icons.rate_review_outlined,
@@ -220,5 +236,87 @@ class _TutorDetailState extends State<TutorDetail> {
         onPressed: () {
           Navigator.pushNamed(context, Routes.bookingScreen);
         });
+  }
+
+  void _showReportDialog() {
+    final textController = TextEditingController();
+    showDialog(
+        context: context,
+        builder: (context) => SingleChildScrollView(
+              child: AlertDialog(
+                title: Row(
+                  children: [
+                    const Icon(Icons.warning),
+                    const SizedBox(width: 8),
+                    const Text('Report Tutor'),
+                  ],
+                ),
+                content: SingleChildScrollView(
+                    child: Column(
+                  mainAxisSize: MainAxisSize.min,
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    const Text("Help us understand what's happening:",
+                        style: CustomTextStyle.boldRegular),
+                    const SizedBox(height: 8),
+                    Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        CheckboxListTile(
+                          title: const Text('This tutor is annoying me'),
+                          value: false,
+                          onChanged: (value) {
+                            value = true;
+                          },
+                          controlAffinity: ListTileControlAffinity.leading,
+                        ),
+                        CheckboxListTile(
+                          title: const Text(
+                              'This profile is pretending to be someone or is fake'),
+                          value: false,
+                          onChanged: (value) {
+                            value = true;
+                          },
+                          controlAffinity: ListTileControlAffinity.leading,
+                        ),
+                        CheckboxListTile(
+                          title: const Text('Inappropriate profile photo'),
+                          value: false,
+                          onChanged: (value) {
+                            value = true;
+                          },
+                          controlAffinity: ListTileControlAffinity.leading,
+                        ),
+                      ],
+                    ),
+                    const SizedBox(height: 16),
+                    const Text('Additional Information:',
+                        style: CustomTextStyle.boldRegular),
+                    const SizedBox(height: 8),
+                    TextField(
+                      controller: textController,
+                      decoration: InputDecoration(
+                        hintText: 'Enter your report here',
+                        border: OutlineInputBorder(),
+                      ),
+                      maxLines: 5,
+                    ),
+                  ],
+                )),
+                actions: [
+                  TextButton(
+                    onPressed: () => Navigator.pop(context),
+                    child: const Text('Cancel',
+                        style: TextStyle(color: Colors.red)),
+                  ),
+                  TextButton(
+                    onPressed: () {
+                      Navigator.pop(context);
+                    },
+                    child: const Text('Submit'),
+                  ),
+                ],
+              ),
+            ));
   }
 }

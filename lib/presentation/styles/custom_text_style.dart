@@ -19,6 +19,12 @@ class CustomTextStyle {
     color: Colors.black,
   );
 
+  static const TextStyle boldRegular = TextStyle(
+    fontSize: 16,
+    fontWeight: FontWeight.bold,
+    color: Colors.black,
+  );
+
   static TextStyle topHeadline = const TextStyle(
     fontSize: 28,
     fontWeight: FontWeight.bold,

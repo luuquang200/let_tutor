@@ -75,7 +75,7 @@ class _HistoryCardState extends State<HistoryCard> {
                 Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    Text('Krytal', style: CustomTextStyle.headlineLarge),
+                    Text('Krystal', style: CustomTextStyle.headlineLarge),
                     // Text('Lesson Time: '),
                     Text('Monday, 31 Oct 2023'),
                     Text('10:00 - 10:15 AM'),
@@ -123,7 +123,7 @@ class _HistoryCardState extends State<HistoryCard> {
               // Navigator.pushNamed(context, Routes.teacherDetail);
             },
             child: Text(
-              'Krytal',
+              'Krystal',
               style: CustomTextStyle.headlineLarge,
             ),
           ),
