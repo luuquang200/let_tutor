@@ -137,7 +137,7 @@ class _HistoryCardState extends State<HistoryCard> {
     return Expanded(
       child: TextButton(
         onPressed: () {
-          Routes.navigateTo(context, Routes.videoCallScreen);
+          Routes.navigateTo(context, Routes.writeReview);
         },
         child: const Text(
           'Add a rating',

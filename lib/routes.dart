@@ -10,6 +10,7 @@ import 'package:let_tutor/presentation/tutor_detail.dart';
 import 'package:let_tutor/presentation/tutor_list_screen.dart';
 import 'package:let_tutor/presentation/tutor_review_screen.dart';
 import 'package:let_tutor/presentation/video_call_screen.dart';
+import 'package:let_tutor/presentation/write_review.dart';
 
 class Routes {
   static const String signInScreen = '/sign_in_screen';
@@ -23,6 +24,7 @@ class Routes {
   static const String topicDetail = '/topic_detail';
   static const String scheduleScreen = '/schedule_screen';
   static const String videoCallScreen = '/video_call_screen';
+  static const String writeReview = '/write_review';
 
   static Route<dynamic> generateRoute(RouteSettings settings) {
     switch (settings.name) {
@@ -48,6 +50,8 @@ class Routes {
         return MaterialPageRoute(builder: (_) => const ScheduleSceen());
       case videoCallScreen:
         return MaterialPageRoute(builder: (_) => const VideoCallScreen());
+      case writeReview:
+        return MaterialPageRoute(builder: (_) => const WriteReview());
       default:
         return MaterialPageRoute(builder: (_) => const UnknownScreen());
     }
