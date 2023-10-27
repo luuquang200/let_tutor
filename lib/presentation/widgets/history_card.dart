@@ -30,7 +30,7 @@ class _HistoryCardState extends State<HistoryCard> {
             Row(
               children: [
                 const SizedBox(width: 12),
-                _tutorAvatar(context),
+                _tutorAvatar(context, 44),
                 const SizedBox(width: 12),
                 _tutorInfo(context),
               ],
@@ -57,6 +57,62 @@ class _HistoryCardState extends State<HistoryCard> {
     );
   }
 
+  void _showReportDialog(BuildContext context) {
+    final textController =
+        TextEditingController(); // controller để lấy giá trị của TextField
+    showDialog(
+      context: context,
+      builder: (context) => AlertDialog(
+        title: const Text('Report on Lesson'),
+        content: Column(
+          mainAxisSize: MainAxisSize.min,
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Row(
+              children: [
+                _tutorAvatar(context, 32),
+                const SizedBox(width: 16),
+                Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text('Krytal', style: CustomTextStyle.headlineLarge),
+                    // Text('Lesson Time: '),
+                    Text('Monday, 31 Oct 2023'),
+                    Text('10:00 - 10:15 AM'),
+                  ],
+                ),
+              ],
+            ),
+            const SizedBox(height: 8),
+            Text('What was the reason you reported on the lesson?',
+                style: CustomTextStyle.bodyRegular),
+            const SizedBox(height: 8),
+            TextField(
+              controller: textController,
+              decoration: InputDecoration(
+                hintText: 'Enter your report here',
+                border: OutlineInputBorder(),
+              ),
+              maxLines: 5,
+            ),
+          ],
+        ),
+        actions: [
+          TextButton(
+            onPressed: () => Navigator.pop(context),
+            child: const Text('Later'),
+          ),
+          TextButton(
+            onPressed: () {
+              Navigator.pop(context);
+            },
+            child: const Text('Submit'),
+          ),
+        ],
+      ),
+    );
+  }
+
   _tutorInfo(BuildContext context) {
     return Expanded(
       child: Column(
@@ -67,7 +123,7 @@ class _HistoryCardState extends State<HistoryCard> {
               // Navigator.pushNamed(context, Routes.teacherDetail);
             },
             child: Text(
-              'Keegan',
+              'Krytal',
               style: CustomTextStyle.headlineLarge,
             ),
           ),
@@ -108,14 +164,14 @@ class _HistoryCardState extends State<HistoryCard> {
     );
   }
 
-  _tutorAvatar(BuildContext context) {
+  Widget _tutorAvatar(BuildContext context, double radius) {
     return GestureDetector(
       onTap: () {
         Routes.navigateTo(context, Routes.tutorDetail);
       },
-      child: const CircleAvatar(
+      child: CircleAvatar(
         backgroundImage: AssetImage('assets/tutor_avatar_01.jpg'),
-        radius: 44,
+        radius: radius,
       ),
     );
   }
@@ -124,7 +180,9 @@ class _HistoryCardState extends State<HistoryCard> {
     return Expanded(
       child: TextButton(
         style: TextButton.styleFrom(foregroundColor: Colors.red),
-        onPressed: () {},
+        onPressed: () {
+          _showReportDialog(context);
+        },
         child: const Text(
           'Report',
           style: TextStyle(fontSize: 16, color: Colors.red),
@@ -145,18 +203,6 @@ class _HistoryCardState extends State<HistoryCard> {
         ),
       ),
     );
-  }
-
-  _showEditRequestButton(BuildContext context) {
-    return IconButton(
-        onPressed: () async {
-          final dialogResult = await showEditRequestDialog(context);
-        },
-        icon: Icon(
-          Icons.edit_note_outlined,
-          size: 28,
-          color: Colors.blue[700],
-        ));
   }
 
   _timeInfo() {
@@ -246,42 +292,4 @@ class _HistoryCardState extends State<HistoryCard> {
           ],
         ));
   }
-}
-
-Future<bool> showEditRequestDialog(BuildContext context) {
-  return showDialog<bool>(
-    context: context,
-    builder: (context) {
-      return AlertDialog(
-        title: const Text('Requests For Lesson'),
-        content: TextField(
-          decoration: InputDecoration(
-              contentPadding: const EdgeInsets.all(28),
-              border: OutlineInputBorder(
-                  borderSide: const BorderSide(color: Colors.grey, width: 1),
-                  borderRadius: BorderRadius.circular(10))),
-        ),
-        actions: [
-          TextButton(
-            onPressed: () {
-              Navigator.pop(context, false);
-            },
-            child: const Text(
-              'Cancel',
-              style: TextStyle(fontSize: 18),
-            ),
-          ),
-          TextButton(
-            onPressed: () {
-              Navigator.pop(context, true);
-            },
-            child: const Text(
-              'OK',
-              style: TextStyle(fontSize: 18),
-            ),
-          ),
-        ],
-      );
-    },
-  ).then((value) => value ?? false);
 }

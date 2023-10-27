@@ -193,40 +193,34 @@ class BookedScheduleCard extends StatelessWidget {
   }
 }
 
-Future<bool> showEditRequestDialog(BuildContext context) {
-  return showDialog<bool>(
+Future<bool> showEditRequestDialog(BuildContext context) async {
+  final textController = TextEditingController();
+  final result = await showDialog<bool>(
     context: context,
-    builder: (context) {
-      return AlertDialog(
-        title: const Text('Requests For Lesson'),
-        content: TextField(
-          decoration: InputDecoration(
-              contentPadding: const EdgeInsets.all(28),
-              border: OutlineInputBorder(
-                  borderSide: const BorderSide(color: Colors.grey, width: 1),
-                  borderRadius: BorderRadius.circular(10))),
+    builder: (context) => AlertDialog(
+      title: const Text('Request for Tutor'),
+      content: TextField(
+        controller: textController,
+        maxLines: 5,
+        decoration: InputDecoration(
+          hintText: 'Enter your request here',
+          border: OutlineInputBorder(),
+          contentPadding: EdgeInsets.symmetric(vertical: 8, horizontal: 8),
         ),
-        actions: [
-          TextButton(
-            onPressed: () {
-              Navigator.pop(context, false);
-            },
-            child: const Text(
-              'Cancel',
-              style: TextStyle(fontSize: 18),
-            ),
-          ),
-          TextButton(
-            onPressed: () {
-              Navigator.pop(context, true);
-            },
-            child: const Text(
-              'OK',
-              style: TextStyle(fontSize: 18),
-            ),
-          ),
-        ],
-      );
-    },
-  ).then((value) => value ?? false);
+      ),
+      actions: [
+        TextButton(
+          onPressed: () => Navigator.pop(context, false),
+          child: const Text('Cancel'),
+        ),
+        TextButton(
+          onPressed: () {
+            Navigator.pop(context, true);
+          },
+          child: const Text('Send'),
+        ),
+      ],
+    ),
+  );
+  return result ?? false;
 }

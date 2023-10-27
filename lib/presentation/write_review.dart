@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:let_tutor/presentation/styles/custom_button.dart';
+import 'package:let_tutor/presentation/styles/custom_text_style.dart';
 
 class WriteReview extends StatefulWidget {
   const WriteReview({super.key});
@@ -17,10 +18,8 @@ class _WriteReviewState extends State<WriteReview> {
     return SafeArea(
       child: Scaffold(
         appBar: AppBar(
-          title: const Center(
-            child: Text('Write Review'),
-          ),
-        ),
+            title: Text('Write review', style: CustomTextStyle.topHeadline),
+            iconTheme: IconThemeData(color: Theme.of(context).primaryColor)),
         body: SingleChildScrollView(
           padding: const EdgeInsets.symmetric(horizontal: 16),
           child: Column(
