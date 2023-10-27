@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:let_tutor/presentation/account_screen.dart';
 import 'package:let_tutor/presentation/courses_screen.dart';
 import 'package:let_tutor/presentation/schedule_screen.dart';
 import 'package:let_tutor/presentation/styles/custom_text_style.dart';
@@ -16,9 +17,9 @@ class _HomeState extends State<Home> {
     const TutorListScreen(),
     const ScheduleSceen(),
     const CoursesScreen(),
-    const TutorListScreen(),
+    const AccountScreen(),
   ];
-  List<String> screenTitle = ['Tutors', 'Schedule', 'Courses', 'Settings'];
+  List<String> screenTitle = ['Tutors', 'Schedule', 'Courses', 'Account'];
   int selectedScreenIndex = 0;
 
   @override
@@ -50,7 +51,7 @@ class _HomeState extends State<Home> {
               icon: Icon(Icons.schedule_outlined), label: 'Schedule'),
           BottomNavigationBarItem(icon: Icon(Icons.school), label: 'Courses'),
           BottomNavigationBarItem(
-              icon: Icon(Icons.settings), label: 'Settings'),
+              icon: Icon(Icons.account_circle_outlined), label: 'Account'),
         ],
       ),
     );

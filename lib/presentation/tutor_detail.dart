@@ -27,44 +27,7 @@ class _TutorDetailState extends State<TutorDetail> {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             // Tutor Information
-            Row(
-              children: [
-                const CircleAvatar(
-                  radius: 45,
-                  backgroundImage: AssetImage('assets/tutor_avatar.jpg'),
-                ),
-                const SizedBox(
-                  width: 20,
-                ),
-                Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    // Name
-                    Text("Adelia Rice", style: CustomTextStyle.headlineLarge),
-                    Row(
-                      children: [
-                        SvgPicture.asset(
-                          'assets/flags/Foreigner.svg',
-                          width: 20,
-                          height: 20,
-                        ),
-                        SizedBox(width: 10),
-                        Text(
-                          'United States',
-                          style: CustomTextStyle.bodyRegular,
-                        ),
-                      ],
-                    ),
-                    // row
-                    Row(
-                        children: List<Widget>.generate(
-                      5,
-                      (index) => const Icon(Icons.star, color: Colors.amber),
-                    ))
-                  ],
-                )
-              ],
-            ),
+            _tutorInformation(),
             const SizedBox(
               height: 16,
             ),
@@ -318,5 +281,46 @@ class _TutorDetailState extends State<TutorDetail> {
                 ],
               ),
             ));
+  }
+
+  _tutorInformation() {
+    return Row(
+      children: [
+        const CircleAvatar(
+          radius: 45,
+          backgroundImage: AssetImage('assets/tutor_avatar.jpg'),
+        ),
+        const SizedBox(
+          width: 20,
+        ),
+        Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            // Name
+            Text("Adelia Rice", style: CustomTextStyle.headlineLarge),
+            Row(
+              children: [
+                SvgPicture.asset(
+                  'assets/flags/Foreigner.svg',
+                  width: 20,
+                  height: 20,
+                ),
+                SizedBox(width: 10),
+                Text(
+                  'United States',
+                  style: CustomTextStyle.bodyRegular,
+                ),
+              ],
+            ),
+            // row
+            Row(
+                children: List<Widget>.generate(
+              5,
+              (index) => const Icon(Icons.star, color: Colors.amber),
+            ))
+          ],
+        )
+      ],
+    );
   }
 }
