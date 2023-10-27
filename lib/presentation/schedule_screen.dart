@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:let_tutor/presentation/widgets/booked_schedule_card.dart';
 import 'package:let_tutor/presentation/widgets/course_card.dart';
+import 'package:let_tutor/presentation/widgets/history_card.dart';
 import 'package:let_tutor/routes.dart';
 
 class ScheduleSceen extends StatefulWidget {
@@ -86,6 +87,20 @@ class _ScheduleSceenState extends State<ScheduleSceen> {
   }
 
   _historyTab() {
-    return Text('data');
+    return Padding(
+        padding: const EdgeInsets.symmetric(vertical: 8, horizontal: 16),
+        child: ListView.builder(
+          shrinkWrap: true,
+          scrollDirection: Axis.vertical,
+          itemCount: 10,
+          itemBuilder: (context, index) {
+            return GestureDetector(
+              onTap: () {
+                Routes.navigateTo(context, Routes.courseDetail);
+              },
+              child: const HistoryCard(),
+            );
+          },
+        ));
   }
 }

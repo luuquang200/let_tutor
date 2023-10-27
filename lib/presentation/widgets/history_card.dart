@@ -3,8 +3,15 @@ import 'package:flutter_svg/svg.dart';
 import 'package:let_tutor/presentation/styles/custom_text_style.dart';
 import 'package:let_tutor/routes.dart';
 
-class BookedScheduleCard extends StatelessWidget {
-  const BookedScheduleCard({super.key});
+class HistoryCard extends StatefulWidget {
+  const HistoryCard({super.key});
+
+  @override
+  State<HistoryCard> createState() => _HistoryCardState();
+}
+
+class _HistoryCardState extends State<HistoryCard> {
+  bool isReviewExpanded = false;
 
   @override
   Widget build(BuildContext context) {
@@ -33,14 +40,15 @@ class BookedScheduleCard extends StatelessWidget {
             ),
             _timeInfo(),
             const SizedBox(
-              height: 6,
+              height: 12,
             ),
             _requestForLesson(context),
+            _reviewFromTutor(),
             Row(
               children: [
-                _cancelButton(context),
+                _reportButton(context),
                 const SizedBox(width: 12),
-                _goMeetingButton(context),
+                _addRatingButton(context),
               ],
             )
           ],
@@ -106,33 +114,33 @@ class BookedScheduleCard extends StatelessWidget {
         Routes.navigateTo(context, Routes.tutorDetail);
       },
       child: const CircleAvatar(
-        backgroundImage: AssetImage('assets/tutor_avatar.jpg'),
+        backgroundImage: AssetImage('assets/tutor_avatar_01.jpg'),
         radius: 44,
       ),
     );
   }
 
-  _cancelButton(BuildContext context) {
+  _reportButton(BuildContext context) {
     return Expanded(
       child: TextButton(
         style: TextButton.styleFrom(foregroundColor: Colors.red),
         onPressed: () {},
         child: const Text(
-          'Cancel',
+          'Report',
           style: TextStyle(fontSize: 16, color: Colors.red),
         ),
       ),
     );
   }
 
-  _goMeetingButton(BuildContext context) {
+  _addRatingButton(BuildContext context) {
     return Expanded(
       child: TextButton(
         onPressed: () {
           Routes.navigateTo(context, Routes.videoCallScreen);
         },
         child: const Text(
-          'Go to meeting',
+          'Add a rating',
           style: TextStyle(fontSize: 16),
         ),
       ),
@@ -169,15 +177,15 @@ class BookedScheduleCard extends StatelessWidget {
 
   _requestForLesson(BuildContext context) {
     return Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 16),
+        padding: EdgeInsets.symmetric(horizontal: 16),
         child: Row(
           children: [
             // _showEditRequestButton(context),
-            const Icon(
+            Icon(
               Icons.request_page_outlined,
               size: 18,
             ),
-            const SizedBox(width: 6),
+            SizedBox(width: 6),
             Expanded(
                 child: Row(
               children: [
@@ -187,7 +195,54 @@ class BookedScheduleCard extends StatelessWidget {
                     style: CustomTextStyle.bodyRegular),
               ],
             )),
-            _showEditRequestButton(context),
+          ],
+        ));
+  }
+
+  _reviewFromTutor() {
+    return Padding(
+        padding: const EdgeInsets.symmetric(horizontal: 16),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Row(
+              children: [
+                Icon(
+                  Icons.rate_review_outlined,
+                  size: 18,
+                ),
+                SizedBox(width: 6),
+                Expanded(
+                    child: Row(
+                  children: [
+                    Text('Review from tutor:',
+                        style: CustomTextStyle.bodyRegular),
+                  ],
+                )),
+
+                // Expanded button
+                IconButton(
+                    onPressed: () {
+                      setState(() {
+                        isReviewExpanded = !isReviewExpanded;
+                      });
+                    },
+                    icon: Icon(
+                      isReviewExpanded
+                          ? Icons.arrow_drop_down_sharp
+                          : Icons.arrow_right_sharp,
+                      size: 38,
+                      color: Theme.of(context).primaryColor,
+                    ))
+              ],
+            ),
+            // review content
+            Visibility(
+                visible: isReviewExpanded,
+                child: Padding(
+                    padding: EdgeInsets.symmetric(horizontal: 22),
+                    child: Text(
+                        'Session 1: 00:00 - 00:25\nLesson status: Completed\nLesson: The Internet\nBehavior (⭐⭐⭐⭐⭐):\nListening (⭐⭐⭐⭐):\nSpeaking (⭐⭐⭐):\nVocabulary (⭐⭐⭐⭐⭐):\nOverall comment: Good and handsome.')))
           ],
         ));
   }
