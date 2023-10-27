@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:let_tutor/presentation/styles/custom_button.dart';
 import 'package:let_tutor/routes.dart';
 
 class SignInScreen extends StatefulWidget {
@@ -81,31 +82,13 @@ class _SignInScreenState extends State<SignInScreen> {
                           fontSize: 18, fontWeight: FontWeight.normal),
                     ),
                   ),
-                  SizedBox(
-                    width: double.infinity,
-                    child: ElevatedButton(
-                        onPressed: () {
-                          Routes.navigateToReplacement(context, Routes.home);
-                        },
-                        style: ButtonStyle(
-                          padding: MaterialStateProperty.all(
-                            const EdgeInsets.symmetric(vertical: 16),
-                          ),
-                          backgroundColor: MaterialStateProperty.all<Color>(
-                              const Color(0xFF0058C6)),
-                          shape:
-                              MaterialStateProperty.all<RoundedRectangleBorder>(
-                            RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(8),
-                            ),
-                          ),
-                        ),
-                        child: const Text('Login',
-                            style: TextStyle(
-                                color: Color(0xFFFFFFFF),
-                                fontSize: 20,
-                                fontWeight: FontWeight.bold))),
-                  ),
+                  CustomElevatedButton(
+                      text: 'Login',
+                      height: 52,
+                      radius: 8,
+                      onPressed: () {
+                        Routes.navigateToReplacement(context, Routes.home);
+                      }),
                   Container(
                     width: double.infinity,
                     margin: const EdgeInsets.only(top: 30, bottom: 10),
@@ -132,14 +115,6 @@ class _SignInScreenState extends State<SignInScreen> {
                         onPressed: () {},
                         icon: SvgPicture.asset(
                           'assets/google-logo.svg',
-                          width: 50,
-                          height: 50,
-                        ),
-                      ),
-                      IconButton(
-                        onPressed: () {},
-                        icon: SvgPicture.asset(
-                          'assets/facebook-logo.svg',
                           width: 50,
                           height: 50,
                         ),

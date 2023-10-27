@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:let_tutor/presentation/styles/custom_button.dart';
 import 'package:let_tutor/presentation/styles/custom_text_style.dart';
-import 'package:let_tutor/presentation/tutor_detail.dart';
+import 'package:let_tutor/presentation/screen/tutor_detail.dart';
 import 'package:let_tutor/routes.dart';
 
 class CourseDetail extends StatefulWidget {
@@ -201,7 +201,7 @@ class _CourseDetailState extends State<CourseDetail> {
       padding: const EdgeInsets.symmetric(horizontal: 26),
       child: Row(
         children: [
-          Text('Keegan', style: CustomTextStyle.headlineMedium),
+          Text('Adelia Rice', style: CustomTextStyle.headlineMedium),
           const SizedBox(width: 16),
           TextButton(
               onPressed: () {

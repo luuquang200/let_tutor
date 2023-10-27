@@ -1,16 +1,16 @@
 import 'package:flutter/material.dart';
-import 'package:let_tutor/presentation/booking_screen.dart';
-import 'package:let_tutor/presentation/course_detail.dart';
-import 'package:let_tutor/presentation/courses_screen.dart';
-import 'package:let_tutor/presentation/home.dart';
-import 'package:let_tutor/presentation/schedule_screen.dart';
-import 'package:let_tutor/presentation/sign_in_screen.dart';
-import 'package:let_tutor/presentation/topic_detail.dart';
-import 'package:let_tutor/presentation/tutor_detail.dart';
-import 'package:let_tutor/presentation/tutor_list_screen.dart';
-import 'package:let_tutor/presentation/tutor_review_screen.dart';
-import 'package:let_tutor/presentation/video_call_screen.dart';
-import 'package:let_tutor/presentation/write_review.dart';
+import 'package:let_tutor/presentation/screen/booking_screen.dart';
+import 'package:let_tutor/presentation/screen/course_detail.dart';
+import 'package:let_tutor/presentation/screen/courses_screen.dart';
+import 'package:let_tutor/presentation/screen/home.dart';
+import 'package:let_tutor/presentation/screen/schedule_screen.dart';
+import 'package:let_tutor/presentation/screen/sign_in_screen.dart';
+import 'package:let_tutor/presentation/screen/topic_detail.dart';
+import 'package:let_tutor/presentation/screen/tutor_detail.dart';
+import 'package:let_tutor/presentation/screen/tutor_list_screen.dart';
+import 'package:let_tutor/presentation/screen/tutor_review_screen.dart';
+import 'package:let_tutor/presentation/screen/video_call_screen.dart';
+import 'package:let_tutor/presentation/screen/write_review.dart';
 
 class Routes {
   static const String signInScreen = '/sign_in_screen';

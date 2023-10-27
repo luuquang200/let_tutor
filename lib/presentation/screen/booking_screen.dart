@@ -234,8 +234,8 @@ class _BookingScreenState extends State<BookingScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Booking'),
-      ),
+          title: Text('Booking', style: CustomTextStyle.topHeadline),
+          iconTheme: IconThemeData(color: Theme.of(context).primaryColor)),
       body: Padding(
         padding: const EdgeInsets.all(26.0),
         child: Column(

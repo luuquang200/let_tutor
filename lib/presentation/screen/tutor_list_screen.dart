@@ -27,7 +27,11 @@ class _TutorListScreenState extends State<TutorListScreen> {
   ];
   final dateController = TextEditingController();
   int selectedSpecialityIndex = 0;
-  final List<String> listNationalities = <String>['Vietnamese', 'Foreigner'];
+  final List<String> listNationalities = <String>[
+    'Vietnamese',
+    'Foreigner',
+    'Tunisia'
+  ];
   final startTimeController = TextEditingController();
   final endTimeController = TextEditingController();
 
@@ -89,22 +93,10 @@ class _TutorListScreenState extends State<TutorListScreen> {
                   child: _buttonResetFilter(),
                 ),
                 const SizedBox(height: 8),
-                SizedBox(
-                  height: 600,
-                  child: ListView.builder(
-                    shrinkWrap: true,
-                    scrollDirection: Axis.vertical,
-                    itemCount: 6,
-                    itemBuilder: (context, index) {
-                      return const Column(
-                        children: [
-                          TutorInformationCard(),
-                          SizedBox(height: 16),
-                        ],
-                      );
-                    },
-                  ),
-                )
+                const Text('Recommended Tutors:',
+                    style: CustomTextStyle.headlineMedium),
+                const SizedBox(height: 8),
+                _listTutorInformationCard(),
               ],
             ),
           ),
@@ -122,7 +114,7 @@ class _TutorListScreenState extends State<TutorListScreen> {
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
           const Text(
-            'Upcoming lesson.',
+            'Upcoming lesson',
             textAlign: TextAlign.center,
             style: TextStyle(
               fontSize: 26,
@@ -130,6 +122,13 @@ class _TutorListScreenState extends State<TutorListScreen> {
               color: Colors.white,
             ),
           ),
+          const SizedBox(height: 8),
+          const Text(
+            'Sat, 28 Oct 23 02:30 - 02:55',
+            textAlign: TextAlign.center,
+            style: TextStyle(fontSize: 20, color: Colors.white),
+          ),
+          const SizedBox(height: 8),
           ElevatedButton.icon(
             onPressed: () {},
             label: const Text("Enter lesson room"),
@@ -318,6 +317,25 @@ class _TutorListScreenState extends State<TutorListScreen> {
         side: const BorderSide(color: Color(0xFF0058C6), width: 1),
       ),
       child: const Text('Reset Filters'),
+    );
+  }
+
+  _listTutorInformationCard() {
+    return SizedBox(
+      height: 600,
+      child: ListView.builder(
+        shrinkWrap: true,
+        scrollDirection: Axis.vertical,
+        itemCount: 6,
+        itemBuilder: (context, index) {
+          return const Column(
+            children: [
+              TutorInformationCard(),
+              SizedBox(height: 16),
+            ],
+          );
+        },
+      ),
     );
   }
 }

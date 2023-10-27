@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:let_tutor/presentation/account_screen.dart';
-import 'package:let_tutor/presentation/courses_screen.dart';
-import 'package:let_tutor/presentation/schedule_screen.dart';
+import 'package:let_tutor/presentation/screen/account_screen.dart';
+import 'package:let_tutor/presentation/screen/courses_screen.dart';
+import 'package:let_tutor/presentation/screen/schedule_screen.dart';
 import 'package:let_tutor/presentation/styles/custom_text_style.dart';
-import 'package:let_tutor/presentation/tutor_list_screen.dart';
+import 'package:let_tutor/presentation/screen/tutor_list_screen.dart';
 
 class Home extends StatefulWidget {
   const Home({super.key});
@@ -48,7 +48,7 @@ class _HomeState extends State<Home> {
         items: const [
           BottomNavigationBarItem(icon: Icon(Icons.people), label: 'Tutors'),
           BottomNavigationBarItem(
-              icon: Icon(Icons.schedule_outlined), label: 'Schedule'),
+              icon: Icon(Icons.edit_calendar_outlined), label: 'Schedule'),
           BottomNavigationBarItem(icon: Icon(Icons.school), label: 'Courses'),
           BottomNavigationBarItem(
               icon: Icon(Icons.account_circle_outlined), label: 'Account'),
