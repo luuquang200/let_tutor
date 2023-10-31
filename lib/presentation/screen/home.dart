@@ -22,6 +22,9 @@ class _HomeState extends State<Home> {
   ];
   List<String> screenTitle = ['Tutors', 'Schedule', 'Courses', 'Account'];
   int selectedScreenIndex = 0;
+  List<String> listNationalities = <String>['Vietnamese', 'English'];
+
+  late String currentLanguage = listNationalities[0];
 
   @override
   Widget build(BuildContext context) {
@@ -29,18 +32,12 @@ class _HomeState extends State<Home> {
       appBar: AppBar(
         elevation: 0,
         backgroundColor: Colors.white,
-        iconTheme: IconThemeData(color: Color(0xFF0058C6)),
+        iconTheme: const IconThemeData(color: Color(0xFF0058C6)),
         title: Text(
           screenTitle[selectedScreenIndex],
           style: CustomTextStyle.topHeadline,
         ),
-        actions: [
-          IconButton(
-            icon: const Icon(Icons.menu_outlined),
-            onPressed: () {},
-          ),
-          SizedBox(width: 16)
-        ],
+        actions: [_selectLanguage(), const SizedBox(width: 16)],
       ),
       body: screens[selectedScreenIndex],
       bottomNavigationBar: BottomNavigationBar(
@@ -63,6 +60,49 @@ class _HomeState extends State<Home> {
               icon: Icon(Icons.account_circle_outlined), label: 'Account'),
         ],
       ),
+    );
+  }
+
+  _selectLanguage() {
+    return PopupMenuButton<String>(
+      icon: Container(
+          padding: const EdgeInsets.all(8.0),
+          decoration: const BoxDecoration(
+            color: Color.fromARGB(255, 223, 228, 249),
+            shape: BoxShape.circle,
+          ),
+          child: ClipOval(
+            child: SvgPicture.asset(
+              'assets/flags/$currentLanguage.svg',
+              width: 24,
+              height: 24,
+            ),
+          )),
+      onSelected: (String value) {
+        // Update language here
+        setState(() {
+          currentLanguage = value;
+        });
+      },
+      itemBuilder: (BuildContext context) {
+        return listNationalities.map((String value) {
+          return PopupMenuItem<String>(
+            value: value,
+            child: Row(
+              children: <Widget>[
+                const SizedBox(width: 10),
+                SvgPicture.asset(
+                  'assets/flags/$value.svg',
+                  width: 20,
+                  height: 20,
+                ),
+                const SizedBox(width: 10),
+                Text(value),
+              ],
+            ),
+          );
+        }).toList();
+      },
     );
   }
 }
