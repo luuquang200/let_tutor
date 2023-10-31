@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/svg.dart';
 import 'package:let_tutor/presentation/screen/account_screen.dart';
 import 'package:let_tutor/presentation/screen/courses_screen.dart';
 import 'package:let_tutor/presentation/screen/schedule_screen.dart';
@@ -28,10 +29,18 @@ class _HomeState extends State<Home> {
       appBar: AppBar(
         elevation: 0,
         backgroundColor: Colors.white,
+        iconTheme: IconThemeData(color: Color(0xFF0058C6)),
         title: Text(
           screenTitle[selectedScreenIndex],
           style: CustomTextStyle.topHeadline,
         ),
+        actions: [
+          IconButton(
+            icon: const Icon(Icons.menu_outlined),
+            onPressed: () {},
+          ),
+          SizedBox(width: 16)
+        ],
       ),
       body: screens[selectedScreenIndex],
       bottomNavigationBar: BottomNavigationBar(

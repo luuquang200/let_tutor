@@ -127,7 +127,7 @@ class _WriteReviewState extends State<WriteReview> {
   }
 
   Widget _saveButton() {
-    return CustomElevatedButton(
+    return MyElevatedButton(
         text: 'Save',
         height: 44,
         radius: 8,

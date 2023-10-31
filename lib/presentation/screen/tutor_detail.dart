@@ -192,7 +192,7 @@ class _TutorDetailState extends State<TutorDetail> {
   }
 
   _bookingButton() {
-    return CustomElevatedButton(
+    return MyElevatedButton(
         text: 'Book this tutor',
         height: 50,
         radius: 8,

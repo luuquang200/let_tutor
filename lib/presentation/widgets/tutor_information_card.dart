@@ -12,12 +12,10 @@ class TutorInformationCard extends StatelessWidget {
         onTap: () {
           Routes.navigateTo(context, Routes.tutorDetail);
         },
-        child: Container(
-          decoration: BoxDecoration(
-            border: Border.all(
-              color: const Color(0xFFBEBEBE),
-              width: 1,
-            ),
+        child: Card(
+          elevation: 5,
+          surfaceTintColor: Colors.white,
+          shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(10),
           ),
           child: Stack(

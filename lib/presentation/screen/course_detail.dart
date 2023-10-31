@@ -68,7 +68,7 @@ class _CourseDetailState extends State<CourseDetail> {
   }
 
   _dicoveryButton() {
-    return CustomElevatedButton(
+    return MyElevatedButton(
       text: 'Discover',
       height: 50,
       radius: 8,

@@ -20,6 +20,7 @@ class MyApp extends StatelessWidget {
           primary: Color(0xFF0058C6),
           secondary: Colors.blueAccent,
         ),
+        // iconTheme: IconThemeData(color: Color(0xFF0058C6)),
         useMaterial3: true,
       ),
       onGenerateRoute: Routes.generateRoute,

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:let_tutor/presentation/styles/custom_button.dart';
 import 'package:let_tutor/presentation/styles/custom_text_style.dart';
 import 'package:let_tutor/routes.dart';
 
@@ -99,16 +100,22 @@ class _HistoryCardState extends State<HistoryCard> {
           ],
         ),
         actions: [
-          TextButton(
+          MyOutlineButton(
+            text: 'Later',
+            height: 25,
+            radius: 5,
             onPressed: () => Navigator.pop(context),
-            child: const Text('Later'),
+            width: 26,
+            textSize: 18,
           ),
-          TextButton(
-            onPressed: () {
-              Navigator.pop(context);
-            },
-            child: const Text('Submit'),
-          ),
+          MyElevatedButton(
+            text: 'Submit',
+            height: 25,
+            radius: 5,
+            onPressed: () => Navigator.pop(context),
+            width: 26,
+            textSize: 18,
+          )
         ],
       ),
     );

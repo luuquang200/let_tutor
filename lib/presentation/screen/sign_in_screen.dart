@@ -82,7 +82,7 @@ class _SignInScreenState extends State<SignInScreen> {
                           fontSize: 18, fontWeight: FontWeight.normal),
                     ),
                   ),
-                  CustomElevatedButton(
+                  MyElevatedButton(
                       text: 'Login',
                       height: 52,
                       radius: 8,

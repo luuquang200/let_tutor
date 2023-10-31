@@ -35,6 +35,7 @@ class _TutorListScreenState extends State<TutorListScreen> {
   ];
   final startTimeController = TextEditingController();
   final endTimeController = TextEditingController();
+  bool isShowFilter = false;
 
   @override
   Widget build(BuildContext context) {
@@ -49,53 +50,28 @@ class _TutorListScreenState extends State<TutorListScreen> {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                const Padding(
-                    padding: EdgeInsets.symmetric(vertical: 10),
-                    child: Text(
-                      'Find a tutor',
-                      style: CustomTextStyle.headlineMedium,
-                    )),
+                const SizedBox(height: 8),
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
-                    SizedBox(width: 220, child: _searchByName()),
-                    SizedBox(width: 160, child: _selectNationality())
+                    const Text('Recommended Tutors:',
+                        style: CustomTextStyle.headlineLarge),
+                    IconButton(
+                        onPressed: () {
+                          setState(() {
+                            isShowFilter = !isShowFilter;
+                          });
+                        },
+                        icon: const Icon(
+                          Icons.filter_list_outlined,
+                          size: 28,
+                        )),
                   ],
                 ),
-                const Padding(
-                  padding: EdgeInsets.symmetric(vertical: 12),
-                  child: Text('Select available tutoring time:',
-                      style: CustomTextStyle.headlineMedium),
+                Visibility(
+                  visible: isShowFilter,
+                  child: _inputFilter(),
                 ),
-                Row(
-                  children: [Expanded(child: _selectAvailableDate())],
-                ),
-                const SizedBox(height: 16),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    Expanded(
-                      child: _selectStartTime(),
-                    ),
-                    const SizedBox(width: 10),
-                    Expanded(child: _selectEndTime()),
-                  ],
-                ),
-                const SizedBox(height: 16),
-                const Text('Select speciality:',
-                    style: CustomTextStyle.headlineMedium),
-                const SizedBox(height: 8),
-                Padding(
-                  padding: const EdgeInsets.symmetric(vertical: 8),
-                  child: _specialitiesChips(),
-                ),
-                Padding(
-                  padding: const EdgeInsets.symmetric(vertical: 8),
-                  child: _buttonResetFilter(),
-                ),
-                const SizedBox(height: 8),
-                const Text('Recommended Tutors:',
-                    style: CustomTextStyle.headlineMedium),
                 const SizedBox(height: 8),
                 _listTutorInformationCard(),
                 NumberPaginator(
@@ -343,6 +319,63 @@ class _TutorListScreenState extends State<TutorListScreen> {
           );
         },
       ),
+    );
+  }
+
+  _inputFilter() {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        const Padding(
+            padding: EdgeInsets.symmetric(vertical: 10),
+            child: Text(
+              'Find a tutor',
+              style: CustomTextStyle.headlineMedium,
+            )),
+        Row(
+          children: [
+            Expanded(
+              flex: 3,
+              child: _searchByName(),
+            ),
+            const SizedBox(width: 10),
+            Expanded(
+              flex: 2,
+              child: _selectNationality(),
+            ),
+          ],
+        ),
+        const Padding(
+          padding: EdgeInsets.symmetric(vertical: 12),
+          child: Text('Select available tutoring time:',
+              style: CustomTextStyle.headlineMedium),
+        ),
+        Row(
+          children: [Expanded(child: _selectAvailableDate())],
+        ),
+        const SizedBox(height: 16),
+        Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [
+            Expanded(
+              child: _selectStartTime(),
+            ),
+            const SizedBox(width: 10),
+            Expanded(child: _selectEndTime()),
+          ],
+        ),
+        const SizedBox(height: 16),
+        const Text('Select speciality:', style: CustomTextStyle.headlineMedium),
+        const SizedBox(height: 8),
+        Padding(
+          padding: const EdgeInsets.symmetric(vertical: 8),
+          child: _specialitiesChips(),
+        ),
+        Padding(
+          padding: const EdgeInsets.symmetric(vertical: 8),
+          child: _buttonResetFilter(),
+        ),
+      ],
     );
   }
 }

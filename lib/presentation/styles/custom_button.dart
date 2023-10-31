@@ -41,26 +41,30 @@ class CustomButton extends StatelessWidget {
   }
 }
 
-class CustomElevatedButton extends StatelessWidget {
+class MyElevatedButton extends StatelessWidget {
   final String text;
   final double height;
   final double radius;
+  final double width;
+  final double textSize;
   final VoidCallback onPressed;
 
-  const CustomElevatedButton({
-    super.key,
+  const MyElevatedButton({
+    Key? key,
     required this.text,
     required this.height,
     required this.radius,
+    this.width = double.infinity,
+    this.textSize = 20.0,
     required this.onPressed,
-  });
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return ElevatedButton(
       style: ElevatedButton.styleFrom(
         backgroundColor: const Color(0xFF0058C6),
-        minimumSize: Size(double.infinity, height),
+        minimumSize: Size(width, height), // Sử dụng width
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(radius),
         ),
@@ -68,9 +72,49 @@ class CustomElevatedButton extends StatelessWidget {
       onPressed: onPressed,
       child: Text(
         text,
-        style: const TextStyle(
+        style: TextStyle(
           color: Colors.white,
-          fontSize: 20,
+          fontSize: textSize,
+        ),
+      ),
+    );
+  }
+}
+
+class MyOutlineButton extends StatelessWidget {
+  final String text;
+  final double height;
+  final double radius;
+  final double width;
+  final double textSize;
+  final VoidCallback onPressed;
+
+  const MyOutlineButton({
+    Key? key,
+    required this.text,
+    required this.height,
+    required this.radius,
+    this.width = double.infinity,
+    this.textSize = 20.0,
+    required this.onPressed,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return OutlinedButton(
+      style: OutlinedButton.styleFrom(
+        side: const BorderSide(color: Color(0xFF0058C6), width: 1),
+        minimumSize: Size(width, height),
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(radius),
+        ),
+      ),
+      onPressed: onPressed,
+      child: Text(
+        text,
+        style: TextStyle(
+          color: const Color(0xFF0058C6),
+          fontSize: textSize,
         ),
       ),
     );

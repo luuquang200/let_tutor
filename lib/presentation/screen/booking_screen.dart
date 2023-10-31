@@ -20,6 +20,37 @@ class _BookingScreenState extends State<BookingScreen> {
 
   String _selectedTime = '00:00 - 00:00';
 
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+          title: Text('Booking', style: CustomTextStyle.topHeadline),
+          iconTheme: IconThemeData(color: Theme.of(context).primaryColor)),
+      body: Padding(
+        padding: const EdgeInsets.all(26.0),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            header(context, 'Booking date'),
+            calendarPicker(),
+            header(context, 'Booking time'),
+            Padding(
+                padding: const EdgeInsets.only(left: 10), child: timePicker()),
+            const SizedBox(height: 16),
+            balanceInformation(),
+            const SizedBox(height: 16),
+            priceInformation(),
+            const SizedBox(height: 16),
+            Expanded(
+              child: Container(),
+            ),
+            bookButton(),
+          ],
+        ),
+      ),
+    );
+  }
+
   void _selectTime(BuildContext context) async {
     final List<String> availableHours = [
       '18:30 - 18:55',
@@ -133,7 +164,7 @@ class _BookingScreenState extends State<BookingScreen> {
   }
 
   Widget bookButton() {
-    return CustomElevatedButton(
+    return MyElevatedButton(
         text: 'Book now',
         height: 50,
         radius: 8,
@@ -215,48 +246,23 @@ class _BookingScreenState extends State<BookingScreen> {
           ],
         ),
         actions: [
-          TextButton(
+          MyOutlineButton(
+            text: 'Cancel',
+            height: 25,
+            radius: 5,
             onPressed: () => Navigator.pop(context),
-            child: const Text('Cancel', style: TextStyle(color: Colors.red)),
+            width: 26,
+            textSize: 18,
           ),
-          TextButton(
-            onPressed: () {
-              Navigator.pop(context);
-            },
-            child: const Text('Book'),
-          ),
+          MyElevatedButton(
+            text: 'Book',
+            height: 25,
+            radius: 5,
+            onPressed: () => Navigator.pop(context),
+            width: 26,
+            textSize: 18,
+          )
         ],
-      ),
-    );
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-          title: Text('Booking', style: CustomTextStyle.topHeadline),
-          iconTheme: IconThemeData(color: Theme.of(context).primaryColor)),
-      body: Padding(
-        padding: const EdgeInsets.all(26.0),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            header(context, 'Booking date'),
-            calendarPicker(),
-            header(context, 'Booking time'),
-            Padding(
-                padding: const EdgeInsets.only(left: 10), child: timePicker()),
-            const SizedBox(height: 16),
-            balanceInformation(),
-            const SizedBox(height: 16),
-            priceInformation(),
-            const SizedBox(height: 16),
-            Expanded(
-              child: Container(),
-            ),
-            bookButton(),
-          ],
-        ),
       ),
     );
   }
