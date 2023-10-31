@@ -3,6 +3,7 @@ import 'package:let_tutor/presentation/widgets/booked_schedule_card.dart';
 import 'package:let_tutor/presentation/widgets/course_card.dart';
 import 'package:let_tutor/presentation/widgets/history_card.dart';
 import 'package:let_tutor/routes.dart';
+import 'package:number_paginator/number_paginator.dart';
 
 class ScheduleSceen extends StatefulWidget {
   const ScheduleSceen({super.key});
@@ -12,6 +13,7 @@ class ScheduleSceen extends StatefulWidget {
 }
 
 class _ScheduleSceenState extends State<ScheduleSceen> {
+  var _currentPage = 1;
   @override
   Widget build(BuildContext context) {
     return DefaultTabController(
@@ -87,20 +89,32 @@ class _ScheduleSceenState extends State<ScheduleSceen> {
   }
 
   _historyTab() {
-    return Padding(
+    return SingleChildScrollView(
+      child: Padding(
         padding: const EdgeInsets.symmetric(vertical: 8, horizontal: 16),
-        child: ListView.builder(
-          shrinkWrap: true,
-          scrollDirection: Axis.vertical,
-          itemCount: 10,
-          itemBuilder: (context, index) {
-            return GestureDetector(
-              onTap: () {
-                Routes.navigateTo(context, Routes.courseDetail);
+        child: Column(
+          children: [
+            ListView.builder(
+              shrinkWrap: true,
+              physics: const NeverScrollableScrollPhysics(),
+              itemCount: 5,
+              itemBuilder: (context, index) {
+                return GestureDetector(
+                  onTap: () {},
+                  child: const HistoryCard(),
+                );
               },
-              child: const HistoryCard(),
-            );
-          },
-        ));
+            ),
+            NumberPaginator(
+              numberPages: 8,
+              onPageChange: (index) {
+                print(index);
+                setState(() {});
+              },
+            ),
+          ],
+        ),
+      ),
+    );
   }
 }

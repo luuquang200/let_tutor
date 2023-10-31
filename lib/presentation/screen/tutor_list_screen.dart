@@ -3,6 +3,7 @@ import 'package:flutter_svg/svg.dart';
 import 'package:intl/intl.dart';
 import 'package:let_tutor/presentation/styles/custom_text_style.dart';
 import 'package:let_tutor/presentation/widgets/tutor_information_card.dart';
+import 'package:number_paginator/number_paginator.dart';
 
 class TutorListScreen extends StatefulWidget {
   const TutorListScreen({Key? key}) : super(key: key);
@@ -97,6 +98,13 @@ class _TutorListScreenState extends State<TutorListScreen> {
                     style: CustomTextStyle.headlineMedium),
                 const SizedBox(height: 8),
                 _listTutorInformationCard(),
+                NumberPaginator(
+                  numberPages: 8,
+                  onPageChange: (index) {
+                    print(index);
+                    setState(() {});
+                  },
+                ),
               ],
             ),
           ),
@@ -322,10 +330,9 @@ class _TutorListScreenState extends State<TutorListScreen> {
 
   _listTutorInformationCard() {
     return SizedBox(
-      height: 600,
       child: ListView.builder(
         shrinkWrap: true,
-        scrollDirection: Axis.vertical,
+        physics: const NeverScrollableScrollPhysics(),
         itemCount: 6,
         itemBuilder: (context, index) {
           return const Column(

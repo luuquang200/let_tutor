@@ -88,11 +88,17 @@ class _AccountScreenState extends State<AccountScreen> {
               icons[index],
               size: 30,
             ),
-            SizedBox(width: 12),
+            const SizedBox(width: 12),
             Text(
               sections[index],
-              style: TextStyle(fontSize: 16),
-            )
+              style: const TextStyle(fontSize: 16),
+            ),
+            const Spacer(),
+            const Icon(
+              Icons.arrow_forward_ios_outlined,
+              size: 20,
+            ),
+            const SizedBox(width: 10),
           ],
         ),
       ),

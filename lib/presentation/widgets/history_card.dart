@@ -12,6 +12,7 @@ class HistoryCard extends StatefulWidget {
 
 class _HistoryCardState extends State<HistoryCard> {
   bool isReviewExpanded = false;
+  bool isRequestExpanded = false;
 
   @override
   Widget build(BuildContext context) {
@@ -120,7 +121,7 @@ class _HistoryCardState extends State<HistoryCard> {
         children: [
           GestureDetector(
             onTap: () {
-              // Navigator.pushNamed(context, Routes.teacherDetail);
+              Routes.navigateTo(context, Routes.tutorDetail);
             },
             child: Text(
               'Krystal',
@@ -207,7 +208,7 @@ class _HistoryCardState extends State<HistoryCard> {
 
   _timeInfo() {
     return const Padding(
-        padding: EdgeInsets.symmetric(horizontal: 16),
+        padding: EdgeInsets.symmetric(horizontal: 20),
         child: Row(
           children: [
             Icon(Icons.calendar_today_outlined, size: 18),
@@ -215,7 +216,7 @@ class _HistoryCardState extends State<HistoryCard> {
             Text('Monday, 31 Oct 2023', style: CustomTextStyle.bodyRegular),
             SizedBox(width: 20),
             Icon(Icons.access_time_outlined, size: 18),
-            SizedBox(width: 6),
+            SizedBox(width: 2),
             Text('10:00 - 10:15 AM', style: CustomTextStyle.bodyRegular),
           ],
         ));
@@ -223,31 +224,56 @@ class _HistoryCardState extends State<HistoryCard> {
 
   _requestForLesson(BuildContext context) {
     return Padding(
-        padding: EdgeInsets.symmetric(horizontal: 16),
-        child: Row(
+        padding: const EdgeInsets.symmetric(horizontal: 20),
+        child: Column(
           children: [
-            // _showEditRequestButton(context),
-            Icon(
-              Icons.request_page_outlined,
-              size: 18,
-            ),
-            SizedBox(width: 6),
-            Expanded(
-                child: Row(
+            Row(
               children: [
-                Text('Requests:', style: CustomTextStyle.bodyRegular),
+                Icon(
+                  Icons.request_page_outlined,
+                  size: 18,
+                ),
                 SizedBox(width: 6),
-                Text('No request for lesson',
-                    style: CustomTextStyle.bodyRegular),
+                Expanded(
+                  child: Row(
+                    children: [
+                      Text('Requests for lesson:',
+                          style: CustomTextStyle.bodyRegular),
+                      SizedBox(width: 6),
+                    ],
+                  ),
+                ),
+                IconButton(
+                    onPressed: () {
+                      setState(() {
+                        isRequestExpanded = !isRequestExpanded;
+                      });
+                    },
+                    alignment: Alignment.topCenter,
+                    padding: EdgeInsets.zero,
+                    icon: Icon(
+                      isRequestExpanded
+                          ? Icons.arrow_drop_down_sharp
+                          : Icons.arrow_right_sharp,
+                      size: 38,
+                      color: Theme.of(context).primaryColor,
+                    )),
               ],
-            )),
+            ),
+            Visibility(
+                visible: isRequestExpanded,
+                child: Padding(
+                  padding: EdgeInsets.symmetric(horizontal: 22),
+                  child: Text(
+                      'Hi there! I\'d like to schedule a tutoring session to cover grammarly. Do you have any specific materials or resources I should prepare for the session?'),
+                ))
           ],
         ));
   }
 
   _reviewFromTutor() {
     return Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 16),
+        padding: const EdgeInsets.symmetric(horizontal: 20),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
@@ -273,6 +299,7 @@ class _HistoryCardState extends State<HistoryCard> {
                         isReviewExpanded = !isReviewExpanded;
                       });
                     },
+                    padding: EdgeInsets.zero,
                     icon: Icon(
                       isReviewExpanded
                           ? Icons.arrow_drop_down_sharp
