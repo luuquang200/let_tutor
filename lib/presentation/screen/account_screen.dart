@@ -50,9 +50,40 @@ class _AccountScreenState extends State<AccountScreen> {
 
   _avatar() {
     return Center(
-      child: CircleAvatar(
-        radius: 80,
-        backgroundImage: AssetImage('assets/account_avatar.jpeg'),
+      child: Container(
+        padding: const EdgeInsets.all(5.0),
+        decoration: const BoxDecoration(
+          color: Color.fromARGB(255, 201, 198, 198), // Color of padding
+          shape: BoxShape.circle,
+        ),
+        child: Stack(
+          children: <Widget>[
+            CircleAvatar(
+              radius: 98,
+              backgroundImage: AssetImage('assets/account_avatar.jpeg'),
+            ),
+            Positioned(
+              right: 8,
+              bottom: 8,
+              child: Container(
+                width: 44,
+                height: 41,
+                padding: const EdgeInsets.all(1.0), // Adjust padding here
+                decoration: const BoxDecoration(
+                  color: Color(0xFF0058C6),
+                  shape: BoxShape.circle, // Circular shape
+                ),
+                child: IconButton(
+                  icon: const Icon(Icons.edit),
+                  color: Colors.white,
+                  onPressed: () {
+                    // Handle editing action here
+                  },
+                ),
+              ),
+            ),
+          ],
+        ),
       ),
     );
   }
