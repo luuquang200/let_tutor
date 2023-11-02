@@ -22,7 +22,7 @@ class _TutorDetailState extends State<TutorDetail> {
           title: Text('Tutor Detail', style: CustomTextStyle.topHeadline),
           iconTheme: IconThemeData(color: Theme.of(context).primaryColor)),
       body: SingleChildScrollView(
-        padding: const EdgeInsets.symmetric(vertical: 8, horizontal: 16),
+        padding: const EdgeInsets.symmetric(vertical: 8, horizontal: 20),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [

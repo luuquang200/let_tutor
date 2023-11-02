@@ -3,11 +3,18 @@ import 'package:flutter_svg/svg.dart';
 import 'package:let_tutor/presentation/styles/custom_text_style.dart';
 import 'package:let_tutor/routes.dart';
 
-class BookedScheduleCard extends StatelessWidget {
+class BookedScheduleCard extends StatefulWidget {
   const BookedScheduleCard({super.key});
 
   @override
+  State<BookedScheduleCard> createState() => _BookedScheduleCardState();
+}
+
+class _BookedScheduleCardState extends State<BookedScheduleCard> {
+  bool isRequestExpanded = false;
+  @override
   Widget build(BuildContext context) {
+    // TODO: implement build
     return Card(
       elevation: 5,
       shape: RoundedRectangleBorder(
@@ -17,9 +24,12 @@ class BookedScheduleCard extends StatelessWidget {
       margin: const EdgeInsets.symmetric(vertical: 8),
       surfaceTintColor: Colors.white,
       child: Padding(
-        padding: const EdgeInsets.symmetric(vertical: 16, horizontal: 8),
+        padding: const EdgeInsets.symmetric(vertical: 8, horizontal: 8),
         child: Column(
           children: [
+            const SizedBox(
+              height: 16,
+            ),
             Row(
               children: [
                 const SizedBox(width: 12),
@@ -152,16 +162,17 @@ class BookedScheduleCard extends StatelessWidget {
   }
 
   _timeInfo() {
-    return const Padding(
-        padding: EdgeInsets.symmetric(horizontal: 16),
+    return Padding(
+        padding: EdgeInsets.symmetric(horizontal: 0),
         child: Row(
           children: [
-            Icon(Icons.calendar_today_outlined, size: 18),
-            SizedBox(width: 6),
+            SizedBox(width: 14),
+            Icon(Icons.calendar_today_outlined, size: 22),
+            SizedBox(width: 12),
             Text('Monday, 31 Oct 2023', style: CustomTextStyle.bodyRegular),
-            SizedBox(width: 20),
-            Icon(Icons.access_time_outlined, size: 18),
-            SizedBox(width: 6),
+            SizedBox(width: 18),
+            Icon(Icons.access_time_outlined, size: 22),
+            SizedBox(width: 3),
             Text('10:00 - 10:15 AM', style: CustomTextStyle.bodyRegular),
           ],
         ));
@@ -169,25 +180,43 @@ class BookedScheduleCard extends StatelessWidget {
 
   _requestForLesson(BuildContext context) {
     return Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 16),
-        child: Row(
+        padding: const EdgeInsets.symmetric(horizontal: 0),
+        child: Column(
           children: [
-            // _showEditRequestButton(context),
-            const Icon(
-              Icons.request_page_outlined,
-              size: 18,
-            ),
-            const SizedBox(width: 6),
-            Expanded(
-                child: Row(
+            Row(
               children: [
-                Text('Requests:', style: CustomTextStyle.bodyRegular),
-                SizedBox(width: 6),
-                Text('No request for lesson',
-                    style: CustomTextStyle.bodyRegular),
+                // _showEditRequestButton(context),
+                IconButton(
+                  onPressed: () {
+                    setState(() {
+                      isRequestExpanded = !isRequestExpanded;
+                    });
+                  },
+                  padding: EdgeInsets.zero,
+                  icon: Icon(
+                    isRequestExpanded
+                        ? Icons.keyboard_arrow_down_sharp
+                        : Icons.keyboard_arrow_right_sharp,
+                  ),
+                  iconSize: 32,
+                ),
+                const Expanded(
+                    child: Row(
+                  children: [
+                    Text('Requests for lesson:',
+                        style: CustomTextStyle.bodyRegular),
+                  ],
+                )),
+                _showEditRequestButton(context),
               ],
-            )),
-            _showEditRequestButton(context),
+            ),
+            if (isRequestExpanded)
+              Padding(
+                padding: const EdgeInsets.only(left: 48, right: 8),
+                child: Text(
+                  'I would like to learn about the history of the internet',
+                ),
+              ),
           ],
         ));
   }

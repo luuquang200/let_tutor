@@ -215,15 +215,15 @@ class _HistoryCardState extends State<HistoryCard> {
 
   _timeInfo() {
     return const Padding(
-        padding: EdgeInsets.symmetric(horizontal: 20),
+        padding: EdgeInsets.only(left: 18, right: 6),
         child: Row(
           children: [
-            Icon(Icons.calendar_today_outlined, size: 18),
-            SizedBox(width: 6),
+            Icon(Icons.calendar_today_outlined, size: 20),
+            SizedBox(width: 8),
             Text('Monday, 31 Oct 2023', style: CustomTextStyle.bodyRegular),
-            SizedBox(width: 20),
-            Icon(Icons.access_time_outlined, size: 18),
-            SizedBox(width: 2),
+            SizedBox(width: 16),
+            Icon(Icons.access_time_outlined, size: 20),
+            SizedBox(width: 3),
             Text('10:00 - 10:15 AM', style: CustomTextStyle.bodyRegular),
           ],
         ));
@@ -231,16 +231,16 @@ class _HistoryCardState extends State<HistoryCard> {
 
   _requestForLesson(BuildContext context) {
     return Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 20),
+        padding: EdgeInsets.only(left: 18, right: 12),
         child: Column(
           children: [
             Row(
               children: [
                 Icon(
                   Icons.request_page_outlined,
-                  size: 18,
+                  size: 20,
                 ),
-                SizedBox(width: 6),
+                SizedBox(width: 8),
                 Expanded(
                   child: Row(
                     children: [
@@ -270,7 +270,7 @@ class _HistoryCardState extends State<HistoryCard> {
             Visibility(
                 visible: isRequestExpanded,
                 child: Padding(
-                  padding: EdgeInsets.symmetric(horizontal: 22),
+                  padding: const EdgeInsets.only(left: 28, right: 8),
                   child: Text(
                       'Hi there! I\'d like to schedule a tutoring session to cover grammarly. Do you have any specific materials or resources I should prepare for the session?'),
                 ))
@@ -280,7 +280,7 @@ class _HistoryCardState extends State<HistoryCard> {
 
   _reviewFromTutor() {
     return Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 20),
+        padding: EdgeInsets.only(left: 18, right: 12),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
@@ -288,9 +288,9 @@ class _HistoryCardState extends State<HistoryCard> {
               children: [
                 Icon(
                   Icons.rate_review_outlined,
-                  size: 18,
+                  size: 20,
                 ),
-                SizedBox(width: 6),
+                SizedBox(width: 8),
                 Expanded(
                     child: Row(
                   children: [
@@ -320,7 +320,7 @@ class _HistoryCardState extends State<HistoryCard> {
             Visibility(
                 visible: isReviewExpanded,
                 child: Padding(
-                    padding: EdgeInsets.symmetric(horizontal: 22),
+                    padding: const EdgeInsets.only(left: 28, right: 8),
                     child: Text(
                         'Session 1: 00:00 - 00:25\nLesson status: Completed\nLesson: The Internet\nBehavior (⭐⭐⭐⭐⭐):\nListening (⭐⭐⭐⭐):\nSpeaking (⭐⭐⭐):\nVocabulary (⭐⭐⭐⭐⭐):\nOverall comment: Good and handsome.')))
           ],
