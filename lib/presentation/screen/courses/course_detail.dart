@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:let_tutor/presentation/styles/custom_button.dart';
 import 'package:let_tutor/presentation/styles/custom_text_style.dart';
-import 'package:let_tutor/presentation/screen/tutor_detail.dart';
+import 'package:let_tutor/presentation/screen/tutor/tutor_detail.dart';
 import 'package:let_tutor/routes.dart';
 
 class CourseDetail extends StatefulWidget {

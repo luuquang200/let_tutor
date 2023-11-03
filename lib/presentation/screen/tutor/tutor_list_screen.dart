@@ -147,20 +147,27 @@ class _TutorListScreenState extends State<TutorListScreen> {
           value: value,
           child: Row(
             children: <Widget>[
-              const SizedBox(width: 10),
+              const SizedBox(width: 8),
               SvgPicture.asset(
                 'assets/flags/$value.svg',
                 width: 20,
                 height: 20,
               ),
-              const SizedBox(width: 10),
-              Text(value),
+              const SizedBox(width: 8),
+              Flexible(
+                child: Text(
+                  value,
+                  overflow: TextOverflow.ellipsis,
+                ),
+              ),
             ],
           ),
         );
       }).toList(),
       onChanged: (String? value) {},
-      style: const TextStyle(color: Colors.black),
+      style: const TextStyle(
+        color: Colors.black,
+      ),
     );
   }
 
