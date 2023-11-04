@@ -224,7 +224,10 @@ class _HistoryCardState extends State<HistoryCard> {
             SizedBox(width: 16),
             Icon(Icons.access_time_outlined, size: 20),
             SizedBox(width: 3),
-            Text('10:00 - 10:15 AM', style: CustomTextStyle.bodyRegular),
+            Flexible(
+              child:
+                  Text('10:00 - 10:15 AM', style: CustomTextStyle.bodyRegular),
+            ),
           ],
         ));
   }

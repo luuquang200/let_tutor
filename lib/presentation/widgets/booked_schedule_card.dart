@@ -173,7 +173,10 @@ class _BookedScheduleCardState extends State<BookedScheduleCard> {
             SizedBox(width: 18),
             Icon(Icons.access_time_outlined, size: 22),
             SizedBox(width: 3),
-            Text('10:00 - 10:15 AM', style: CustomTextStyle.bodyRegular),
+            Flexible(
+              child:
+                  Text('10:00 - 10:15 AM', style: CustomTextStyle.bodyRegular),
+            ),
           ],
         ));
   }
