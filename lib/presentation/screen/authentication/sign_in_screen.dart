@@ -191,7 +191,10 @@ class _SignInScreenState extends State<SignInScreen> {
                                   fontWeight: FontWeight.normal,
                                 )),
                             TextButton(
-                              onPressed: () {},
+                              onPressed: () {
+                                Routes.navigateToReplacement(
+                                    context, Routes.signUpScreen);
+                              },
                               child: const Text('Sign Up',
                                   style: TextStyle(
                                     fontSize: 16,

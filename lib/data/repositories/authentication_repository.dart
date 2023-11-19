@@ -1,15 +1,27 @@
+import 'dart:developer';
+
 class AuthenticationRepository {
+  final Map<String, String> registeredAccounts = {};
+
   Future<void> signIn(String email, String password) async {
     const fakeEmail = 't@gmail.com';
     const fakePassword = 'pass';
-    print('call signIn');
-    print('email: $email, password: $password');
-    if (email == fakeEmail && password == fakePassword) {
+    registeredAccounts[fakeEmail] = fakePassword;
+    log('email: $email, password: $password');
+    if (registeredAccounts[email] == password) {
       return Future.value();
     } else {
-      print('Invalid email or password');
+      log('Invalid email or password');
       throw Exception('Invalid email or password');
     }
-    ;
+  }
+
+  Future<void> signUp(String email, String password) async {
+    if (registeredAccounts.containsKey(email)) {
+      throw Exception('Email already exists');
+    } else {
+      registeredAccounts[email] = password;
+      return Future.value();
+    }
   }
 }

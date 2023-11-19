@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:let_tutor/presentation/screen/authentication/sign_up_screen.dart';
 import 'package:let_tutor/presentation/screen/tutor/booking_screen.dart';
 import 'package:let_tutor/presentation/screen/courses/course_detail.dart';
 import 'package:let_tutor/presentation/screen/courses/courses_screen.dart';
@@ -14,6 +15,7 @@ import 'package:let_tutor/presentation/screen/schedule/write_review.dart';
 
 class Routes {
   static const String signInScreen = '/sign_in_screen';
+  static const String signUpScreen = '/sign_up_screen';
   static const String tutorListScreen = '/tutor_list_screen';
   static const String tutorDetail = '/tutor_detail';
   static const String bookingScreen = '/booking_screen';
@@ -30,6 +32,8 @@ class Routes {
     switch (settings.name) {
       case signInScreen:
         return MaterialPageRoute(builder: (_) => const SignInScreen());
+      case signUpScreen:
+        return MaterialPageRoute(builder: (_) => const SignUpScreen());
       case tutorListScreen:
         return MaterialPageRoute(builder: (_) => const TutorListScreen());
       case tutorDetail:
