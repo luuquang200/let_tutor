@@ -206,24 +206,11 @@ class _SignInScreenState extends State<SignInScreen> {
     );
   }
 
-  // MyElevatedButton _loginButton(BuildContext context) {
-  //   return MyElevatedButton(
-  //     text: 'Login',
-  //     height: 52,
-  //     radius: 8,
-  //     onPressed: () {
-  //       context.read<SignInBloc>().add(
-  //             SignInSubmitted(
-  //               email: _emailController.text,
-  //               password: _passwordController.text,
-  //             ),
-  //           );
-  //     },
-  //   );
-  // }
-  CustomButton _loginButton(BuildContext context) {
-    return CustomButton(
+  MyElevatedButton _loginButton(BuildContext context) {
+    return MyElevatedButton(
       text: 'Login',
+      height: 52,
+      radius: 8,
       onPressed: () {
         context.read<SignInBloc>().add(
               SignInSubmitted(

@@ -123,8 +123,8 @@ class _ForgotPasswordScreenState extends State<ForgotPasswordScreen> {
     );
   }
 
-  CustomButton _sendEmailButton(BuildContext context) {
-    return CustomButton(
+  MyElevatedButton _sendEmailButton(BuildContext context) {
+    return MyElevatedButton(
       onPressed: () {
         context.read<ForgotPasswordBloc>().add(
               ForgotPasswordSubmitted(
@@ -133,6 +133,8 @@ class _ForgotPasswordScreenState extends State<ForgotPasswordScreen> {
             );
       },
       text: 'Send Email',
+      height: 52,
+      radius: 8,
     );
   }
 
