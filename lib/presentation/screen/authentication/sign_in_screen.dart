@@ -127,7 +127,10 @@ class _SignInScreenState extends State<SignInScreen> {
                           ),
                         ),
                         TextButton(
-                          onPressed: () {},
+                          onPressed: () {
+                            Routes.navigateToReplacement(
+                                context, Routes.forgotPasswordScreen);
+                          },
                           style: TextButton.styleFrom(
                             padding: const EdgeInsets.only(top: 20, bottom: 15),
                           ),
@@ -137,19 +140,7 @@ class _SignInScreenState extends State<SignInScreen> {
                                 fontSize: 18, fontWeight: FontWeight.normal),
                           ),
                         ),
-                        MyElevatedButton(
-                          text: 'Login',
-                          height: 52,
-                          radius: 8,
-                          onPressed: () {
-                            context.read<SignInBloc>().add(
-                                  SignInSubmitted(
-                                    email: _emailController.text,
-                                    password: _passwordController.text,
-                                  ),
-                                );
-                          },
-                        ),
+                        _loginButton(context),
                         Container(
                           width: double.infinity,
                           margin: const EdgeInsets.only(top: 30, bottom: 10),
@@ -212,6 +203,35 @@ class _SignInScreenState extends State<SignInScreen> {
           );
         },
       ),
+    );
+  }
+
+  // MyElevatedButton _loginButton(BuildContext context) {
+  //   return MyElevatedButton(
+  //     text: 'Login',
+  //     height: 52,
+  //     radius: 8,
+  //     onPressed: () {
+  //       context.read<SignInBloc>().add(
+  //             SignInSubmitted(
+  //               email: _emailController.text,
+  //               password: _passwordController.text,
+  //             ),
+  //           );
+  //     },
+  //   );
+  // }
+  CustomButton _loginButton(BuildContext context) {
+    return CustomButton(
+      text: 'Login',
+      onPressed: () {
+        context.read<SignInBloc>().add(
+              SignInSubmitted(
+                email: _emailController.text,
+                password: _passwordController.text,
+              ),
+            );
+      },
     );
   }
 }

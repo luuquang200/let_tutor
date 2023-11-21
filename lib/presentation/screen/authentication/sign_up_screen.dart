@@ -31,41 +31,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
       ),
       child: BlocConsumer<SignUpBloc, SignUpState>(
         listener: (context, state) {
-          if (state is EmailInvalid) {
-            emailErrorText = state.error;
-          } else if (state is EmailValid) {
-            emailErrorText = null;
-          } else if (state is PasswordInvalid) {
-            passwordErrorText = state.error;
-          } else if (state is PasswordValid) {
-            passwordErrorText = null;
-          } else if (state is PasswordsDoNotMatch) {
-            retypePasswordErrorText = state.error;
-          } else if (state is SignUpLoading) {
-            ScaffoldMessenger.of(context).showSnackBar(
-              const SnackBar(
-                content: Text('Signing up...'),
-              ),
-            );
-          } else if (state is SignUpSuccess) {
-            ScaffoldMessenger.of(context).hideCurrentSnackBar();
-            ScaffoldMessenger.of(context).showSnackBar(
-              const SnackBar(
-                content: Text('Sign up success!'),
-              ),
-            );
-            Routes.navigateToReplacement(context, Routes.signInScreen);
-          } else if (state is SignUpFailure) {
-            ScaffoldMessenger.of(context).showSnackBar(
-              SnackBar(
-                content: Text(state.error),
-              ),
-            );
-          } else if (state is SignUpFailure) {
-            ScaffoldMessenger.of(context).showSnackBar(
-              SnackBar(content: Text(state.error)),
-            );
-          }
+          handleState(context, state);
         },
         builder: (context, state) {
           return Scaffold(
@@ -99,6 +65,51 @@ class _SignUpScreenState extends State<SignUpScreen> {
         },
       ),
     );
+  }
+
+  void handleState(BuildContext context, SignUpState state) {
+    final scaffoldMessenger = ScaffoldMessenger.of(context);
+    switch (state.runtimeType) {
+      case EmailInvalid:
+        emailErrorText = (state as EmailInvalid).error;
+        break;
+      case EmailValid:
+        emailErrorText = null;
+        break;
+      case PasswordInvalid:
+        passwordErrorText = (state as PasswordInvalid).error;
+        break;
+      case PasswordValid:
+        passwordErrorText = null;
+        break;
+      case PasswordsDoNotMatch:
+        retypePasswordErrorText = (state as PasswordsDoNotMatch).error;
+        break;
+      case SignUpLoading:
+        scaffoldMessenger.showSnackBar(
+          const SnackBar(
+            content: Text('Signing up...'),
+          ),
+        );
+        break;
+      case SignUpSuccess:
+        scaffoldMessenger.hideCurrentSnackBar();
+        scaffoldMessenger.showSnackBar(
+          const SnackBar(
+            content: Text('Sign up success!'),
+          ),
+        );
+        Routes.navigateToReplacement(context, Routes.signInScreen);
+        break;
+      case SignUpFailure:
+        scaffoldMessenger.hideCurrentSnackBar();
+        scaffoldMessenger.showSnackBar(
+          SnackBar(
+            content: Text((state as SignUpFailure).error),
+          ),
+        );
+        break;
+    }
   }
 
   Row _backLogin(BuildContext context) {
@@ -181,7 +192,9 @@ class _SignUpScreenState extends State<SignUpScreen> {
 
   TextButton _forgotPasswordLabel() {
     return TextButton(
-      onPressed: () {},
+      onPressed: () {
+        Routes.navigateTo(context, Routes.forgotPasswordScreen);
+      },
       style: TextButton.styleFrom(
         padding: const EdgeInsets.only(top: 20, bottom: 15),
       ),
