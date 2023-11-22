@@ -38,33 +38,7 @@ class _TutorDetailState extends State<TutorDetail> {
             ),
 
             // Buttons: Favorite, Report and Review
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-              children: [
-                IconTextButton(
-                  icon: Icons.favorite_outline,
-                  text: 'Favorite',
-                  color: Theme.of(context).primaryColor,
-                  onTap: () {},
-                ),
-                IconTextButton(
-                  icon: Icons.report_outlined,
-                  text: 'Report',
-                  color: Theme.of(context).primaryColor,
-                  onTap: () {
-                    _showReportDialog();
-                  },
-                ),
-                IconTextButton(
-                  icon: Icons.rate_review_outlined,
-                  text: 'Review',
-                  color: Theme.of(context).primaryColor,
-                  onTap: () {
-                    Navigator.pushNamed(context, Routes.tutorReviewScreen);
-                  },
-                ),
-              ],
-            ),
+            _actionButtonsRow(context),
 
             // Introduction Video
             const SizedBox(
@@ -151,6 +125,36 @@ class _TutorDetailState extends State<TutorDetail> {
           ],
         ),
       ),
+    );
+  }
+
+  Row _actionButtonsRow(BuildContext context) {
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+      children: [
+        IconTextButton(
+          icon: Icons.favorite_outline,
+          text: 'Favorite',
+          color: Theme.of(context).primaryColor,
+          onTap: () {},
+        ),
+        IconTextButton(
+          icon: Icons.report_outlined,
+          text: 'Report',
+          color: Theme.of(context).primaryColor,
+          onTap: () {
+            _showReportDialog();
+          },
+        ),
+        IconTextButton(
+          icon: Icons.rate_review_outlined,
+          text: 'Review',
+          color: Theme.of(context).primaryColor,
+          onTap: () {
+            Navigator.pushNamed(context, Routes.tutorReviewScreen);
+          },
+        ),
+      ],
     );
   }
 

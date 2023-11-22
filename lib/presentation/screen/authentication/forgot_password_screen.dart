@@ -1,5 +1,3 @@
-//Create
-
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/flutter_svg.dart';
@@ -168,10 +166,13 @@ class _ForgotPasswordScreenState extends State<ForgotPasswordScreen> {
   }
 
   _subTitle(BuildContext context) {
-    return Text('Please enter your email address to search for your account.',
-        style: CustomTextStyle.bodyRegular.copyWith(
-          fontSize: 16,
-          color: const Color.fromRGBO(164, 176, 190, 1),
-        ));
+    return Text(
+      'Please enter your email address to search for your account.',
+      textAlign: TextAlign.center,
+      style: CustomTextStyle.bodyRegular.copyWith(
+        fontSize: 16,
+        color: const Color.fromRGBO(164, 176, 190, 1),
+      ),
+    );
   }
 }

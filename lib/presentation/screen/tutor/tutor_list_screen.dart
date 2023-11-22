@@ -1,6 +1,9 @@
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:intl/intl.dart';
+import 'package:let_tutor/data/models/tutor.dart';
 import 'package:let_tutor/presentation/styles/custom_text_style.dart';
 import 'package:let_tutor/presentation/widgets/tutor_information_card.dart';
 import 'package:number_paginator/number_paginator.dart';
@@ -37,6 +40,45 @@ class _TutorListScreenState extends State<TutorListScreen> {
   final endTimeController = TextEditingController();
   bool isShowFilter = false;
 
+  List<Tutor> tutors = [
+    Tutor(
+      name: 'Adelia Rice',
+      country: 'United States',
+      avatar: 'assets/tutor_avatar.jpg',
+      rating: 3.5,
+      specialties: ['IELTS', 'TOEFL', 'TOEIC', 'GRE', 'GMAT'],
+      resume:
+          'I am passionate about running and fitness, I often compete in trail/mountain running events and I love pushing myself. I am training to one day take part in ultra-endurance events. I also enjoy watching rugby on the weekends, reading and watching podcasts on Youtube. My most memorable life experience would be living in and traveling around Southeast Asia.',
+    ),
+    Tutor(
+      name: 'Adelia Rice',
+      country: 'United States',
+      avatar: 'assets/tutor_avatar.jpg',
+      rating: 3.5,
+      specialties: ['IELTS', 'TOEFL', 'TOEIC', 'GRE', 'GMAT'],
+      resume:
+          'I am passionate about running and fitness, I often compete in trail/mountain running events and I love pushing myself. I am training to one day take part in ultra-endurance events. I also enjoy watching rugby on the weekends, reading and watching podcasts on Youtube. My most memorable life experience would be living in and traveling around Southeast Asia.',
+    ),
+    Tutor(
+      name: 'Adelia Rice',
+      country: 'United States',
+      avatar: 'assets/tutor_avatar.jpg',
+      rating: 3.5,
+      specialties: ['IELTS', 'TOEFL', 'TOEIC', 'GRE', 'GMAT'],
+      resume:
+          'I am passionate about running and fitness, I often compete in trail/mountain running events and I love pushing myself. I am training to one day take part in ultra-endurance events. I also enjoy watching rugby on the weekends, reading and watching podcasts on Youtube. My most memorable life experience would be living in and traveling around Southeast Asia.',
+    ),
+    Tutor(
+      name: 'Adelia Rice',
+      country: 'United States',
+      avatar: 'assets/tutor_avatar.jpg',
+      rating: 3.5,
+      specialties: ['IELTS', 'TOEFL', 'TOEIC', 'GRE', 'GMAT'],
+      resume:
+          'I am passionate about running and fitness, I often compete in trail/mountain running events and I love pushing myself. I am training to one day take part in ultra-endurance events. I also enjoy watching rugby on the weekends, reading and watching podcasts on Youtube. My most memorable life experience would be living in and traveling around Southeast Asia.',
+    ),
+  ];
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -51,42 +93,49 @@ class _TutorListScreenState extends State<TutorListScreen> {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 const SizedBox(height: 8),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    const Text('Recommended Tutors:',
-                        style: CustomTextStyle.headlineLarge),
-                    IconButton(
-                        onPressed: () {
-                          setState(() {
-                            isShowFilter = !isShowFilter;
-                          });
-                        },
-                        icon: const Icon(
-                          Icons.filter_list_outlined,
-                          size: 28,
-                        )),
-                  ],
-                ),
+                _buildHeaderRow(),
                 Visibility(
                   visible: isShowFilter,
                   child: _inputFilter(),
                 ),
                 const SizedBox(height: 8),
-                _listTutorInformationCard(),
-                NumberPaginator(
-                  numberPages: 8,
-                  onPageChange: (index) {
-                    print(index);
-                    setState(() {});
-                  },
-                ),
+                _listTutorInformationCard(tutors),
+                _paginator(),
               ],
             ),
           ),
         ],
       ),
     ));
+  }
+
+  Row _buildHeaderRow() {
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+      children: [
+        const Text('Recommended Tutors:', style: CustomTextStyle.headlineLarge),
+        IconButton(
+            onPressed: () {
+              setState(() {
+                isShowFilter = !isShowFilter;
+              });
+            },
+            icon: const Icon(
+              Icons.filter_list_outlined,
+              size: 28,
+            )),
+      ],
+    );
+  }
+
+  NumberPaginator _paginator() {
+    return NumberPaginator(
+      numberPages: 8,
+      onPageChange: (index) {
+        log(index.toString());
+        setState(() {});
+      },
+    );
   }
 
   Widget _buildUpcomingLesson() {
@@ -311,17 +360,17 @@ class _TutorListScreenState extends State<TutorListScreen> {
     );
   }
 
-  _listTutorInformationCard() {
+  _listTutorInformationCard(List<Tutor> tutors) {
     return SizedBox(
       child: ListView.builder(
         shrinkWrap: true,
         physics: const NeverScrollableScrollPhysics(),
-        itemCount: 6,
+        itemCount: tutors.length,
         itemBuilder: (context, index) {
-          return const Column(
+          return Column(
             children: [
-              TutorInformationCard(),
-              SizedBox(height: 16),
+              TutorInformationCard(tutor: tutors[index]),
+              const SizedBox(height: 16),
             ],
           );
         },
