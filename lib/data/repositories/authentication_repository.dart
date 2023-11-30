@@ -24,4 +24,12 @@ class AuthenticationRepository {
       return Future.value();
     }
   }
+
+  Future<void> sendPasswordResetEmail(String email) async {
+    if (registeredAccounts.containsKey(email)) {
+      return Future.value();
+    } else {
+      throw Exception('Email does not exist');
+    }
+  }
 }
