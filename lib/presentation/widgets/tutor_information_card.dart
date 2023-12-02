@@ -22,7 +22,7 @@ class TutorInformationCard extends StatelessWidget {
           ),
           child: Stack(
             children: [
-              _favoriteButton(),
+              _favoriteButton(tutor),
               // Column
               _tutorInformation(tutor),
               // Book button
@@ -92,11 +92,11 @@ class TutorInformationCard extends StatelessWidget {
           const SizedBox(
             height: 16,
           ),
-          buildSpecialtiesChips(tutor.specialties ?? []),
+          buildSpecialtiesChips(tutor.specialties),
           const SizedBox(
             height: 10,
           ),
-          Text(tutor.resume ?? ''),
+          Text(tutor.bio ?? ''),
           const SizedBox(
             height: 44,
           ),
@@ -123,15 +123,19 @@ class TutorInformationCard extends StatelessWidget {
         ));
   }
 
-  Positioned _favoriteButton() {
+  Positioned _favoriteButton(Tutor tutor) {
     return Positioned(
       top: 10,
       right: 10,
       child: IconButton(
         onPressed: () {},
-        icon: const Icon(
-          Icons.favorite_border_outlined,
-          color: Color(0xFF0058C6),
+        icon: Icon(
+          (tutor.isFavorite ?? false)
+              ? Icons.favorite
+              : Icons.favorite_border_outlined,
+          color: (tutor.isFavorite ?? false)
+              ? Colors.red
+              : const Color(0xFF0058C6),
         ),
       ),
     );
@@ -150,11 +154,17 @@ class TutorInformationCard extends StatelessWidget {
     );
   }
 
-  Widget buildSpecialtiesChips(List<String> specialties) {
+  Widget buildSpecialtiesChips(String? specialties) {
+    if (specialties == null || specialties.isEmpty) {
+      return Container();
+    }
+
+    List<String> specialtiesList = specialties.split(',');
+
     return Wrap(
       spacing: 8,
       runSpacing: 8,
-      children: specialties.map((specialty) {
+      children: specialtiesList.map((specialty) {
         return Chip(
           backgroundColor: const Color(0xFFDDEAFF),
           side: BorderSide.none,

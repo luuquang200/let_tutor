@@ -1,9 +1,14 @@
 import 'dart:developer';
 
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:intl/intl.dart';
+import 'package:let_tutor/blocs/tutor/tutor_list/tutor_list_bloc.dart';
+import 'package:let_tutor/blocs/tutor/tutor_list/tutor_list_event.dart';
+import 'package:let_tutor/blocs/tutor/tutor_list/tutor_list_state.dart';
 import 'package:let_tutor/data/models/tutor.dart';
+import 'package:let_tutor/data/repositories/tutor_repository.dart';
 import 'package:let_tutor/presentation/styles/custom_text_style.dart';
 import 'package:let_tutor/presentation/widgets/tutor_information_card.dart';
 import 'package:number_paginator/number_paginator.dart';
@@ -46,67 +51,88 @@ class _TutorListScreenState extends State<TutorListScreen> {
       country: 'United States',
       avatar: 'assets/tutor_avatar.jpg',
       rating: 3.5,
-      specialties: ['IELTS', 'TOEFL', 'TOEIC', 'GRE', 'GMAT'],
-      resume:
+      isFavorite: true,
+      specialties:
+          "business-english,conversational-english,english-for-kids,ielts,starters,movers,flyers,ket,pet,toefl,toeic",
+      bio:
           'I am passionate about running and fitness, I often compete in trail/mountain running events and I love pushing myself. I am training to one day take part in ultra-endurance events. I also enjoy watching rugby on the weekends, reading and watching podcasts on Youtube. My most memorable life experience would be living in and traveling around Southeast Asia.',
-    ),
-    Tutor(
-      name: 'Adelia Rice',
-      country: 'United States',
-      avatar: 'assets/tutor_avatar.jpg',
-      rating: 3.5,
-      specialties: ['IELTS', 'TOEFL', 'TOEIC', 'GRE', 'GMAT'],
-      resume:
-          'I am passionate about running and fitness, I often compete in trail/mountain running events and I love pushing myself. I am training to one day take part in ultra-endurance events. I also enjoy watching rugby on the weekends, reading and watching podcasts on Youtube. My most memorable life experience would be living in and traveling around Southeast Asia.',
-    ),
-    Tutor(
-      name: 'Adelia Rice',
-      country: 'United States',
-      avatar: 'assets/tutor_avatar.jpg',
-      rating: 3.5,
-      specialties: ['IELTS', 'TOEFL', 'TOEIC', 'GRE', 'GMAT'],
-      resume:
-          'I am passionate about running and fitness, I often compete in trail/mountain running events and I love pushing myself. I am training to one day take part in ultra-endurance events. I also enjoy watching rugby on the weekends, reading and watching podcasts on Youtube. My most memorable life experience would be living in and traveling around Southeast Asia.',
-    ),
-    Tutor(
-      name: 'Adelia Rice',
-      country: 'United States',
-      avatar: 'assets/tutor_avatar.jpg',
-      rating: 3.5,
-      specialties: ['IELTS', 'TOEFL', 'TOEIC', 'GRE', 'GMAT'],
-      resume:
-          'I am passionate about running and fitness, I often compete in trail/mountain running events and I love pushing myself. I am training to one day take part in ultra-endurance events. I also enjoy watching rugby on the weekends, reading and watching podcasts on Youtube. My most memorable life experience would be living in and traveling around Southeast Asia.',
-    ),
+    )
   ];
 
+  // @override
+  // Widget build(BuildContext context) {
+  //   return Scaffold(
+  //       body: SingleChildScrollView(
+  //     child: Column(
+  //       crossAxisAlignment: CrossAxisAlignment.start,
+  //       children: [
+  //         _buildUpcomingLesson(),
+  //         Container(
+  //           padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 8),
+  //           child: Column(
+  //             crossAxisAlignment: CrossAxisAlignment.start,
+  //             children: [
+  //               const SizedBox(height: 8),
+  //               _buildHeaderRow(),
+  //               Visibility(
+  //                 visible: isShowFilter,
+  //                 child: _inputFilter(),
+  //               ),
+  //               const SizedBox(height: 8),
+  //               _listTutorInformationCard(tutors),
+  //               _paginator(),
+  //             ],
+  //           ),
+  //         ),
+  //       ],
+  //     ),
+  //   ));
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-        body: SingleChildScrollView(
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          _buildUpcomingLesson(),
-          Container(
-            padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 8),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                const SizedBox(height: 8),
-                _buildHeaderRow(),
-                Visibility(
-                  visible: isShowFilter,
-                  child: _inputFilter(),
+    return BlocProvider(
+      create: (context) => TutorListBloc(tutorRepository: TutorRepository())
+        ..add(TutorListRequested()),
+      child: BlocBuilder<TutorListBloc, TutorListState>(
+        builder: (context, state) {
+          if (state is TutorListLoading) {
+            return const CircularProgressIndicator();
+          } else if (state is TutorListSuccess) {
+            return Scaffold(
+              body: SingleChildScrollView(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    _buildUpcomingLesson(),
+                    Container(
+                      padding: const EdgeInsets.symmetric(
+                          horizontal: 20, vertical: 8),
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          const SizedBox(height: 8),
+                          _buildHeaderRow(),
+                          Visibility(
+                            visible: isShowFilter,
+                            child: _inputFilter(),
+                          ),
+                          const SizedBox(height: 8),
+                          _listTutorInformationCard(state.tutors),
+                          _paginator(),
+                        ],
+                      ),
+                    ),
+                  ],
                 ),
-                const SizedBox(height: 8),
-                _listTutorInformationCard(tutors),
-                _paginator(),
-              ],
-            ),
-          ),
-        ],
+              ),
+            );
+          } else if (state is TutorListFailure) {
+            return Text('Error: ${state.error}');
+          } else {
+            return Container();
+          }
+        },
       ),
-    ));
+    );
   }
 
   Row _buildHeaderRow() {
@@ -361,6 +387,14 @@ class _TutorListScreenState extends State<TutorListScreen> {
   }
 
   _listTutorInformationCard(List<Tutor> tutors) {
+    // Sort tutors by favorite status and rating
+    tutors.sort((a, b) {
+      if (b.isFavorite != a.isFavorite) {
+        return (b.isFavorite ?? false) ? 1 : -1;
+      }
+      return (b.rating ?? 0).compareTo(a.rating ?? 0);
+    });
+
     return SizedBox(
       child: ListView.builder(
         shrinkWrap: true,

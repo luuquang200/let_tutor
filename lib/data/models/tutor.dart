@@ -3,21 +3,22 @@ class Tutor {
   final String? country;
   final String? avatar;
   final String? language;
-  final List<String>? specialties;
+  final String? specialties;
   final String? interests;
   final String? experience;
-  final String? resume;
+  final String? bio;
   final double? rating;
+  final bool? isFavorite;
 
-  Tutor({
-    this.name,
-    this.country,
-    this.avatar,
-    this.language,
-    this.specialties,
-    this.interests,
-    this.experience,
-    this.rating,
-    this.resume,
-  });
+  Tutor(
+      {this.name,
+      this.country,
+      this.avatar,
+      this.language,
+      this.specialties,
+      this.interests,
+      this.experience,
+      this.rating,
+      this.bio,
+      this.isFavorite});
 }
