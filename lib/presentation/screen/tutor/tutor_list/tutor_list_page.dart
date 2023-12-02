@@ -22,20 +22,37 @@ class TutorListPage extends StatefulWidget {
 }
 
 class TutorListPageState extends State<TutorListPage> {
-  final specialities = [
-    'All',
-    'English for kids',
-    'English for Business',
-    'Conversational',
-    'STARTERS',
-    'MOVERS',
-    'FLYERS',
-    'KET',
-    'PET',
-    'IELTS',
-    'TOEFL',
-    'TOEIC'
-  ];
+  // final specialities = [
+  //   'All',
+  //   'English for kids',
+  //   'English for Business',
+  //   'Conversational',
+  //   'STARTERS',
+  //   'MOVERS',
+  //   'FLYERS',
+  //   'KET',
+  //   'PET',
+  //   'IELTS',
+  //   'TOEFL',
+  //   'TOEIC'
+  // ];
+  // final specialities = [
+  //   'All',
+  //   'English for kids',
+  //   'English for Business',
+  //   'Conversational',
+  //   'STARTERS',
+  //   'MOVERS',
+  //   'FLYERS',
+  //   'KET',
+  //   'PET',
+  //   'IELTS',
+  //   'TOEFL',
+  //   'TOEIC'
+  // ];
+  final specialities =
+      "business-english,conversational-english,english-for-kids,ielts,starters,movers,flyers,ket,pet,toefl,toeic"
+          .split(',');
   final dateController = TextEditingController();
   int selectedSpecialityIndex = 0;
   final List<String> listNationalities = <String>[
@@ -52,7 +69,6 @@ class TutorListPageState extends State<TutorListPage> {
     return SafeArea(
       child: Scaffold(
         body: SingleChildScrollView(
-          padding: const EdgeInsets.symmetric(horizontal: 20),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
@@ -60,30 +76,39 @@ class TutorListPageState extends State<TutorListPage> {
               const SizedBox(
                 height: 8,
               ),
-              _buildHeaderRow(),
-              const SizedBox(
-                height: 8,
-              ),
-              Visibility(
-                visible: isShowFilter,
-                child: _inputFilter(context),
-              ),
-              // _inputFilter(context),
-              const SizedBox(
-                height: 8,
-              ),
-              BlocBuilder<TutorListBloc, TutorListState>(
-                builder: (context, state) {
-                  if (state is TutorListLoading) {
-                    return const Center(child: CircularProgressIndicator());
-                  } else if (state is TutorListSuccess) {
-                    return _listTutorInformationCard(state.tutors);
-                  } else if (state is TutorListFailure) {
-                    return Text('Error: ${state.error}');
-                  } else {
-                    return Container();
-                  }
-                },
+              Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 16),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    _buildHeaderRow(),
+                    const SizedBox(
+                      height: 8,
+                    ),
+                    Visibility(
+                      visible: isShowFilter,
+                      child: _inputFilter(context),
+                    ),
+                    // _inputFilter(context),
+                    const SizedBox(
+                      height: 8,
+                    ),
+                    BlocBuilder<TutorListBloc, TutorListState>(
+                      builder: (context, state) {
+                        if (state is TutorListLoading) {
+                          return const Center(
+                              child: CircularProgressIndicator());
+                        } else if (state is TutorListSuccess) {
+                          return _listTutorInformationCard(state.tutors);
+                        } else if (state is TutorListFailure) {
+                          return Text('Error: ${state.error}');
+                        } else {
+                          return Container();
+                        }
+                      },
+                    ),
+                  ],
+                ),
               ),
             ],
           ),

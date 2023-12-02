@@ -8,8 +8,7 @@ class TutorRepository {
       avatar: 'assets/tutor_avatar.jpg',
       rating: 3.5,
       isFavorite: true,
-      specialties:
-          "business-english,conversational-english,english-for-kids,ielts,starters,movers,flyers,ket,pet,toefl,toeic",
+      specialties: "business-english,conversational-english,toeic",
       bio:
           'I am passionate about running and fitness, I often compete in trail/mountain running events and I love pushing myself. I am training to one day take part in ultra-endurance events. I also enjoy watching rugby on the weekends, reading and watching podcasts on Youtube. My most memorable life experience would be living in and traveling around Southeast Asia.',
     ),
@@ -18,8 +17,7 @@ class TutorRepository {
       country: 'United States',
       avatar: 'assets/tutor_avatar.jpg',
       rating: 5,
-      specialties:
-          "business-english,conversational-english,english-for-kids,ielts,starters,movers,flyers,ket,pet,toefl,toeic",
+      specialties: "ielts,starters,movers,flyers,ket,pet,toefl,toeic",
       bio:
           'I am passionate about running and fitness, I often compete in trail/mountain running events and I love pushing myself. I am training to one day take part in ultra-endurance events. I also enjoy watching rugby on the weekends, reading and watching podcasts on Youtube. My most memorable life experience would be living in and traveling around Southeast Asia.',
     ),
@@ -39,8 +37,7 @@ class TutorRepository {
       avatar: 'assets/tutor_avatar.jpg',
       rating: 3.5,
       isFavorite: true,
-      specialties:
-          "business-english,conversational-english,english-for-kids,ielts,starters,movers,flyers,ket,pet,toefl,toeic",
+      specialties: "business-english,conversational-english,toeic",
       bio:
           'I am passionate about running and fitness, I often compete in trail/mountain running events and I love pushing myself. I am training to one day take part in ultra-endurance events. I also enjoy watching rugby on the weekends, reading and watching podcasts on Youtube. My most memorable life experience would be living in and traveling around Southeast Asia.',
     ),
@@ -54,6 +51,9 @@ class TutorRepository {
   Future<List<Tutor>> getTutorsBySpeciality(
       String speciality, int page, int tutorPerPage) async {
     await Future.delayed(const Duration(seconds: 1));
-    return tutors;
+    return tutors
+        .where((tutor) =>
+            tutor.specialties!.toLowerCase().contains(speciality.toLowerCase()))
+        .toList();
   }
 }
