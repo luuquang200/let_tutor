@@ -8,7 +8,7 @@ import 'package:let_tutor/presentation/screen/schedule/schedule_screen.dart';
 import 'package:let_tutor/presentation/screen/authentication/sign_in_screen.dart';
 import 'package:let_tutor/presentation/screen/courses/topic_detail.dart';
 import 'package:let_tutor/presentation/screen/tutor/tutor_detail.dart';
-import 'package:let_tutor/presentation/screen/tutor/tutor_list_screen.dart';
+import 'package:let_tutor/presentation/screen/tutor/tutor_list/tutor_list_screen.dart';
 import 'package:let_tutor/presentation/screen/tutor/tutor_review_screen.dart';
 import 'package:let_tutor/presentation/screen/video_call/video_call_screen.dart';
 import 'package:let_tutor/presentation/screen/schedule/write_review.dart';

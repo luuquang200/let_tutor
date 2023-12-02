@@ -2,24 +2,26 @@ import 'dart:developer';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutter_svg/svg.dart';
-import 'package:intl/intl.dart';
 import 'package:let_tutor/blocs/tutor/tutor_list/tutor_list_bloc.dart';
 import 'package:let_tutor/blocs/tutor/tutor_list/tutor_list_event.dart';
 import 'package:let_tutor/blocs/tutor/tutor_list/tutor_list_state.dart';
-import 'package:let_tutor/data/models/tutor.dart';
-import 'package:let_tutor/data/repositories/tutor_repository.dart';
+import 'package:flutter_svg/svg.dart';
+import 'package:intl/intl.dart';
+
 import 'package:let_tutor/presentation/styles/custom_text_style.dart';
 import 'package:let_tutor/presentation/widgets/tutor_information_card.dart';
 import 'package:number_paginator/number_paginator.dart';
 
-class TutorListScreen extends StatefulWidget {
-  const TutorListScreen({Key? key}) : super(key: key);
+import 'package:let_tutor/data/models/tutor.dart';
+
+class TutorListPage extends StatefulWidget {
+  const TutorListPage({Key? key}) : super(key: key);
+
   @override
-  State<TutorListScreen> createState() => _TutorListScreenState();
+  TutorListPageState createState() => TutorListPageState();
 }
 
-class _TutorListScreenState extends State<TutorListScreen> {
+class TutorListPageState extends State<TutorListPage> {
   final specialities = [
     'All',
     'English for kids',
@@ -45,92 +47,47 @@ class _TutorListScreenState extends State<TutorListScreen> {
   final endTimeController = TextEditingController();
   bool isShowFilter = false;
 
-  List<Tutor> tutors = [
-    Tutor(
-      name: 'Adelia Rice',
-      country: 'United States',
-      avatar: 'assets/tutor_avatar.jpg',
-      rating: 3.5,
-      isFavorite: true,
-      specialties:
-          "business-english,conversational-english,english-for-kids,ielts,starters,movers,flyers,ket,pet,toefl,toeic",
-      bio:
-          'I am passionate about running and fitness, I often compete in trail/mountain running events and I love pushing myself. I am training to one day take part in ultra-endurance events. I also enjoy watching rugby on the weekends, reading and watching podcasts on Youtube. My most memorable life experience would be living in and traveling around Southeast Asia.',
-    )
-  ];
-
-  // @override
-  // Widget build(BuildContext context) {
-  //   return Scaffold(
-  //       body: SingleChildScrollView(
-  //     child: Column(
-  //       crossAxisAlignment: CrossAxisAlignment.start,
-  //       children: [
-  //         _buildUpcomingLesson(),
-  //         Container(
-  //           padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 8),
-  //           child: Column(
-  //             crossAxisAlignment: CrossAxisAlignment.start,
-  //             children: [
-  //               const SizedBox(height: 8),
-  //               _buildHeaderRow(),
-  //               Visibility(
-  //                 visible: isShowFilter,
-  //                 child: _inputFilter(),
-  //               ),
-  //               const SizedBox(height: 8),
-  //               _listTutorInformationCard(tutors),
-  //               _paginator(),
-  //             ],
-  //           ),
-  //         ),
-  //       ],
-  //     ),
-  //   ));
   @override
   Widget build(BuildContext context) {
-    return BlocProvider(
-      create: (context) => TutorListBloc(tutorRepository: TutorRepository())
-        ..add(TutorListRequested()),
-      child: BlocBuilder<TutorListBloc, TutorListState>(
-        builder: (context, state) {
-          if (state is TutorListLoading) {
-            return const CircularProgressIndicator();
-          } else if (state is TutorListSuccess) {
-            return Scaffold(
-              body: SingleChildScrollView(
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    _buildUpcomingLesson(),
-                    Container(
-                      padding: const EdgeInsets.symmetric(
-                          horizontal: 20, vertical: 8),
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          const SizedBox(height: 8),
-                          _buildHeaderRow(),
-                          Visibility(
-                            visible: isShowFilter,
-                            child: _inputFilter(),
-                          ),
-                          const SizedBox(height: 8),
-                          _listTutorInformationCard(state.tutors),
-                          _paginator(),
-                        ],
-                      ),
-                    ),
-                  ],
-                ),
+    return SafeArea(
+      child: Scaffold(
+        body: SingleChildScrollView(
+          padding: const EdgeInsets.symmetric(horizontal: 20),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              _buildUpcomingLesson(),
+              const SizedBox(
+                height: 8,
               ),
-            );
-          } else if (state is TutorListFailure) {
-            return Text('Error: ${state.error}');
-          } else {
-            return Container();
-          }
-        },
+              _buildHeaderRow(),
+              const SizedBox(
+                height: 8,
+              ),
+              Visibility(
+                visible: isShowFilter,
+                child: _inputFilter(context),
+              ),
+              // _inputFilter(context),
+              const SizedBox(
+                height: 8,
+              ),
+              BlocBuilder<TutorListBloc, TutorListState>(
+                builder: (context, state) {
+                  if (state is TutorListLoading) {
+                    return const Center(child: CircularProgressIndicator());
+                  } else if (state is TutorListSuccess) {
+                    return _listTutorInformationCard(state.tutors);
+                  } else if (state is TutorListFailure) {
+                    return Text('Error: ${state.error}');
+                  } else {
+                    return Container();
+                  }
+                },
+              ),
+            ],
+          ),
+        ),
       ),
     );
   }
@@ -341,7 +298,7 @@ class _TutorListScreenState extends State<TutorListScreen> {
     );
   }
 
-  _specialitiesChips() {
+  _specialitiesChips(BuildContext context) {
     return Wrap(
       spacing: 8,
       runSpacing: 5,
@@ -364,6 +321,10 @@ class _TutorListScreenState extends State<TutorListScreen> {
             setState(() {
               selectedSpecialityIndex = index;
             });
+            // Add this line to dispatch the FilterTutorsBySpeciality event
+            context
+                .read<TutorListBloc>()
+                .add(FilterTutorsBySpeciality(specialities[index]));
           },
           side: BorderSide.none,
         ),
@@ -399,20 +360,24 @@ class _TutorListScreenState extends State<TutorListScreen> {
       child: ListView.builder(
         shrinkWrap: true,
         physics: const NeverScrollableScrollPhysics(),
-        itemCount: tutors.length,
+        itemCount: tutors.length + 1, // Increase itemCount by 1
         itemBuilder: (context, index) {
-          return Column(
-            children: [
-              TutorInformationCard(tutor: tutors[index]),
-              const SizedBox(height: 16),
-            ],
-          );
+          if (index < tutors.length) {
+            return Column(
+              children: [
+                TutorInformationCard(tutor: tutors[index]),
+                const SizedBox(height: 16),
+              ],
+            );
+          } else {
+            return _paginator(); // Display _paginator at the end
+          }
         },
       ),
     );
   }
 
-  _inputFilter() {
+  _inputFilter(BuildContext context) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
@@ -459,7 +424,7 @@ class _TutorListScreenState extends State<TutorListScreen> {
         const SizedBox(height: 8),
         Padding(
           padding: const EdgeInsets.symmetric(vertical: 8),
-          child: _specialitiesChips(),
+          child: _specialitiesChips(context),
         ),
         Padding(
           padding: const EdgeInsets.symmetric(vertical: 8),

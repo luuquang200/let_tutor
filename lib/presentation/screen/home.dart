@@ -4,7 +4,7 @@ import 'package:let_tutor/presentation/screen/account/account_screen.dart';
 import 'package:let_tutor/presentation/screen/courses/courses_screen.dart';
 import 'package:let_tutor/presentation/screen/schedule/schedule_screen.dart';
 import 'package:let_tutor/presentation/styles/custom_text_style.dart';
-import 'package:let_tutor/presentation/screen/tutor/tutor_list_screen.dart';
+import 'package:let_tutor/presentation/screen/tutor/tutor_list/tutor_list_screen.dart';
 
 class Home extends StatefulWidget {
   const Home({super.key});

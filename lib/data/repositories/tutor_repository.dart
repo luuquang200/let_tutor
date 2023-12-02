@@ -47,6 +47,13 @@ class TutorRepository {
   ];
 
   Future<List<Tutor>> getTutors() async {
-    return Future.value(tutors);
+    await Future.delayed(const Duration(seconds: 1));
+    return tutors;
+  }
+
+  Future<List<Tutor>> getTutorsBySpeciality(
+      String speciality, int page, int tutorPerPage) async {
+    await Future.delayed(const Duration(seconds: 1));
+    return tutors;
   }
 }
