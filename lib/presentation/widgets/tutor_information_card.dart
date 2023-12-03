@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:let_tutor/data/models/tutor.dart';
 import 'package:let_tutor/presentation/styles/custom_text_style.dart';
+import 'package:let_tutor/presentation/widgets/star_rating.dart';
 import 'package:let_tutor/routes.dart';
 
 class TutorInformationCard extends StatelessWidget {
@@ -72,7 +73,7 @@ class TutorInformationCard extends StatelessWidget {
                         width: 20,
                         height: 20,
                       ),
-                      SizedBox(width: 10),
+                      const SizedBox(width: 10),
                       Text(
                         tutor.country ?? '',
                         style: CustomTextStyle.bodyRegular,
@@ -81,7 +82,7 @@ class TutorInformationCard extends StatelessWidget {
                   ),
                   const SizedBox(height: 2),
                   // row
-                  buildStarRating(tutor.rating?.toInt() ?? 0, 20)
+                  StarRating(rating: tutor.rating ?? 0, size: 20),
                 ],
               )
             ],
@@ -140,19 +141,6 @@ class TutorInformationCard extends StatelessWidget {
           color: (tutor.isFavorite ?? false)
               ? Colors.red
               : const Color(0xFF0058C6),
-        ),
-      ),
-    );
-  }
-
-  Widget buildStarRating(int rating, double size) {
-    return Row(
-      children: List<Widget>.generate(
-        5,
-        (index) => Icon(
-          Icons.star,
-          color: index < rating ? Colors.amber : Colors.grey,
-          size: size,
         ),
       ),
     );

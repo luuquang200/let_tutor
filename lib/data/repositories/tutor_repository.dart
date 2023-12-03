@@ -4,19 +4,21 @@ class TutorRepository {
   List<Tutor> tutors = [
     Tutor(
       id: '1',
-      name: 'Adelia Rice Brown',
+      name: 'Mark Rice',
       country: 'United States',
+      language: 'English, Spanish',
       avatar: 'assets/tutor_avatar.jpg',
       rating: 3.5,
       isFavorite: true,
       specialties: "business-english,conversational-english,toeic",
       bio:
-          'I am passionate about running and fitness, I often compete in trail/mountain running events and I love pushing myself. I am training to one day take part in ultra-endurance events. I also enjoy watching rugby on the weekends, reading and watching podcasts on Youtube. My most memorable life experience would be living in and traveling around Southeast Asia.',
+          'I am passionate about football and coding, I often compete in trail/mountain running events and I love pushing myself. I am training to one day take part in ultra-endurance events. I also enjoy watching rugby on the weekends, reading and watching podcasts on Youtube. My most memorable life experience would be living in and traveling around Southeast Asia.',
     ),
     Tutor(
       id: '2',
       name: 'Adelia Rice Marry',
       country: 'United States',
+      language: 'English, Spanish, French',
       avatar: 'assets/tutor_avatar.jpg',
       rating: 5,
       specialties: "ielts,starters,movers,flyers,ket,pet,toefl,toeic",
@@ -25,8 +27,9 @@ class TutorRepository {
     ),
     Tutor(
       id: '3',
-      name: 'Adelia Rice',
+      name: 'Romina Todorova',
       country: 'United States',
+      language: 'English, Mexican',
       avatar: 'assets/tutor_avatar.jpg',
       rating: 4.5,
       specialties:
@@ -36,8 +39,9 @@ class TutorRepository {
     ),
     Tutor(
       id: '4',
-      name: 'Adelia Rice',
+      name: 'Bill Rice',
       country: 'United States',
+      language: 'English, German, French, Spanish, Italian, Russian, Chinese',
       avatar: 'assets/tutor_avatar.jpg',
       rating: 3.5,
       isFavorite: true,
