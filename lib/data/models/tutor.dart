@@ -1,4 +1,5 @@
 class Tutor {
+  final String? id;
   final String? name;
   final String? country;
   final String? avatar;
@@ -11,7 +12,8 @@ class Tutor {
   final bool? isFavorite;
 
   Tutor(
-      {this.name,
+      {this.id,
+      this.name,
       this.country,
       this.avatar,
       this.language,

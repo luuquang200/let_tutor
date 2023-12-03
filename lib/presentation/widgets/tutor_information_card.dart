@@ -12,7 +12,11 @@ class TutorInformationCard extends StatelessWidget {
   Widget build(BuildContext context) {
     return GestureDetector(
         onTap: () {
-          Routes.navigateTo(context, Routes.tutorDetail);
+          Navigator.pushNamed(
+            context,
+            Routes.tutorDetail,
+            arguments: tutor.id,
+          );
         },
         child: Card(
           elevation: 5,

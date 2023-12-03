@@ -8,7 +8,8 @@ import 'package:let_tutor/presentation/widgets/specialities.dart';
 import 'package:let_tutor/routes.dart';
 
 class TutorDetailPage extends StatefulWidget {
-  const TutorDetailPage({Key? key}) : super(key: key);
+  final String tutorId;
+  const TutorDetailPage({Key? key, required this.tutorId}) : super(key: key);
 
   @override
   State<TutorDetailPage> createState() => _TutorDetailPageState();

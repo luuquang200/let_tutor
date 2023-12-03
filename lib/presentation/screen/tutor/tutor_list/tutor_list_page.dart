@@ -36,20 +36,6 @@ class TutorListPageState extends State<TutorListPage> {
   //   'TOEFL',
   //   'TOEIC'
   // ];
-  // final specialities = [
-  //   'All',
-  //   'English for kids',
-  //   'English for Business',
-  //   'Conversational',
-  //   'STARTERS',
-  //   'MOVERS',
-  //   'FLYERS',
-  //   'KET',
-  //   'PET',
-  //   'IELTS',
-  //   'TOEFL',
-  //   'TOEIC'
-  // ];
   final specialities =
       "business-english,conversational-english,english-for-kids,ielts,starters,movers,flyers,ket,pet,toefl,toeic"
           .split(',');

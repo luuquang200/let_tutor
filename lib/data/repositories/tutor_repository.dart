@@ -3,6 +3,7 @@ import 'package:let_tutor/data/models/tutor.dart';
 class TutorRepository {
   List<Tutor> tutors = [
     Tutor(
+      id: '1',
       name: 'Adelia Rice Brown',
       country: 'United States',
       avatar: 'assets/tutor_avatar.jpg',
@@ -13,6 +14,7 @@ class TutorRepository {
           'I am passionate about running and fitness, I often compete in trail/mountain running events and I love pushing myself. I am training to one day take part in ultra-endurance events. I also enjoy watching rugby on the weekends, reading and watching podcasts on Youtube. My most memorable life experience would be living in and traveling around Southeast Asia.',
     ),
     Tutor(
+      id: '2',
       name: 'Adelia Rice Marry',
       country: 'United States',
       avatar: 'assets/tutor_avatar.jpg',
@@ -22,6 +24,7 @@ class TutorRepository {
           'I am passionate about running and fitness, I often compete in trail/mountain running events and I love pushing myself. I am training to one day take part in ultra-endurance events. I also enjoy watching rugby on the weekends, reading and watching podcasts on Youtube. My most memorable life experience would be living in and traveling around Southeast Asia.',
     ),
     Tutor(
+      id: '3',
       name: 'Adelia Rice',
       country: 'United States',
       avatar: 'assets/tutor_avatar.jpg',
@@ -32,6 +35,7 @@ class TutorRepository {
           'I am passionate about running and fitness, I often compete in trail/mountain running events and I love pushing myself. I am training to one day take part in ultra-endurance events. I also enjoy watching rugby on the weekends, reading and watching podcasts on Youtube. My most memorable life experience would be living in and traveling around Southeast Asia.',
     ),
     Tutor(
+      id: '4',
       name: 'Adelia Rice',
       country: 'United States',
       avatar: 'assets/tutor_avatar.jpg',
@@ -96,5 +100,11 @@ class TutorRepository {
     // filteredTutors = filteredTutors.skip(skip).take(perPage).toList();
 
     return filteredTutors;
+  }
+
+  // get tutor by id
+  Future<Tutor> getTutorById(String id) async {
+    await Future.delayed(const Duration(seconds: 1));
+    return tutors.firstWhere((tutor) => tutor.id == id);
   }
 }
