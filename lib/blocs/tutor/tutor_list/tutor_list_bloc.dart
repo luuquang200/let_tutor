@@ -15,6 +15,7 @@ class TutorListBloc extends Bloc<TutorListEvent, TutorListState> {
     on<TutorListRequested>(_onTutorListRequested);
     on<FilterTutorsBySpeciality>(_onFilterTutorsBySpeciality);
     on<FilterTutorsByName>(_onFilterTutorsByName);
+    on<FilterTutorsByNationality>(_onFilterTutorsByNationality);
   }
 
   FutureOr<void> _onTutorListRequested(
@@ -58,6 +59,26 @@ class TutorListBloc extends Bloc<TutorListEvent, TutorListState> {
       if (currentState is TutorListSuccess) {
         final filters = Map<String, dynamic>.from(currentState.filters);
         filters['name'] = event.name; // Update filters with new name filter
+
+        final filteredTutors =
+            await tutorRepository.filterTutors(filters, page, tutorPerPage);
+
+        emit(TutorListSuccess(filteredTutors, filters));
+      }
+    } catch (error) {
+      emit(TutorListFailure(error.toString()));
+    }
+  }
+
+  FutureOr<void> _onFilterTutorsByNationality(
+      FilterTutorsByNationality event, Emitter<TutorListState> emit) async {
+    final currentState = state;
+    emit(TutorListLoading());
+    try {
+      if (currentState is TutorListSuccess) {
+        final filters = Map<String, dynamic>.from(currentState.filters);
+        filters['nationality'] = event.nationality;
+        log(filters.toString());
 
         final filteredTutors =
             await tutorRepository.filterTutors(filters, page, tutorPerPage);

@@ -24,3 +24,13 @@ class FilterTutorsByName extends TutorListEvent {
   @override
   List<Object> get props => [name];
 }
+
+// Nationality filter
+class FilterTutorsByNationality extends TutorListEvent {
+  final Map<String, bool> nationality;
+
+  FilterTutorsByNationality({required this.nationality});
+
+  @override
+  List<Object> get props => [nationality];
+}

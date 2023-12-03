@@ -55,11 +55,11 @@ class TutorListPageState extends State<TutorListPage> {
           .split(',');
   final dateController = TextEditingController();
   int selectedSpecialityIndex = 0;
-  final List<String> listNationalities = <String>[
-    'Vietnamese',
-    'Foreigner',
-    'Tunisia'
-  ];
+  final Map<String, Map<String, bool>> listNationalities = {
+    'Vietnamese Tutor': {'isVietnamese': true},
+    'Native English Tutor': {'isNative': true},
+    'Foreign Tutor': {'isVietnamese': false, 'isNative': false},
+  };
   final startTimeController = TextEditingController();
   final endTimeController = TextEditingController();
   bool isShowFilter = false;
@@ -122,13 +122,15 @@ class TutorListPageState extends State<TutorListPage> {
   }
 
   Center _noTutorsFoundMessage() {
-    return const Center(
+    return Center(
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
-          Icon(Icons.warning_amber_rounded, size: 48, color: Colors.grey),
-          Text('No tutors found', style: CustomTextStyle.headlineMedium),
-          SizedBox(height: 8),
+          Icon(Icons.warning_amber_rounded, size: 48, color: Colors.grey[400]),
+          Text('Sorry we can\'t find any tutor with this keywords',
+              style: CustomTextStyle.bodyRegular
+                  .copyWith(color: Colors.grey[400])),
+          const SizedBox(height: 8),
         ],
       ),
     );
@@ -215,18 +217,19 @@ class TutorListPageState extends State<TutorListPage> {
         contentPadding: EdgeInsets.symmetric(vertical: 16.0),
       ),
       isExpanded: true,
-      value: listNationalities.first,
-      items: listNationalities.map<DropdownMenuItem<String>>((String value) {
+      value: listNationalities.keys.first,
+      items:
+          listNationalities.keys.map<DropdownMenuItem<String>>((String value) {
         return DropdownMenuItem<String>(
           value: value,
           child: Row(
             children: <Widget>[
               const SizedBox(width: 8),
-              SvgPicture.asset(
-                'assets/flags/$value.svg',
-                width: 20,
-                height: 20,
-              ),
+              // SvgPicture.asset(
+              //   'assets/flags/$value.svg',
+              //   width: 20,
+              //   height: 20,
+              // ),
               const SizedBox(width: 8),
               Flexible(
                 child: Text(
@@ -238,7 +241,10 @@ class TutorListPageState extends State<TutorListPage> {
           ),
         );
       }).toList(),
-      onChanged: (String? value) {},
+      onChanged: (String? value) {
+        context.read<TutorListBloc>().add(
+            FilterTutorsByNationality(nationality: listNationalities[value]!));
+      },
       style: const TextStyle(
         color: Colors.black,
       ),
