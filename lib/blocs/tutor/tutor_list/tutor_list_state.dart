@@ -15,11 +15,12 @@ class TutorListLoading extends TutorListState {
 
 class TutorListSuccess extends TutorListState {
   final List<Tutor> tutors;
+  final Map<String, dynamic> filters;
 
-  TutorListSuccess(this.tutors);
+  TutorListSuccess(this.tutors, this.filters);
 
   @override
-  List<Object> get props => [tutors];
+  List<Object> get props => [tutors, filters];
 }
 
 class TutorListFailure extends TutorListState {

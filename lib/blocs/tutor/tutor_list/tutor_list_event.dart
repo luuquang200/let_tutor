@@ -15,3 +15,12 @@ class FilterTutorsBySpeciality extends TutorListEvent {
   @override
   List<Object> get props => [speciality];
 }
+
+class FilterTutorsByName extends TutorListEvent {
+  final String name;
+
+  FilterTutorsByName(this.name);
+
+  @override
+  List<Object> get props => [name];
+}

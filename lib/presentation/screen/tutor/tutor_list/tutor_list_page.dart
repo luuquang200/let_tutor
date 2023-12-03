@@ -99,6 +99,10 @@ class TutorListPageState extends State<TutorListPage> {
                           return const Center(
                               child: CircularProgressIndicator());
                         } else if (state is TutorListSuccess) {
+                          if (state.tutors.isEmpty) {
+                            return _noTutorsFoundMessage();
+                          }
+
                           return _listTutorInformationCard(state.tutors);
                         } else if (state is TutorListFailure) {
                           return Text('Error: ${state.error}');
@@ -113,6 +117,19 @@ class TutorListPageState extends State<TutorListPage> {
             ],
           ),
         ),
+      ),
+    );
+  }
+
+  Center _noTutorsFoundMessage() {
+    return const Center(
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          Icon(Icons.warning_amber_rounded, size: 48, color: Colors.grey),
+          Text('No tutors found', style: CustomTextStyle.headlineMedium),
+          SizedBox(height: 8),
+        ],
       ),
     );
   }
@@ -228,9 +245,11 @@ class TutorListPageState extends State<TutorListPage> {
     );
   }
 
-  Widget _searchByName() {
-    return const TextField(
-      decoration: InputDecoration(
+  Widget _searchByName(BuildContext context) {
+    return TextField(
+      onChanged: (value) =>
+          context.read<TutorListBloc>().add(FilterTutorsByName(value)),
+      decoration: const InputDecoration(
         prefixIcon: Icon(Icons.type_specimen_outlined),
         hintText: 'Enter a tutor name',
         hintStyle: TextStyle(
@@ -416,7 +435,7 @@ class TutorListPageState extends State<TutorListPage> {
           children: [
             Expanded(
               flex: 3,
-              child: _searchByName(),
+              child: _searchByName(context),
             ),
             const SizedBox(width: 10),
             Expanded(

@@ -56,4 +56,45 @@ class TutorRepository {
             tutor.specialties!.toLowerCase().contains(speciality.toLowerCase()))
         .toList();
   }
+
+  Future<List<Tutor>> getTutorsByName(
+      String name, int page, int tutorPerPage) async {
+    await Future.delayed(const Duration(seconds: 1));
+    return tutors
+        .where(
+            (tutor) => tutor.name!.toLowerCase().contains(name.toLowerCase()))
+        .toList();
+  }
+
+  Future<List<Tutor>> filterTutors(
+      Map<String, dynamic> filters, int page, int perPage) async {
+    await Future.delayed(const Duration(seconds: 1));
+
+    List<Tutor> filteredTutors = tutors;
+
+    if (filters.containsKey('speciality')) {
+      String speciality = filters['speciality'];
+      filteredTutors = filteredTutors
+          .where((tutor) => tutor.specialties!
+              .toLowerCase()
+              .contains(speciality.toLowerCase()))
+          .toList();
+    }
+
+    if (filters.containsKey('name')) {
+      String name = filters['name'];
+      filteredTutors = filteredTutors
+          .where(
+              (tutor) => tutor.name!.toLowerCase().contains(name.toLowerCase()))
+          .toList();
+    }
+
+    // Add more filters as needed
+
+    // Implement pagination
+    // int skip = (page - 1) * perPage;
+    // filteredTutors = filteredTutors.skip(skip).take(perPage).toList();
+
+    return filteredTutors;
+  }
 }
