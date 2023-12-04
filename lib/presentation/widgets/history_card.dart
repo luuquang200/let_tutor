@@ -74,7 +74,7 @@ class _HistoryCardState extends State<HistoryCard> {
               children: [
                 _tutorAvatar(context, 32),
                 const SizedBox(width: 16),
-                Column(
+                const Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Text('Krystal', style: CustomTextStyle.headlineLarge),
@@ -86,12 +86,12 @@ class _HistoryCardState extends State<HistoryCard> {
               ],
             ),
             const SizedBox(height: 8),
-            Text('What was the reason you reported on the lesson?',
+            const Text('What was the reason you reported on the lesson?',
                 style: CustomTextStyle.bodyRegular),
             const SizedBox(height: 8),
             TextField(
               controller: textController,
-              decoration: InputDecoration(
+              decoration: const InputDecoration(
                 hintText: 'Enter your report here',
                 border: OutlineInputBorder(),
               ),
@@ -130,12 +130,12 @@ class _HistoryCardState extends State<HistoryCard> {
             onTap: () {
               Routes.navigateTo(context, Routes.tutorDetail);
             },
-            child: Text(
+            child: const Text(
               'Krystal',
               style: CustomTextStyle.headlineLarge,
             ),
           ),
-          SizedBox(height: 2),
+          const SizedBox(height: 2),
           Row(
             children: [
               SvgPicture.asset(
@@ -143,14 +143,14 @@ class _HistoryCardState extends State<HistoryCard> {
                 width: 20,
                 height: 20,
               ),
-              SizedBox(width: 4),
-              Text(
+              const SizedBox(width: 4),
+              const Text(
                 'Tunisia',
                 style: CustomTextStyle.bodyRegular,
               ),
             ],
           ),
-          SizedBox(height: 3),
+          const SizedBox(height: 3),
           // direct messeage
           Row(
             children: [
@@ -159,7 +159,7 @@ class _HistoryCardState extends State<HistoryCard> {
                 size: 16,
                 color: Theme.of(context).primaryColor,
               ),
-              SizedBox(width: 4),
+              const SizedBox(width: 4),
               Text(
                 'Direct message',
                 style: CustomTextStyle.bodyRegular
@@ -178,7 +178,7 @@ class _HistoryCardState extends State<HistoryCard> {
         Routes.navigateTo(context, Routes.tutorDetail);
       },
       child: CircleAvatar(
-        backgroundImage: AssetImage('assets/tutor_avatar_01.jpg'),
+        backgroundImage: const AssetImage('assets/tutor_avatar_01.jpg'),
         radius: radius,
       ),
     );
@@ -234,17 +234,17 @@ class _HistoryCardState extends State<HistoryCard> {
 
   _requestForLesson(BuildContext context) {
     return Padding(
-        padding: EdgeInsets.only(left: 18, right: 12),
+        padding: const EdgeInsets.only(left: 18, right: 12),
         child: Column(
           children: [
             Row(
               children: [
-                Icon(
+                const Icon(
                   Icons.request_page_outlined,
                   size: 20,
                 ),
-                SizedBox(width: 8),
-                Expanded(
+                const SizedBox(width: 8),
+                const Expanded(
                   child: Row(
                     children: [
                       Text('Requests for lesson:',
@@ -272,8 +272,8 @@ class _HistoryCardState extends State<HistoryCard> {
             ),
             Visibility(
                 visible: isRequestExpanded,
-                child: Padding(
-                  padding: const EdgeInsets.only(left: 28, right: 8),
+                child: const Padding(
+                  padding: EdgeInsets.only(left: 28, right: 8),
                   child: Text(
                       'Hi there! I\'d like to schedule a tutoring session to cover grammarly. Do you have any specific materials or resources I should prepare for the session?'),
                 ))
@@ -283,18 +283,18 @@ class _HistoryCardState extends State<HistoryCard> {
 
   _reviewFromTutor() {
     return Padding(
-        padding: EdgeInsets.only(left: 18, right: 12),
+        padding: const EdgeInsets.only(left: 18, right: 12),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Row(
               children: [
-                Icon(
+                const Icon(
                   Icons.rate_review_outlined,
                   size: 20,
                 ),
-                SizedBox(width: 8),
-                Expanded(
+                const SizedBox(width: 8),
+                const Expanded(
                     child: Row(
                   children: [
                     Text('Review from tutor:',
@@ -322,8 +322,8 @@ class _HistoryCardState extends State<HistoryCard> {
             // review content
             Visibility(
                 visible: isReviewExpanded,
-                child: Padding(
-                    padding: const EdgeInsets.only(left: 28, right: 8),
+                child: const Padding(
+                    padding: EdgeInsets.only(left: 28, right: 8),
                     child: Text(
                         'Session 1: 00:00 - 00:25\nLesson status: Completed\nLesson: The Internet\nBehavior (⭐⭐⭐⭐⭐):\nListening (⭐⭐⭐⭐):\nSpeaking (⭐⭐⭐):\nVocabulary (⭐⭐⭐⭐⭐):\nOverall comment: Good and handsome.')))
           ],

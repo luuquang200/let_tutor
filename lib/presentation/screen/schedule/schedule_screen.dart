@@ -1,6 +1,7 @@
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
 import 'package:let_tutor/presentation/widgets/booked_schedule_card.dart';
-import 'package:let_tutor/presentation/widgets/course_card.dart';
 import 'package:let_tutor/presentation/widgets/history_card.dart';
 import 'package:let_tutor/routes.dart';
 import 'package:number_paginator/number_paginator.dart';
@@ -13,7 +14,6 @@ class ScheduleSceen extends StatefulWidget {
 }
 
 class _ScheduleSceenState extends State<ScheduleSceen> {
-  var _currentPage = 1;
   @override
   Widget build(BuildContext context) {
     return DefaultTabController(
@@ -108,7 +108,7 @@ class _ScheduleSceenState extends State<ScheduleSceen> {
             NumberPaginator(
               numberPages: 8,
               onPageChange: (index) {
-                print(index);
+                log('index, $index');
                 setState(() {});
               },
             ),

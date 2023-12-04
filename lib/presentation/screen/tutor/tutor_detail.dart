@@ -82,7 +82,7 @@ class _TutorDetailPageState extends State<TutorDetailPage> {
             const SizedBox(
               height: 8,
             ),
-            Specialities(),
+            const Specialities(),
 
             //Suggested courses
             const SizedBox(
@@ -211,11 +211,11 @@ class _TutorDetailPageState extends State<TutorDetailPage> {
         context: context,
         builder: (context) => SingleChildScrollView(
               child: AlertDialog(
-                title: Row(
+                title: const Row(
                   children: [
-                    const Icon(Icons.warning),
-                    const SizedBox(width: 8),
-                    const Text('Report Tutor'),
+                    Icon(Icons.warning),
+                    SizedBox(width: 8),
+                    Text('Report Tutor'),
                   ],
                 ),
                 content: SingleChildScrollView(
@@ -262,7 +262,7 @@ class _TutorDetailPageState extends State<TutorDetailPage> {
                     const SizedBox(height: 8),
                     TextField(
                       controller: textController,
-                      decoration: InputDecoration(
+                      decoration: const InputDecoration(
                         hintText: 'Enter your report here',
                         border: OutlineInputBorder(),
                       ),
@@ -301,7 +301,7 @@ class _TutorDetailPageState extends State<TutorDetailPage> {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             // Name
-            Text("Adelia Rice", style: CustomTextStyle.headlineLarge),
+            const Text("Adelia Rice", style: CustomTextStyle.headlineLarge),
             Row(
               children: [
                 SvgPicture.asset(
@@ -309,8 +309,8 @@ class _TutorDetailPageState extends State<TutorDetailPage> {
                   width: 20,
                   height: 20,
                 ),
-                SizedBox(width: 10),
-                Text(
+                const SizedBox(width: 10),
+                const Text(
                   'United States',
                   style: CustomTextStyle.bodyRegular,
                 ),

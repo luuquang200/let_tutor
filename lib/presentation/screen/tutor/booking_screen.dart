@@ -7,10 +7,10 @@ class BookingScreen extends StatefulWidget {
   const BookingScreen({Key? key}) : super(key: key);
 
   @override
-  _BookingScreenState createState() => _BookingScreenState();
+  BookingScreenState createState() => BookingScreenState();
 }
 
-class _BookingScreenState extends State<BookingScreen> {
+class BookingScreenState extends State<BookingScreen> {
   DateTime _selectedDate = DateTime.now();
   final List<DateTime> _availableDates = [
     DateTime(2023, 10, 28),
@@ -187,24 +187,24 @@ class _BookingScreenState extends State<BookingScreen> {
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                Text(
+                const Text(
                   'Booking Date:',
                 ),
                 Text(
-                  '${DateFormat('E, d MMM yyyy').format(_selectedDate)}',
-                  style: TextStyle(color: Color(0xFF0058C6)),
+                  DateFormat('E, d MMM yyyy').format(_selectedDate),
+                  style: const TextStyle(color: Color(0xFF0058C6)),
                 ),
               ],
             ),
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                Text(
+                const Text(
                   'Lesson Time: :',
                 ),
                 Text(
-                  '$_selectedTime',
-                  style: TextStyle(color: Color(0xFF0058C6)),
+                  _selectedTime,
+                  style: const TextStyle(color: Color(0xFF0058C6)),
                 ),
               ],
             ),
@@ -233,11 +233,11 @@ class _BookingScreenState extends State<BookingScreen> {
               ],
             ),
             const SizedBox(height: 8),
-            Text('Request for Tutor:'),
+            const Text('Request for Tutor:'),
             const SizedBox(height: 8),
             TextField(
               controller: textController,
-              decoration: InputDecoration(
+              decoration: const InputDecoration(
                 hintText: 'Enter your request here',
                 border: OutlineInputBorder(),
               ),

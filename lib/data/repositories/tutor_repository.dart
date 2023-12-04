@@ -5,7 +5,7 @@ class TutorRepository {
     Tutor(
       id: '1',
       name: 'Mark Rice',
-      country: 'United States',
+      country: 'Poland',
       language: 'English, Spanish',
       avatar: 'assets/tutor_avatar.jpg',
       rating: 3.5,
@@ -28,7 +28,7 @@ class TutorRepository {
     Tutor(
       id: '3',
       name: 'Romina Todorova',
-      country: 'United States',
+      country: 'Mexico',
       language: 'English, Mexican',
       avatar: 'assets/tutor_avatar.jpg',
       rating: 4.5,

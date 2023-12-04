@@ -25,7 +25,7 @@ class ReviewCard extends StatelessWidget {
                   children: [
                     const Text('Adelia Rice',
                         style: CustomTextStyle.headlineLarge),
-                    Text('288 days ago'),
+                    const Text('288 days ago'),
                     Row(
                         children: List<Widget>.generate(
                       5,
