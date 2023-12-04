@@ -1,10 +1,17 @@
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:let_tutor/configs/app_config.dart';
 import 'package:let_tutor/presentation/screen/authentication/sign_in_screen.dart';
 import 'package:let_tutor/routes.dart';
 import 'package:let_tutor/app_providers.dart';
+//
 
-void main() {
+void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  await AppConfig.readCountriesFromJson();
+  log(AppConfig.countries.length.toString());
   runApp(const MyApp());
 }
 

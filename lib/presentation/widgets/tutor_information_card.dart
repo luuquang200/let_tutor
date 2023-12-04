@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:let_tutor/configs/app_config.dart';
+import 'package:let_tutor/data/models/country.dart';
 import 'package:let_tutor/data/models/tutor.dart';
 import 'package:let_tutor/presentation/styles/custom_text_style.dart';
 import 'package:let_tutor/presentation/widgets/star_rating.dart';
@@ -46,14 +48,14 @@ class TutorInformationCard extends StatelessWidget {
           Row(
             children: [
               // Avatar
-              // CircleAvatar(
-              //   backgroundImage: NetworkImage(tutor.avatar ?? ''),
-              //   radius: 44,
-              // ),
               CircleAvatar(
-                radius: 45,
-                backgroundImage: AssetImage(tutor.avatar ?? ''),
+                backgroundImage: NetworkImage(tutor.avatar ?? ''),
+                radius: 44,
               ),
+              // CircleAvatar(
+              //   radius: 45,
+              //   backgroundImage: AssetImage(tutor.avatar ?? ''),
+              // ),
               const SizedBox(
                 width: 18,
               ),
@@ -68,14 +70,15 @@ class TutorInformationCard extends StatelessWidget {
                   const SizedBox(height: 2),
                   Row(
                     children: [
-                      SvgPicture.asset(
-                        'assets/flags/Foreigner.svg',
+                      // display flag from url image: AppConfig.getFlagUrl(code: tutor.country ?? '')
+                      SvgPicture.network(
+                        AppConfig.getFlagUrl(tutor.country ?? ''),
                         width: 20,
                         height: 20,
                       ),
                       const SizedBox(width: 10),
                       Text(
-                        tutor.country ?? '',
+                        _getNameCountry(tutor.country ?? ''),
                         style: CustomTextStyle.bodyRegular,
                       ),
                     ],
@@ -108,6 +111,13 @@ class TutorInformationCard extends StatelessWidget {
         ],
       ),
     );
+  }
+
+  String _getNameCountry(String code) {
+    final country = AppConfig.countries.firstWhere(
+        (country) => country.code == code,
+        orElse: () => Country(name: 'Unknown', code: 'Unknown'));
+    return country.name;
   }
 
   Positioned _bookButton() {

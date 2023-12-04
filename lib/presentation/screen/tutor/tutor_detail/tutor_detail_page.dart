@@ -63,9 +63,8 @@ class _TutorDetailPageState extends State<TutorDetailPage> {
                   const SizedBox(
                     height: 16,
                   ),
-                  const MyVideoPlayer(
-                    url:
-                        'https://api.app.lettutor.com/video/4d54d3d7-d2a9-42e5-97a2-5ed38af5789avideo1627913015871.mp4',
+                  MyVideoPlayer(
+                    url: tutor.video ?? '',
                   ),
                   // Languages
                   const SizedBox(
@@ -105,7 +104,7 @@ class _TutorDetailPageState extends State<TutorDetailPage> {
 
                   //Interests
                   const SizedBox(
-                    height: 16,
+                    height: 10,
                   ),
                   const Text(
                     'Interests',

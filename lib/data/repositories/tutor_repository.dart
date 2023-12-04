@@ -5,9 +5,10 @@ class TutorRepository {
     Tutor(
       id: '1',
       name: 'Mark Rice',
-      country: 'Poland',
+      country: 'TN',
       language: 'English, Spanish',
-      avatar: 'assets/tutor_avatar.jpg',
+      avatar:
+          'https://sandbox.api.lettutor.com/avatar/4d54d3d7-d2a9-42e5-97a2-5ed38af5789aavatar1684484879187.jpg',
       rating: 3.5,
       video:
           'https://api.app.lettutor.com/video/4d54d3d7-d2a9-42e5-97a2-5ed38af5789avideo1627913015871.mp4',
@@ -22,9 +23,10 @@ class TutorRepository {
     Tutor(
       id: '2',
       name: 'Adelia Rice Marry',
-      country: 'United States',
+      country: 'TN',
       language: 'English, Spanish, French',
-      avatar: 'assets/tutor_avatar.jpg',
+      avatar:
+          'https://sandbox.api.lettutor.com/avatar/4d54d3d7-d2a9-42e5-97a2-5ed38af5789aavatar1684484879187.jpg',
       rating: 5,
       video:
           'https://api.app.lettutor.com/video/4d54d3d7-d2a9-42e5-97a2-5ed38af5789avideo1627913015871.mp4',
@@ -38,9 +40,10 @@ class TutorRepository {
     Tutor(
       id: '3',
       name: 'Romina Todorova',
-      country: 'Mexico',
+      country: 'TW',
       language: 'English, Mexican',
-      avatar: 'assets/tutor_avatar.jpg',
+      avatar:
+          'https://sandbox.api.lettutor.com/avatar/4d54d3d7-d2a9-42e5-97a2-5ed38af5789aavatar1684484879187.jpg',
       rating: 4.5,
       video:
           'https://api.app.lettutor.com/video/4d54d3d7-d2a9-42e5-97a2-5ed38af5789avideo1627913015871.mp4',
@@ -55,9 +58,10 @@ class TutorRepository {
     Tutor(
       id: '4',
       name: 'Bill Rice',
-      country: 'United States',
+      country: 'TW',
       language: 'English, German, French, Spanish, Italian, Russian, Chinese',
-      avatar: 'assets/tutor_avatar.jpg',
+      avatar:
+          'https://api.app.lettutor.com/avatar/8c4e58c4-e9d1-4353-b64d-41b573c5a3e9avatar1632284832414.jpg',
       rating: 3.5,
       video:
           'https://api.app.lettutor.com/video/4d54d3d7-d2a9-42e5-97a2-5ed38af5789avideo1627913015871.mp4',
