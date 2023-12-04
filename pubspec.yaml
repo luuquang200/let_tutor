@@ -42,6 +42,7 @@ dependencies:
   equatable: ^2.0.3
   video_player: ^2.8.1
   chewie: ^1.7.4
+  cached_network_image: ^3.3.0
 
 dev_dependencies:
   flutter_test:

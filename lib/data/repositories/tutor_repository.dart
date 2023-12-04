@@ -40,7 +40,7 @@ class TutorRepository {
     Tutor(
       id: '3',
       name: 'Romina Todorova',
-      country: 'TW',
+      country: 'KI',
       language: 'English, Mexican',
       avatar:
           'https://sandbox.api.lettutor.com/avatar/4d54d3d7-d2a9-42e5-97a2-5ed38af5789aavatar1684484879187.jpg',

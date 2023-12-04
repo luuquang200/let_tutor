@@ -3,6 +3,8 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:let_tutor/blocs/tutor/tutor_detail/tutor_detail_bloc.dart';
 import 'package:let_tutor/blocs/tutor/tutor_detail/tutor_detail_state.dart';
+import 'package:let_tutor/configs/app_config.dart';
+import 'package:let_tutor/data/models/country.dart';
 import 'package:let_tutor/data/models/tutor.dart';
 import 'package:let_tutor/presentation/styles/custom_button.dart';
 import 'package:let_tutor/presentation/styles/custom_chip.dart';
@@ -319,12 +321,19 @@ class _TutorDetailPageState extends State<TutorDetailPage> {
             ));
   }
 
+  String _getNameCountry(String code) {
+    final country = AppConfig.countries.firstWhere(
+        (country) => country.code == code,
+        orElse: () => Country(name: 'Unknown', code: 'Unknown'));
+    return country.name;
+  }
+
   _tutorInformation(Tutor tutor) {
     return Row(
       children: [
-        const CircleAvatar(
+        CircleAvatar(
+          backgroundImage: NetworkImage(tutor.avatar ?? ''),
           radius: 45,
-          backgroundImage: AssetImage('assets/tutor_avatar.jpg'),
         ),
         const SizedBox(
           width: 20,
@@ -336,19 +345,21 @@ class _TutorDetailPageState extends State<TutorDetailPage> {
             Text(tutor.name ?? '', style: CustomTextStyle.headlineLarge),
             Row(
               children: [
-                SvgPicture.asset(
-                  'assets/flags/Foreigner.svg',
+                // flag
+                SvgPicture.network(
+                  AppConfig.getFlagUrl(tutor.country ?? ''),
                   width: 20,
                   height: 20,
                 ),
                 const SizedBox(width: 10),
                 Text(
-                  tutor.country ?? '',
+                  _getNameCountry(tutor.country ?? ''),
                   style: CustomTextStyle.bodyRegular,
                 ),
               ],
             ),
-            // row
+            // Rating Star
+            const SizedBox(height: 2),
             StarRating(rating: tutor.rating ?? 0, size: 20),
           ],
         )
