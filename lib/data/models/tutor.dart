@@ -10,6 +10,7 @@ class Tutor {
   final String? bio;
   final double? rating;
   final bool? isFavorite;
+  final String? video;
 
   Tutor(
       {this.id,
@@ -22,5 +23,6 @@ class Tutor {
       this.experience,
       this.rating,
       this.bio,
+      this.video,
       this.isFavorite});
 }

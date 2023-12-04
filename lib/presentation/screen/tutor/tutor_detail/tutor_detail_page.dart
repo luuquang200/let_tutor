@@ -10,6 +10,7 @@ import 'package:let_tutor/presentation/styles/custom_text_style.dart';
 import 'package:let_tutor/presentation/widgets/icon_text_button.dart';
 import 'package:let_tutor/presentation/widgets/specialities.dart';
 import 'package:let_tutor/presentation/widgets/star_rating.dart';
+import 'package:let_tutor/presentation/widgets/video_player.dart';
 import 'package:let_tutor/routes.dart';
 
 class TutorDetailPage extends StatefulWidget {
@@ -62,19 +63,10 @@ class _TutorDetailPageState extends State<TutorDetailPage> {
                   const SizedBox(
                     height: 16,
                   ),
-                  Container(
-                    height: 200,
-                    alignment: Alignment.center,
-                    decoration: BoxDecoration(
-                        border: Border.all(width: 1),
-                        borderRadius:
-                            const BorderRadius.all(Radius.circular(10))),
-                    child: const Text(
-                      'Introduction Video',
-                      style: CustomTextStyle.headlineMedium,
-                    ),
+                  const MyVideoPlayer(
+                    url:
+                        'https://api.app.lettutor.com/video/4d54d3d7-d2a9-42e5-97a2-5ed38af5789avideo1627913015871.mp4',
                   ),
-
                   // Languages
                   const SizedBox(
                     height: 16,
@@ -121,7 +113,7 @@ class _TutorDetailPageState extends State<TutorDetailPage> {
                   ),
                   Padding(
                       padding: const EdgeInsets.only(left: 10),
-                      child: _interests()),
+                      child: _interests(tutor)),
 
                   //Teaching experience
                   const SizedBox(
@@ -133,7 +125,7 @@ class _TutorDetailPageState extends State<TutorDetailPage> {
                   ),
                   Padding(
                       padding: const EdgeInsets.only(left: 10),
-                      child: _teachingExperience()),
+                      child: _teachingExperience(tutor)),
 
                   // booking button
                   const SizedBox(
@@ -228,14 +220,12 @@ class _TutorDetailPageState extends State<TutorDetailPage> {
     );
   }
 
-  _interests() {
-    return const Text(
-        'I loved the weather, the scenery and the laid-back lifestyle of the locals.');
+  _interests(Tutor tutor) {
+    return Text(tutor.interests ?? '');
   }
 
-  _teachingExperience() {
-    return const Text(
-        'I have more than 10 years of teaching english experience');
+  _teachingExperience(Tutor tutor) {
+    return Text(tutor.experience ?? '');
   }
 
   _bookingButton() {

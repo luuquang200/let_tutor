@@ -9,7 +9,12 @@ class TutorRepository {
       language: 'English, Spanish',
       avatar: 'assets/tutor_avatar.jpg',
       rating: 3.5,
+      video:
+          'https://api.app.lettutor.com/video/4d54d3d7-d2a9-42e5-97a2-5ed38af5789avideo1627913015871.mp4',
       isFavorite: true,
+      experience: 'I have more than 10 years of teaching english experience',
+      interests:
+          'I loved the weather, the scenery and the laid-back lifestyle of the locals.',
       specialties: "business-english,conversational-english,toeic",
       bio:
           'I am passionate about football and coding, I often compete in trail/mountain running events and I love pushing myself. I am training to one day take part in ultra-endurance events. I also enjoy watching rugby on the weekends, reading and watching podcasts on Youtube. My most memorable life experience would be living in and traveling around Southeast Asia.',
@@ -21,6 +26,11 @@ class TutorRepository {
       language: 'English, Spanish, French',
       avatar: 'assets/tutor_avatar.jpg',
       rating: 5,
+      video:
+          'https://api.app.lettutor.com/video/4d54d3d7-d2a9-42e5-97a2-5ed38af5789avideo1627913015871.mp4',
+      experience: 'I have more than 10 years of teaching english experience',
+      interests:
+          'I like to travel and meet new people. Go to the bar and drink beer with my friends.',
       specialties: "ielts,starters,movers,flyers,ket,pet,toefl,toeic",
       bio:
           'I am passionate about running and fitness, I often compete in trail/mountain running events and I love pushing myself. I am training to one day take part in ultra-endurance events. I also enjoy watching rugby on the weekends, reading and watching podcasts on Youtube. My most memorable life experience would be living in and traveling around Southeast Asia.',
@@ -32,6 +42,11 @@ class TutorRepository {
       language: 'English, Mexican',
       avatar: 'assets/tutor_avatar.jpg',
       rating: 4.5,
+      video:
+          'https://api.app.lettutor.com/video/4d54d3d7-d2a9-42e5-97a2-5ed38af5789avideo1627913015871.mp4',
+      experience: 'I have more than 10 years of teaching english experience',
+      interests:
+          'I like football and coding. Sometimes I go to massage and spa to relax myself.',
       specialties:
           "business-english,conversational-english,english-for-kids,ielts,starters,movers,flyers,ket,pet,toefl,toeic",
       bio:
@@ -44,6 +59,11 @@ class TutorRepository {
       language: 'English, German, French, Spanish, Italian, Russian, Chinese',
       avatar: 'assets/tutor_avatar.jpg',
       rating: 3.5,
+      video:
+          'https://api.app.lettutor.com/video/4d54d3d7-d2a9-42e5-97a2-5ed38af5789avideo1627913015871.mp4',
+      experience: 'I have more than 8 years of teaching english experience',
+      interests:
+          'I like to travel and meet new people. Go to the bar and drink beer with my friends.',
       isFavorite: true,
       specialties: "business-english,conversational-english,toeic",
       bio:
