@@ -17,7 +17,7 @@ class BookingPage extends StatefulWidget {
 }
 
 class BookingPageState extends State<BookingPage> {
-  final DateTime _selectedDate = DateTime.now();
+  DateTime _selectedDate = DateTime.now();
   String _selectedTime = '00:00 - 00:00';
 
   @override
@@ -25,6 +25,7 @@ class BookingPageState extends State<BookingPage> {
     return BlocBuilder<BookingBloc, BookingState>(
       builder: (context, state) {
         if (state is BookingLoadSuccess) {
+          _selectedDate = state.availableSlots.keys.first;
           return Scaffold(
             appBar: AppBar(
                 title: Text('Booking', style: CustomTextStyle.topHeadline),
@@ -58,9 +59,15 @@ class BookingPageState extends State<BookingPage> {
             ),
           );
         } else if (state is BookingLoadFailure) {
-          return Text('Failed to load booking data');
+          return const Text('Failed to load booking data');
         } else {
-          return CircularProgressIndicator();
+          return const Center(
+            child: SizedBox(
+              height: 50.0,
+              width: 50.0,
+              child: CircularProgressIndicator(),
+            ),
+          );
         }
       },
     );
@@ -108,15 +115,28 @@ class BookingPageState extends State<BookingPage> {
   }
 
   Widget timePicker(List<String> availableTimes) {
+    if (availableTimes.isEmpty) {
+      _selectedTime = "";
+    } else if (!availableTimes.contains(_selectedTime)) {
+      _selectedTime = availableTimes.first;
+    }
+
     return Row(
-      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+      // mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [
+        // icon
+        const Icon(Icons.access_time),
+        const SizedBox(width: 8),
         DropdownButton<String>(
           value: _selectedTime,
           items: availableTimes.map<DropdownMenuItem<String>>((String value) {
+            final List<String> times = value.split(' - ');
+            final String startTime = formatTime(times[0]);
+            final String endTime = formatTime(times[1]);
+            final String displayValue = '$startTime - $endTime';
             return DropdownMenuItem<String>(
               value: value,
-              child: Text(value),
+              child: Text(displayValue),
             );
           }).toList(),
           onChanged: (String? newValue) {
@@ -124,7 +144,7 @@ class BookingPageState extends State<BookingPage> {
               _selectedTime = newValue!;
             });
           },
-        ),
+        )
       ],
     );
   }
@@ -264,6 +284,12 @@ class BookingPageState extends State<BookingPage> {
       ),
     );
   }
+
+  String formatTime(String time) {
+    final int hour = int.parse(time.split(':')[0]);
+    final String suffix = hour >= 12 ? 'PM' : 'AM';
+    return '$time $suffix';
+  }
 }
 
 class _CalendarPicker extends StatelessWidget {
@@ -277,7 +303,8 @@ class _CalendarPicker extends StatelessWidget {
     availableDate.sort((a, b) => a.compareTo(b));
 
     // remove date before today
-    availableDate.removeWhere((date) => date.isBefore(DateTime.now()));
+    // DateTime today = DateTime.(DateTime.now().year, DateTime.now().month, DateTime.now().day));
+    // availableDate.removeWhere((date) => date.isBefore(today));
 
     if (availableDate.isEmpty) {
       return const Text("No available dates");

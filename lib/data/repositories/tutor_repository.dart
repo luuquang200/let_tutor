@@ -153,10 +153,10 @@ class TutorRepository {
     var list = jsonData['scheduleOfTutor'] as List;
     List<TutorSchedule> tutorSchedules =
         list.map((data) => TutorSchedule.fromJson(data)).toList();
-    log('Schedule: $tutorSchedules');
-    for (var tutorSchedule in tutorSchedules) {
-      log('Schedule: ${tutorSchedule.scheduleDetails}');
-    }
+    // log('Schedule: $tutorSchedules');
+    // for (var tutorSchedule in tutorSchedules) {
+    //   log('Schedule: ${tutorSchedule.scheduleDetails}');
+    // }
 
     return tutorSchedules;
   }

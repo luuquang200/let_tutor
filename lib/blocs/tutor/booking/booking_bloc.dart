@@ -28,24 +28,27 @@ class BookingBloc extends Bloc<BookingEvent, BookingState> {
       for (var schedule in schedules) {
         for (var detail in schedule.scheduleDetails) {
           if (!detail.isBooked) {
-            DateTime startDate = DateTime.fromMillisecondsSinceEpoch(
-                detail.startPeriodTimestamp);
+            DateTime startDate =
+                DateTime.fromMillisecondsSinceEpoch(detail.startPeriodTimestamp)
+                    .toLocal();
+            DateTime dateOnly =
+                DateTime(startDate.year, startDate.month, startDate.day);
+            // log('From booking_bloc.dart: $dateOnly');
 
             String startTime = detail.startPeriod;
             String endTime = detail.endPeriod;
             String timeRange = "$startTime - $endTime";
 
-            if (!availableSlots.containsKey(startDate)) {
-              availableSlots[startDate] = [timeRange];
+            if (!availableSlots.containsKey(dateOnly)) {
+              availableSlots[dateOnly] = [timeRange];
             } else {
-              availableSlots[startDate]!.add(timeRange);
+              availableSlots[dateOnly]!.add(timeRange);
             }
           }
         }
       }
 
       log(availableSlots.toString());
-
       emit(BookingLoadSuccess(availableSlots));
     } catch (error) {
       emit(BookingLoadFailure(error.toString()));
