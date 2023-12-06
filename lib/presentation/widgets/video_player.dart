@@ -43,12 +43,9 @@ class MyVideoPlayerState extends State<MyVideoPlayer> {
             ? Chewie(
                 controller: _chewieController!,
               )
-            : Container(),
+            : const CircularProgressIndicator(),
       ),
     );
-    // return Chewie(
-    //   controller: _chewieController!,
-    // );
   }
 
   @override

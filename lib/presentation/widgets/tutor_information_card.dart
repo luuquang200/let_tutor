@@ -49,9 +49,39 @@ class TutorInformationCard extends StatelessWidget {
           Row(
             children: [
               // Avatar
+              // CircleAvatar(
+              //   radius: 44,
+              //   backgroundImage:
+              //       tutor.avatar != null ? NetworkImage(tutor.avatar!) : null,
+              //   child: tutor.avatar != null
+              //       ? null
+              //       : Text(getInitials(tutor.name!)),
+              //   onBackgroundImageError: (exception, stackTrace) => Text(
+              //     getInitials(tutor.name!),
+              //     style: CustomTextStyle.headlineMedium,
+              //   ),
+              // ),
               CircleAvatar(
-                backgroundImage: NetworkImage(tutor.avatar ?? ''),
                 radius: 44,
+                child: tutor.avatar != null
+                    ? CachedNetworkImage(
+                        imageUrl: tutor.avatar!,
+                        imageBuilder: (context, imageProvider) => Container(
+                          decoration: BoxDecoration(
+                            shape: BoxShape.circle,
+                            image: DecorationImage(
+                              image: imageProvider,
+                              fit: BoxFit.cover,
+                            ),
+                          ),
+                        ),
+                        placeholder: (context, url) =>
+                            const CircularProgressIndicator(),
+                        errorWidget: (context, url, error) => Text(
+                            getInitials(tutor.name!),
+                            style: CustomTextStyle.initialNameOfTutor),
+                      )
+                    : Text(getInitials(tutor.name!)),
               ),
               const SizedBox(
                 width: 18,
@@ -180,4 +210,20 @@ class TutorInformationCard extends StatelessWidget {
       }).toList(),
     );
   }
+}
+
+String getInitials(String name) {
+  List<String> names = name.split(" ");
+  String initials = "";
+  int numWords = 2;
+
+  if (numWords < names.length) {
+    numWords = names.length;
+  }
+
+  for (var i = 0; i < numWords; i++) {
+    initials += '${names[i][0]}';
+  }
+
+  return initials;
 }

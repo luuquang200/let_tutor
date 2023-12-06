@@ -66,10 +66,10 @@ class TutorRepository {
       country: 'TW',
       language: 'English, German, French, Spanish, Italian, Russian, Chinese',
       avatar:
-          'https://api.app.lettutor.com/avatar/8c4e58c4-e9d1-4353-b64d-41b573c5a3e9avatar1632284832414.jpg',
+          'https://api.app.lettutor.com/avatar/e9e3eeaa-a588-47c4-b4d1-ecfa190f63faavatar1632109929661.jpg',
       rating: 3.5,
       video:
-          'https://api.app.lettutor.com/video/4d54d3d7-d2a9-42e5-97a2-5ed38af5789avideo1627913015871.mp4',
+          'https://api.app.lettutor.com/video/e9e3eeaa-a588-47c4-b4d1-ecfa190f63favideo1632109929663.mp4',
       experience: 'I have more than 8 years of teaching english experience',
       interests:
           'I like to travel and meet new people. Go to the bar and drink beer with my friends.',
