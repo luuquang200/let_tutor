@@ -5,7 +5,7 @@ class AuthenticationRepository {
 
   Future<void> signIn(String email, String password) async {
     const fakeEmail = 't@gmail.com';
-    const fakePassword = 'pass';
+    const fakePassword = 'p';
     registeredAccounts[fakeEmail] = fakePassword;
     log('email: $email, password: $password');
     if (registeredAccounts[email] == password) {

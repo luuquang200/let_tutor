@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:let_tutor/blocs/sign_in/sign_in_bloc.dart';
 import 'package:let_tutor/blocs/sign_up/sign_up_bloc.dart';
+import 'package:let_tutor/blocs/tutor/booking/booking_bloc.dart';
 import 'package:let_tutor/blocs/tutor/tutor_detail/tutor_detail_bloc.dart';
 import 'package:let_tutor/blocs/tutor/tutor_list/tutor_list_bloc.dart';
 import 'package:let_tutor/data/repositories/authentication_repository.dart';
@@ -43,6 +44,13 @@ List<BlocProvider> buildBlocs(BuildContext context) {
         tutorRepository: context.read<TutorRepository>(),
       ),
     ),
+    // booking bloc
+    BlocProvider<BookingBloc>(
+      create: (context) => BookingBloc(
+        tutorRepository: context.read<TutorRepository>(),
+      ),
+    ),
+
     // Add more blocs here
   ];
 }

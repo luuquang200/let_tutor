@@ -235,7 +235,11 @@ class _TutorDetailPageState extends State<TutorDetailPage> {
         height: 50,
         radius: 8,
         onPressed: () {
-          Navigator.pushNamed(context, Routes.bookingScreen);
+          Navigator.pushNamed(
+            context,
+            Routes.bookingScreen,
+            arguments: widget.tutorId,
+          );
         });
   }
 

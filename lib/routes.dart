@@ -1,12 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:let_tutor/presentation/screen/authentication/sign_up_screen.dart';
-import 'package:let_tutor/presentation/screen/tutor/booking_screen.dart';
 import 'package:let_tutor/presentation/screen/courses/course_detail.dart';
 import 'package:let_tutor/presentation/screen/courses/courses_screen.dart';
 import 'package:let_tutor/presentation/screen/home.dart';
 import 'package:let_tutor/presentation/screen/schedule/schedule_screen.dart';
 import 'package:let_tutor/presentation/screen/authentication/sign_in_screen.dart';
 import 'package:let_tutor/presentation/screen/courses/topic_detail.dart';
+import 'package:let_tutor/presentation/screen/tutor/booking/booking_screen.dart';
+
 import 'package:let_tutor/presentation/screen/tutor/tutor_detail/tutor_detail_screen.dart';
 import 'package:let_tutor/presentation/screen/tutor/tutor_list/tutor_list_screen.dart';
 import 'package:let_tutor/presentation/screen/tutor/tutor_review_screen.dart';
@@ -45,7 +46,9 @@ class Routes {
             builder: (_) =>
                 TutorDetailScreen(tutorId: settings.arguments as String));
       case bookingScreen:
-        return MaterialPageRoute(builder: (_) => const BookingScreen());
+        return MaterialPageRoute(
+            builder: (_) =>
+                BookingScreen(tutorId: settings.arguments as String));
       case tutorReviewScreen:
         return MaterialPageRoute(builder: (_) => const TutorReviewScreen());
       case home:
