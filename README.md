@@ -1,16 +1,9 @@
-# let_tutor
+# Project Name: Lettutor
 
-A new Flutter project.
+## Demo
 
-## Getting Started
+Here are some links to the demo of the project:
 
-This project is a starting point for a Flutter application.
+- [Widget Tree](https://viewer.diagrams.net/?tags=%7B%7D&highlight=0000ff&edit=_blank&layers=1&nav=1&page-id=zwO6CUl7PEo4ckCouk_B&title=Widget%20Tree.drawio#Uhttps%3A%2F%2Fdrive.google.com%2Fuc%3Fid%3D1GG2R-RfALCuXrYBtaPQBcgZvN5YKBNs0%26export%3Ddownload)
+- [Milestone 2](https://youtu.be/LUeDuUuTBQ4)
 
-A few resources to get you started if this is your first Flutter project:
-
-- [Lab: Write your first Flutter app](https://docs.flutter.dev/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://docs.flutter.dev/cookbook)
-
-For help getting started with Flutter development, view the
-[online documentation](https://docs.flutter.dev/), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
