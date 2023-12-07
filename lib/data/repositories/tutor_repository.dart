@@ -33,6 +33,7 @@ class TutorRepository {
       avatar:
           'https://sandbox.api.lettutor.com/avatar/4d54d3d7-d2a9-42e5-97a2-5ed38af5789aavatar1684484879187.jpg',
       rating: 5,
+      isFavorite: false,
       video:
           'https://api.app.lettutor.com/video/4d54d3d7-d2a9-42e5-97a2-5ed38af5789avideo1627913015871.mp4',
       experience: 'I have more than 10 years of teaching english experience',
@@ -47,6 +48,7 @@ class TutorRepository {
       name: 'Romina Todorova',
       country: 'KI',
       language: 'English, Mexican',
+      isFavorite: false,
       avatar:
           'https://sandbox.api.lettutor.com/avatar/4d54d3d7-d2a9-42e5-97a2-5ed38af5789aavatar1684484879187.jpg',
       rating: 4.5,
@@ -160,4 +162,11 @@ class TutorRepository {
 
     return tutorSchedules;
   }
+
+  favouriteTutor(String tutorId) {
+    tutors.firstWhere((tutor) => tutor.id == tutorId).isFavorite = true;
+    return true;
+  }
+
+  reportTutor(String tutorId, String content) {}
 }

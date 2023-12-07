@@ -15,11 +15,12 @@ class TutorDetailLoading extends TutorDetailState {
 
 class TutorDetailSuccess extends TutorDetailState {
   final Tutor tutor;
+  final DateTime updated;
 
-  TutorDetailSuccess(this.tutor);
+  TutorDetailSuccess(this.tutor, this.updated);
 
   @override
-  List<Object> get props => [tutor];
+  List<Object> get props => [tutor, updated];
 }
 
 class TutorDetailFailure extends TutorDetailState {

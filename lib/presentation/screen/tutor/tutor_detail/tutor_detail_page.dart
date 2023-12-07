@@ -1,7 +1,10 @@
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:let_tutor/blocs/tutor/tutor_detail/tutor_detail_bloc.dart';
+import 'package:let_tutor/blocs/tutor/tutor_detail/tutor_detail_event.dart';
 import 'package:let_tutor/blocs/tutor/tutor_detail/tutor_detail_state.dart';
 import 'package:let_tutor/configs/app_config.dart';
 import 'package:let_tutor/data/models/country.dart';
@@ -26,7 +29,13 @@ class TutorDetailPage extends StatefulWidget {
 class _TutorDetailPageState extends State<TutorDetailPage> {
   @override
   Widget build(BuildContext context) {
-    return BlocBuilder<TutorDetailBloc, TutorDetailState>(
+    return BlocConsumer<TutorDetailBloc, TutorDetailState>(
+      listener: (context, state) {
+        // Add listener code here
+        if (state is TutorDetailSuccess) {
+          log('load tutor detail page - listener');
+        }
+      },
       builder: (context, state) {
         if (state is TutorDetailLoading) {
           return const Center(
@@ -37,7 +46,8 @@ class _TutorDetailPageState extends State<TutorDetailPage> {
             ),
           );
         } else if (state is TutorDetailSuccess) {
-          final tutor = state.tutor;
+          log('load tutor detail page');
+          Tutor tutor = state.tutor;
           return Scaffold(
             appBar: AppBar(
               title: Text('Tutor Detail', style: CustomTextStyle.topHeadline),
@@ -146,6 +156,130 @@ class _TutorDetailPageState extends State<TutorDetailPage> {
     );
   }
 
+// class _TutorDetailPageState extends State<TutorDetailPage> {
+//   @override
+//   Widget build(BuildContext context) {
+//     return BlocBuilder<TutorDetailBloc, TutorDetailState>(
+//       builder: (context, state) {
+//         if (state is TutorDetailLoading) {
+//           return const Center(
+//             child: SizedBox(
+//               height: 50.0,
+//               width: 50.0,
+//               child: CircularProgressIndicator(),
+//             ),
+//           );
+//         } else if (state is TutorDetailSuccess) {
+//           log('load tutor detail page');
+//           final tutor = state.tutor;
+//           return Scaffold(
+//             appBar: AppBar(
+//               title: Text('Tutor Detail', style: CustomTextStyle.topHeadline),
+//               iconTheme: IconThemeData(color: Theme.of(context).primaryColor),
+//             ),
+//             body: SingleChildScrollView(
+//               padding: const EdgeInsets.symmetric(vertical: 8, horizontal: 20),
+//               child: Column(
+//                 crossAxisAlignment: CrossAxisAlignment.start,
+//                 children: [
+//                   // Tutor Information
+//                   _tutorInformation(tutor),
+//                   const SizedBox(
+//                     height: 16,
+//                   ),
+//                   Text(tutor.bio ?? '', style: CustomTextStyle.bodyRegular),
+//                   const SizedBox(
+//                     height: 16,
+//                   ),
+
+//                   // Buttons: Favorite, Report and Review
+//                   _actionButtonsRow(context),
+
+//                   // Introduction Video
+//                   const SizedBox(
+//                     height: 16,
+//                   ),
+//                   MyVideoPlayer(
+//                     url: tutor.video ?? '',
+//                   ),
+//                   // Languages
+//                   const SizedBox(
+//                     height: 16,
+//                   ),
+//                   const Text(
+//                     'Languages',
+//                     style: CustomTextStyle.headlineMedium,
+//                   ),
+//                   const SizedBox(
+//                     height: 8,
+//                   ),
+//                   _language(tutor.language),
+
+//                   // Specialities
+//                   const SizedBox(
+//                     height: 16,
+//                   ),
+//                   const Text(
+//                     'Specialities',
+//                     style: CustomTextStyle.headlineMedium,
+//                   ),
+//                   const SizedBox(
+//                     height: 8,
+//                   ),
+//                   const Specialities(),
+
+//                   //Suggested courses
+//                   const SizedBox(
+//                     height: 16,
+//                   ),
+//                   const Text(
+//                     'Suggested Courses',
+//                     style: CustomTextStyle.headlineMedium,
+//                   ),
+//                   _suggestedCourses(),
+
+//                   //Interests
+//                   const SizedBox(
+//                     height: 10,
+//                   ),
+//                   const Text(
+//                     'Interests',
+//                     style: CustomTextStyle.headlineMedium,
+//                   ),
+//                   Padding(
+//                       padding: const EdgeInsets.only(left: 10),
+//                       child: _interests(tutor)),
+
+//                   //Teaching experience
+//                   const SizedBox(
+//                     height: 16,
+//                   ),
+//                   const Text(
+//                     'Teaching Experience',
+//                     style: CustomTextStyle.headlineMedium,
+//                   ),
+//                   Padding(
+//                       padding: const EdgeInsets.only(left: 10),
+//                       child: _teachingExperience(tutor)),
+
+//                   // booking button
+//                   const SizedBox(
+//                     height: 16,
+//                   ),
+//                   _bookingButton(),
+//                 ],
+//               ),
+//             ),
+//           );
+//         } else if (state is TutorDetailFailure) {
+//           return Text('Error: ${state.error}');
+//         } else {
+//           return Container();
+//         }
+//       },
+//     );
+//   }
+
   Widget _language(String? languages) {
     if (languages == null || languages.isEmpty) {
       return Container();
@@ -168,12 +302,7 @@ class _TutorDetailPageState extends State<TutorDetailPage> {
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceEvenly,
       children: [
-        IconTextButton(
-          icon: Icons.favorite_outline,
-          text: 'Favorite',
-          color: Theme.of(context).primaryColor,
-          onTap: () {},
-        ),
+        FavoriteButton(widget: widget),
         IconTextButton(
           icon: Icons.report_outlined,
           text: 'Report',
@@ -368,6 +497,40 @@ class _TutorDetailPageState extends State<TutorDetailPage> {
           ],
         )
       ],
+    );
+  }
+}
+
+class FavoriteButton extends StatelessWidget {
+  const FavoriteButton({
+    super.key,
+    required this.widget,
+  });
+
+  final TutorDetailPage widget;
+
+  @override
+  Widget build(BuildContext context) {
+    return BlocBuilder<TutorDetailBloc, TutorDetailState>(
+      builder: (context, state) {
+        if (state is TutorDetailSuccess) {
+          return IconTextButton(
+            icon: state.tutor.isFavorite ?? false
+                ? Icons.favorite_rounded
+                : Icons.favorite_border_rounded,
+            text: 'Favorite',
+            color: state.tutor.isFavorite ?? false
+                ? Colors.red
+                : Theme.of(context).primaryColor,
+            onTap: () {
+              context
+                  .read<TutorDetailBloc>()
+                  .add(FavouriteTutorEvent(tutorId: widget.tutorId));
+            },
+          );
+        }
+        return Container();
+      },
     );
   }
 }
