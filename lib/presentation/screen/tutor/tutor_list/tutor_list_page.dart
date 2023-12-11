@@ -1,92 +1,153 @@
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
-import 'package:flutter_svg/svg.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:let_tutor/blocs/tutor/tutor_list/tutor_list_bloc.dart';
+import 'package:let_tutor/blocs/tutor/tutor_list/tutor_list_event.dart';
+import 'package:let_tutor/blocs/tutor/tutor_list/tutor_list_state.dart';
 import 'package:intl/intl.dart';
+
 import 'package:let_tutor/presentation/styles/custom_text_style.dart';
 import 'package:let_tutor/presentation/widgets/tutor_information_card.dart';
 import 'package:number_paginator/number_paginator.dart';
 
-class TutorListScreen extends StatefulWidget {
-  const TutorListScreen({Key? key}) : super(key: key);
+import 'package:let_tutor/data/models/tutor.dart';
+
+class TutorListPage extends StatefulWidget {
+  const TutorListPage({Key? key}) : super(key: key);
+
   @override
-  State<TutorListScreen> createState() => _TutorListScreenState();
+  TutorListPageState createState() => TutorListPageState();
 }
 
-class _TutorListScreenState extends State<TutorListScreen> {
-  final specialities = [
-    'All',
-    'English for kids',
-    'English for Business',
-    'Conversational',
-    'STARTERS',
-    'MOVERS',
-    'FLYERS',
-    'KET',
-    'PET',
-    'IELTS',
-    'TOEFL',
-    'TOEIC'
-  ];
+class TutorListPageState extends State<TutorListPage> {
+  // final specialities = [
+  //   'All',
+  //   'English for kids',
+  //   'English for Business',
+  //   'Conversational',
+  //   'STARTERS',
+  //   'MOVERS',
+  //   'FLYERS',
+  //   'KET',
+  //   'PET',
+  //   'IELTS',
+  //   'TOEFL',
+  //   'TOEIC'
+  // ];
+  final specialities =
+      "business-english,conversational-english,english-for-kids,ielts,starters,movers,flyers,ket,pet,toefl,toeic"
+          .split(',');
   final dateController = TextEditingController();
   int selectedSpecialityIndex = 0;
-  final List<String> listNationalities = <String>[
-    'Vietnamese',
-    'Foreigner',
-    'Tunisia'
-  ];
+  final Map<String, Map<String, bool>> listNationalities = {
+    'Vietnamese Tutor': {'isVietnamese': true},
+    'Native English Tutor': {'isNative': true},
+    'Foreign Tutor': {'isVietnamese': false, 'isNative': false},
+  };
   final startTimeController = TextEditingController();
   final endTimeController = TextEditingController();
   bool isShowFilter = false;
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
+    return SafeArea(
+      child: Scaffold(
         body: SingleChildScrollView(
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          _buildUpcomingLesson(),
-          Container(
-            padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 8),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                const SizedBox(height: 8),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              _buildUpcomingLesson(),
+              const SizedBox(
+                height: 8,
+              ),
+              Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 16),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    const Text('Recommended Tutors:',
-                        style: CustomTextStyle.headlineLarge),
-                    IconButton(
-                        onPressed: () {
-                          setState(() {
-                            isShowFilter = !isShowFilter;
-                          });
-                        },
-                        icon: const Icon(
-                          Icons.filter_list_outlined,
-                          size: 28,
-                        )),
+                    _buildHeaderRow(),
+                    const SizedBox(
+                      height: 8,
+                    ),
+                    Visibility(
+                      visible: isShowFilter,
+                      child: _inputFilter(context),
+                    ),
+                    // _inputFilter(context),
+                    const SizedBox(
+                      height: 8,
+                    ),
+                    BlocBuilder<TutorListBloc, TutorListState>(
+                      builder: (context, state) {
+                        if (state is TutorListLoading) {
+                          return const Center(
+                              child: CircularProgressIndicator());
+                        } else if (state is TutorListSuccess) {
+                          if (state.tutors.isEmpty) {
+                            return _noTutorsFoundMessage();
+                          }
+
+                          return _listTutorInformationCard(state.tutors);
+                        } else if (state is TutorListFailure) {
+                          return Text('Error: ${state.error}');
+                        } else {
+                          return Container();
+                        }
+                      },
+                    ),
                   ],
                 ),
-                Visibility(
-                  visible: isShowFilter,
-                  child: _inputFilter(),
-                ),
-                const SizedBox(height: 8),
-                _listTutorInformationCard(),
-                NumberPaginator(
-                  numberPages: 8,
-                  onPageChange: (index) {
-                    print(index);
-                    setState(() {});
-                  },
-                ),
-              ],
-            ),
+              ),
+            ],
           ),
+        ),
+      ),
+    );
+  }
+
+  Center _noTutorsFoundMessage() {
+    return Center(
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          Icon(Icons.warning_amber_rounded, size: 48, color: Colors.grey[400]),
+          Text('Sorry we can\'t find any tutor with this keywords',
+              style: CustomTextStyle.bodyRegular
+                  .copyWith(color: Colors.grey[400])),
+          const SizedBox(height: 8),
         ],
       ),
-    ));
+    );
+  }
+
+  Row _buildHeaderRow() {
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+      children: [
+        const Text('Recommended Tutors:', style: CustomTextStyle.headlineLarge),
+        IconButton(
+            onPressed: () {
+              setState(() {
+                isShowFilter = !isShowFilter;
+              });
+            },
+            icon: const Icon(
+              Icons.filter_list_outlined,
+              size: 28,
+            )),
+      ],
+    );
+  }
+
+  NumberPaginator _paginator() {
+    return NumberPaginator(
+      numberPages: 8,
+      onPageChange: (index) {
+        log(index.toString());
+        setState(() {});
+      },
+    );
   }
 
   Widget _buildUpcomingLesson() {
@@ -141,18 +202,19 @@ class _TutorListScreenState extends State<TutorListScreen> {
         contentPadding: EdgeInsets.symmetric(vertical: 16.0),
       ),
       isExpanded: true,
-      value: listNationalities.first,
-      items: listNationalities.map<DropdownMenuItem<String>>((String value) {
+      value: listNationalities.keys.first,
+      items:
+          listNationalities.keys.map<DropdownMenuItem<String>>((String value) {
         return DropdownMenuItem<String>(
           value: value,
           child: Row(
             children: <Widget>[
               const SizedBox(width: 8),
-              SvgPicture.asset(
-                'assets/flags/$value.svg',
-                width: 20,
-                height: 20,
-              ),
+              // SvgPicture.asset(
+              //   'assets/flags/$value.svg',
+              //   width: 20,
+              //   height: 20,
+              // ),
               const SizedBox(width: 8),
               Flexible(
                 child: Text(
@@ -164,16 +226,21 @@ class _TutorListScreenState extends State<TutorListScreen> {
           ),
         );
       }).toList(),
-      onChanged: (String? value) {},
+      onChanged: (String? value) {
+        context.read<TutorListBloc>().add(
+            FilterTutorsByNationality(nationality: listNationalities[value]!));
+      },
       style: const TextStyle(
         color: Colors.black,
       ),
     );
   }
 
-  Widget _searchByName() {
-    return const TextField(
-      decoration: InputDecoration(
+  Widget _searchByName(BuildContext context) {
+    return TextField(
+      onChanged: (value) =>
+          context.read<TutorListBloc>().add(FilterTutorsByName(value)),
+      decoration: const InputDecoration(
         prefixIcon: Icon(Icons.type_specimen_outlined),
         hintText: 'Enter a tutor name',
         hintStyle: TextStyle(
@@ -266,7 +333,7 @@ class _TutorListScreenState extends State<TutorListScreen> {
     );
   }
 
-  _specialitiesChips() {
+  _specialitiesChips(BuildContext context) {
     return Wrap(
       spacing: 8,
       runSpacing: 5,
@@ -289,6 +356,10 @@ class _TutorListScreenState extends State<TutorListScreen> {
             setState(() {
               selectedSpecialityIndex = index;
             });
+            // Add this line to dispatch the FilterTutorsBySpeciality event
+            context
+                .read<TutorListBloc>()
+                .add(FilterTutorsBySpeciality(specialities[index]));
           },
           side: BorderSide.none,
         ),
@@ -311,25 +382,37 @@ class _TutorListScreenState extends State<TutorListScreen> {
     );
   }
 
-  _listTutorInformationCard() {
+  _listTutorInformationCard(List<Tutor> tutors) {
+    // Sort tutors by favorite status and rating
+    tutors.sort((a, b) {
+      if (b.isFavorite != a.isFavorite) {
+        return (b.isFavorite ?? false) ? 1 : -1;
+      }
+      return (b.rating ?? 0).compareTo(a.rating ?? 0);
+    });
+
     return SizedBox(
       child: ListView.builder(
         shrinkWrap: true,
         physics: const NeverScrollableScrollPhysics(),
-        itemCount: 6,
+        itemCount: tutors.length + 1, // Increase itemCount by 1
         itemBuilder: (context, index) {
-          return const Column(
-            children: [
-              TutorInformationCard(),
-              SizedBox(height: 16),
-            ],
-          );
+          if (index < tutors.length) {
+            return Column(
+              children: [
+                TutorInformationCard(tutor: tutors[index]),
+                const SizedBox(height: 16),
+              ],
+            );
+          } else {
+            return _paginator(); // Display _paginator at the end
+          }
         },
       ),
     );
   }
 
-  _inputFilter() {
+  _inputFilter(BuildContext context) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
@@ -343,7 +426,7 @@ class _TutorListScreenState extends State<TutorListScreen> {
           children: [
             Expanded(
               flex: 3,
-              child: _searchByName(),
+              child: _searchByName(context),
             ),
             const SizedBox(width: 10),
             Expanded(
@@ -376,7 +459,7 @@ class _TutorListScreenState extends State<TutorListScreen> {
         const SizedBox(height: 8),
         Padding(
           padding: const EdgeInsets.symmetric(vertical: 8),
-          child: _specialitiesChips(),
+          child: _specialitiesChips(context),
         ),
         Padding(
           padding: const EdgeInsets.symmetric(vertical: 8),

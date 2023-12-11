@@ -14,7 +14,6 @@ class _BookedScheduleCardState extends State<BookedScheduleCard> {
   bool isRequestExpanded = false;
   @override
   Widget build(BuildContext context) {
-    // TODO: implement build
     return Card(
       elevation: 5,
       shape: RoundedRectangleBorder(
@@ -68,12 +67,12 @@ class _BookedScheduleCardState extends State<BookedScheduleCard> {
             onTap: () {
               // Navigator.pushNamed(context, Routes.teacherDetail);
             },
-            child: Text(
+            child: const Text(
               'Keegan',
               style: CustomTextStyle.headlineLarge,
             ),
           ),
-          SizedBox(height: 2),
+          const SizedBox(height: 2),
           Row(
             children: [
               SvgPicture.asset(
@@ -81,14 +80,14 @@ class _BookedScheduleCardState extends State<BookedScheduleCard> {
                 width: 20,
                 height: 20,
               ),
-              SizedBox(width: 4),
-              Text(
+              const SizedBox(width: 4),
+              const Text(
                 'Tunisia',
                 style: CustomTextStyle.bodyRegular,
               ),
             ],
           ),
-          SizedBox(height: 3),
+          const SizedBox(height: 3),
           // direct messeage
           Row(
             children: [
@@ -97,7 +96,7 @@ class _BookedScheduleCardState extends State<BookedScheduleCard> {
                 size: 16,
                 color: Theme.of(context).primaryColor,
               ),
-              SizedBox(width: 4),
+              const SizedBox(width: 4),
               Text(
                 'Direct message',
                 style: CustomTextStyle.bodyRegular
@@ -162,7 +161,7 @@ class _BookedScheduleCardState extends State<BookedScheduleCard> {
   }
 
   _timeInfo() {
-    return Padding(
+    return const Padding(
         padding: EdgeInsets.symmetric(horizontal: 0),
         child: Row(
           children: [
@@ -214,8 +213,8 @@ class _BookedScheduleCardState extends State<BookedScheduleCard> {
               ],
             ),
             if (isRequestExpanded)
-              Padding(
-                padding: const EdgeInsets.only(left: 48, right: 8),
+              const Padding(
+                padding: EdgeInsets.only(left: 48, right: 8),
                 child: Text(
                   'I would like to learn about the history of the internet',
                 ),
@@ -234,7 +233,7 @@ Future<bool> showEditRequestDialog(BuildContext context) async {
       content: TextField(
         controller: textController,
         maxLines: 5,
-        decoration: InputDecoration(
+        decoration: const InputDecoration(
           hintText: 'Enter your request here',
           border: OutlineInputBorder(),
           contentPadding: EdgeInsets.symmetric(vertical: 8, horizontal: 8),

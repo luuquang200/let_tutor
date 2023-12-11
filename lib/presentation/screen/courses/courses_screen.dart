@@ -142,7 +142,7 @@ class _CoursesScreenState extends State<CoursesScreen> {
                   onTap: () {
                     Routes.navigateTo(context, Routes.courseDetail);
                   },
-                  child: CourseCard(),
+                  child: const CourseCard(),
                 );
               },
             ),
@@ -186,7 +186,7 @@ class _CoursesScreenState extends State<CoursesScreen> {
               itemBuilder: (context, index) {
                 return GestureDetector(
                   onTap: () {},
-                  child: CourseCard(),
+                  child: const CourseCard(),
                 );
               },
             ),

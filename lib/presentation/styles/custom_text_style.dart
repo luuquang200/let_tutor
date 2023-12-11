@@ -36,4 +36,9 @@ class CustomTextStyle {
     fontWeight: FontWeight.bold,
     color: Colors.black,
   );
+
+  static const TextStyle initialNameOfTutor = TextStyle(
+    fontSize: 32,
+    fontWeight: FontWeight.bold,
+  );
 }

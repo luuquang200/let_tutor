@@ -7,14 +7,14 @@ import 'package:let_tutor/presentation/widgets/icon_text_button.dart';
 import 'package:let_tutor/presentation/widgets/specialities.dart';
 import 'package:let_tutor/routes.dart';
 
-class TutorDetail extends StatefulWidget {
-  const TutorDetail({Key? key}) : super(key: key);
+class TutorDetailPage extends StatefulWidget {
+  const TutorDetailPage({Key? key}) : super(key: key);
 
   @override
-  State<TutorDetail> createState() => _TutorDetailState();
+  State<TutorDetailPage> createState() => _TutorDetailPageState();
 }
 
-class _TutorDetailState extends State<TutorDetail> {
+class _TutorDetailPageState extends State<TutorDetailPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -38,33 +38,7 @@ class _TutorDetailState extends State<TutorDetail> {
             ),
 
             // Buttons: Favorite, Report and Review
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-              children: [
-                IconTextButton(
-                  icon: Icons.favorite_outline,
-                  text: 'Favorite',
-                  color: Theme.of(context).primaryColor,
-                  onTap: () {},
-                ),
-                IconTextButton(
-                  icon: Icons.report_outlined,
-                  text: 'Report',
-                  color: Theme.of(context).primaryColor,
-                  onTap: () {
-                    _showReportDialog();
-                  },
-                ),
-                IconTextButton(
-                  icon: Icons.rate_review_outlined,
-                  text: 'Review',
-                  color: Theme.of(context).primaryColor,
-                  onTap: () {
-                    Navigator.pushNamed(context, Routes.tutorReviewScreen);
-                  },
-                ),
-              ],
-            ),
+            _actionButtonsRow(context),
 
             // Introduction Video
             const SizedBox(
@@ -108,7 +82,7 @@ class _TutorDetailState extends State<TutorDetail> {
             const SizedBox(
               height: 8,
             ),
-            Specialities(),
+            const Specialities(),
 
             //Suggested courses
             const SizedBox(
@@ -151,6 +125,36 @@ class _TutorDetailState extends State<TutorDetail> {
           ],
         ),
       ),
+    );
+  }
+
+  Row _actionButtonsRow(BuildContext context) {
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+      children: [
+        IconTextButton(
+          icon: Icons.favorite_outline,
+          text: 'Favorite',
+          color: Theme.of(context).primaryColor,
+          onTap: () {},
+        ),
+        IconTextButton(
+          icon: Icons.report_outlined,
+          text: 'Report',
+          color: Theme.of(context).primaryColor,
+          onTap: () {
+            _showReportDialog();
+          },
+        ),
+        IconTextButton(
+          icon: Icons.rate_review_outlined,
+          text: 'Review',
+          color: Theme.of(context).primaryColor,
+          onTap: () {
+            Navigator.pushNamed(context, Routes.tutorReviewScreen);
+          },
+        ),
+      ],
     );
   }
 
@@ -207,11 +211,11 @@ class _TutorDetailState extends State<TutorDetail> {
         context: context,
         builder: (context) => SingleChildScrollView(
               child: AlertDialog(
-                title: Row(
+                title: const Row(
                   children: [
-                    const Icon(Icons.warning),
-                    const SizedBox(width: 8),
-                    const Text('Report Tutor'),
+                    Icon(Icons.warning),
+                    SizedBox(width: 8),
+                    Text('Report Tutor'),
                   ],
                 ),
                 content: SingleChildScrollView(
@@ -258,7 +262,7 @@ class _TutorDetailState extends State<TutorDetail> {
                     const SizedBox(height: 8),
                     TextField(
                       controller: textController,
-                      decoration: InputDecoration(
+                      decoration: const InputDecoration(
                         hintText: 'Enter your report here',
                         border: OutlineInputBorder(),
                       ),
@@ -297,7 +301,7 @@ class _TutorDetailState extends State<TutorDetail> {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             // Name
-            Text("Adelia Rice", style: CustomTextStyle.headlineLarge),
+            const Text("Adelia Rice", style: CustomTextStyle.headlineLarge),
             Row(
               children: [
                 SvgPicture.asset(
@@ -305,8 +309,8 @@ class _TutorDetailState extends State<TutorDetail> {
                   width: 20,
                   height: 20,
                 ),
-                SizedBox(width: 10),
-                Text(
+                const SizedBox(width: 10),
+                const Text(
                   'United States',
                   style: CustomTextStyle.bodyRegular,
                 ),

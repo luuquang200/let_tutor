@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:let_tutor/presentation/styles/custom_text_style.dart';
 
 class AccountScreen extends StatefulWidget {
   const AccountScreen({super.key});
@@ -58,7 +57,7 @@ class _AccountScreenState extends State<AccountScreen> {
         ),
         child: Stack(
           children: <Widget>[
-            CircleAvatar(
+            const CircleAvatar(
               radius: 98,
               backgroundImage: AssetImage('assets/account_avatar.jpeg'),
             ),
@@ -103,7 +102,7 @@ class _AccountScreenState extends State<AccountScreen> {
   }
 
   _name() {
-    return Text('Adelia Rice',
+    return const Text('Adelia Rice',
         style: TextStyle(fontSize: 28, fontWeight: FontWeight.bold));
   }
 
