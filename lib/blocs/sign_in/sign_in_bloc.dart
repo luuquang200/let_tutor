@@ -27,11 +27,10 @@ class SignInBloc extends Bloc<SignInEvent, SignInState> {
 
     emit(SignInLoading());
     try {
-      print('email: ${event.email}, password: ${event.password}');
       await authenticationRepository.signIn(event.email, event.password);
       emit(SignInSuccess());
-    } catch (_) {
-      emit(SignInFailure('Invalid email or password'));
+    } catch (e) {
+      emit(SignInFailure(e.toString()));
     }
   }
 
