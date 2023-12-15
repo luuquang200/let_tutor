@@ -8,7 +8,6 @@ import 'package:let_tutor/data/network/exceptions/dio_exception_handler.dart';
 class AuthenticationApiClient {
   // sign in
   Future<LoginResponse> signIn(String email, String password) async {
-    log('call api: $email, password: $password');
     try {
       final response = await DioClient.instance.post(
         Endpoints.login,
@@ -17,8 +16,9 @@ class AuthenticationApiClient {
           'password': password,
         },
       );
-      log('response: $response');
-      return LoginResponse.fromJson(response);
+      LoginResponse loginResponse = LoginResponse.fromJson(response);
+      return loginResponse;
+      // return LoginResponse.fromJson(response);
     } on DioException catch (e) {
       throw DioExceptionHandler.fromDioError(e);
     }

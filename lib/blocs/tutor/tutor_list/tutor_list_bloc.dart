@@ -27,6 +27,7 @@ class TutorListBloc extends Bloc<TutorListEvent, TutorListState> {
 
       emit(TutorListSuccess(tutors, filters));
     } catch (error) {
+      log('error from tutor list bloc: $error');
       emit(TutorListFailure(error.toString()));
     }
   }

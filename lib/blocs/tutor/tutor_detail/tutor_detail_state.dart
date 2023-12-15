@@ -1,5 +1,5 @@
 import 'package:equatable/equatable.dart';
-import 'package:let_tutor/data/models/tutor.dart';
+import 'package:let_tutor/data/models/tutors/tutor.dart';
 
 abstract class TutorDetailState extends Equatable {}
 

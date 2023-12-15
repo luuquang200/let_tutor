@@ -2,10 +2,13 @@ import 'dart:convert';
 import 'dart:developer';
 
 import 'package:flutter/services.dart';
-import 'package:let_tutor/data/models/tutor.dart';
-import 'package:let_tutor/data/models/tutor_schedule.dart';
+import 'package:let_tutor/data/models/tutors/tutor.dart';
+import 'package:let_tutor/data/models/tutors/tutor_schedule.dart';
+import 'package:let_tutor/data/models/tutors/tutor_search_result.dart';
+import 'package:let_tutor/data/network/apis/tutor_api_client.dart';
 
 class TutorRepository {
+  final tutorApiClient = TutorApiClient();
   List<Tutor> tutors = [
     Tutor(
       id: '1',
@@ -83,7 +86,8 @@ class TutorRepository {
   ];
 
   Future<List<Tutor>> getTutors() async {
-    await Future.delayed(const Duration(seconds: 1));
+    TutorSearchResult result = await tutorApiClient.searchTutor({}, 1, 12);
+    List<Tutor> tutors = result.rows;
     return tutors;
   }
 

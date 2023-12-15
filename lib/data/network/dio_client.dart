@@ -1,9 +1,12 @@
 import 'dart:developer';
 
 import 'package:dio/dio.dart';
+import 'package:let_tutor/data/network/interceptors/dio_interceptor.dart';
 
 class DioClient {
-  DioClient._();
+  DioClient._() {
+    _dio.interceptors.add(DioInterceptor(_dio));
+  }
 
   static final instance = DioClient._();
   static const baseUrl = 'https://sandbox.api.lettutor.com';
@@ -57,10 +60,12 @@ class DioClient {
         onReceiveProgress: onReceiveProgress,
       );
       if (response.statusCode == 200 || response.statusCode == 201) {
+        log('call success !');
         return response.data;
       }
       throw "something went wrong";
     } catch (e) {
+      log('error: $e');
       rethrow;
     }
   }

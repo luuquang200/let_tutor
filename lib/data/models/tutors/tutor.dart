@@ -11,6 +11,10 @@ class Tutor {
   double? rating;
   bool? isFavorite;
   String? video;
+  String? isNative;
+  String? userId;
+  String? schedulesTimes;
+  String? price;
 
   Tutor(
       {this.id,
@@ -24,6 +28,10 @@ class Tutor {
       this.rating,
       this.bio,
       this.video,
+      this.isNative,
+      this.userId,
+      this.schedulesTimes,
+      this.price,
       this.isFavorite});
 
   Tutor copyWith({
@@ -39,6 +47,10 @@ class Tutor {
     String? bio,
     String? video,
     bool? isFavorite,
+    String? isNative,
+    String? userId,
+    String? schedulesTimes,
+    String? price,
   }) {
     return Tutor(
       id: id ?? this.id,
@@ -53,6 +65,27 @@ class Tutor {
       bio: bio ?? this.bio,
       video: video ?? this.video,
       isFavorite: isFavorite ?? this.isFavorite,
+      isNative: isNative ?? this.isNative,
+      userId: userId ?? this.userId,
+      schedulesTimes: schedulesTimes ?? this.schedulesTimes,
+      price: price ?? this.price,
+    );
+  }
+
+  factory Tutor.fromJson(Map<String, dynamic> json) {
+    return Tutor(
+      id: json['id'],
+      name: json['name'],
+      country: json['country'],
+      avatar: json['avatar'],
+      bio: json['bio'],
+      isNative: json['isNative'],
+      specialties: json['specialties'],
+      rating: json['rating'],
+      userId: json['userId'],
+      schedulesTimes: json['schedulesTimes'],
+      isFavorite: json['isFavoriteTutor'],
+      price: json['price'],
     );
   }
 }

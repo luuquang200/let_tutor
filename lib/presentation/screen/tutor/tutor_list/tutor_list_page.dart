@@ -11,7 +11,7 @@ import 'package:let_tutor/presentation/styles/custom_text_style.dart';
 import 'package:let_tutor/presentation/widgets/tutor_information_card.dart';
 import 'package:number_paginator/number_paginator.dart';
 
-import 'package:let_tutor/data/models/tutor.dart';
+import 'package:let_tutor/data/models/tutors/tutor.dart';
 
 class TutorListPage extends StatefulWidget {
   const TutorListPage({Key? key}) : super(key: key);

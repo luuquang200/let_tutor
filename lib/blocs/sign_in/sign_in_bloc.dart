@@ -61,8 +61,14 @@ class SignInBloc extends Bloc<SignInEvent, SignInState> {
       // Save the tokens for later use
       await saveTokens(accessToken, refreshToken);
 
+      // test get token
+      String? accessToken1 = await sharedPrefsHelper.accessToken;
+      String? refreshToken1 = await sharedPrefsHelper.refreshToken;
+      log('accessToken1: $accessToken1');
+      log('refreshToken1: $refreshToken1');
       emit(SignInSuccess());
     } catch (e) {
+      log('error from bloc: $e');
       emit(SignInFailure(e.toString()));
     }
   }

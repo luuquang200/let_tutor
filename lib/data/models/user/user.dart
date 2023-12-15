@@ -1,52 +1,60 @@
+import 'dart:developer';
+
 import 'package:let_tutor/data/models/user/learn_topic.dart';
 import 'package:let_tutor/data/models/user/wallet_info.dart';
 
 class User {
-  final String id;
-  final String email;
-  final String name;
-  final String avatar;
-  final String country;
-  final String phone;
-  final List<String> roles;
+  final String? id;
+  final String? email;
+  final String? name;
+  final String? avatar;
+  final String? country;
+  final String? phone;
+  final List<String>? roles;
   final String? language;
-  final String birthday;
-  final bool isActivated;
-  final WalletInfo walletInfo;
-  final List<dynamic> courses;
-  final String requireNote;
-  final String level;
-  final List<LearnTopic> learnTopics;
-  final List<dynamic> testPreparations;
-  final bool isPhoneActivated;
-  final int timezone;
-  final String studySchedule;
-  final bool canSendMessage;
+  final String? birthday;
+  final bool? isActivated;
+  final WalletInfo? walletInfo;
+  final List<dynamic>? courses;
+  final String? requireNote;
+  final String? level;
+  final List<LearnTopic>? learnTopics;
+  final List<dynamic>? testPreparations;
+  final bool? isPhoneActivated;
+  final int? timezone;
+  final String? studySchedule;
+  final bool? canSendMessage;
 
   User({
-    required this.id,
-    required this.email,
-    required this.name,
-    required this.avatar,
-    required this.country,
-    required this.phone,
-    required this.roles,
+    this.id,
+    this.email,
+    this.name,
+    this.avatar,
+    this.country,
+    this.phone,
+    this.roles,
     this.language,
-    required this.birthday,
-    required this.isActivated,
-    required this.walletInfo,
-    required this.courses,
-    required this.requireNote,
-    required this.level,
-    required this.learnTopics,
-    required this.testPreparations,
-    required this.isPhoneActivated,
-    required this.timezone,
-    required this.studySchedule,
-    required this.canSendMessage,
+    this.birthday,
+    this.isActivated,
+    this.walletInfo,
+    this.courses,
+    this.requireNote,
+    this.level,
+    this.learnTopics,
+    this.testPreparations,
+    this.isPhoneActivated,
+    this.timezone,
+    this.studySchedule,
+    this.canSendMessage,
   });
 
   factory User.fromJson(Map<String, dynamic> json) {
+    log('json from user: $json');
+    // xuất tất cả các key và value của json
+    json.forEach((key, value) {
+      log('key: $key, value: $value');
+    });
+
     return User(
       id: json['id'],
       email: json['email'],

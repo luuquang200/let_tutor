@@ -16,6 +16,10 @@ class SharedPreferenceHelper {
     return _sharedPreference.getString(Preferences.access_token);
   }
 
+  Future<String?> get refreshToken async {
+    return _sharedPreference.getString(Preferences.refresh_token);
+  }
+
   Future<bool> saveAcessToken(String accessToken) async {
     return _sharedPreference.setString(Preferences.access_token, accessToken);
   }

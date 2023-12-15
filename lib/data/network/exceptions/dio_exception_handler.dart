@@ -5,7 +5,7 @@ class DioExceptionHandler implements Exception {
   late String errorMessage;
 
   DioExceptionHandler.fromDioError(DioException dioError) {
-    log('type:${dioError.type}');
+    log('Error type: ${dioError.type}');
     switch (dioError.type) {
       case DioExceptionType.cancel:
         errorMessage = "Request to the server was cancelled.";
@@ -35,7 +35,7 @@ class DioExceptionHandler implements Exception {
     }
   }
   String _handleStatusCode(int? statusCode) {
-    log('status code: $statusCode');
+    log('Status code: $statusCode');
     switch (statusCode) {
       case 400:
         return 'Incorrect email or password';

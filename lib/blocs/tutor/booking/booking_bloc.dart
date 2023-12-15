@@ -3,7 +3,7 @@ import 'dart:developer';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:let_tutor/blocs/tutor/booking/booking_event.dart';
 import 'package:let_tutor/blocs/tutor/booking/booking_state.dart';
-import 'package:let_tutor/data/models/tutor_schedule.dart';
+import 'package:let_tutor/data/models/tutors/tutor_schedule.dart';
 import 'package:let_tutor/data/repositories/tutor_repository.dart';
 
 class BookingBloc extends Bloc<BookingEvent, BookingState> {

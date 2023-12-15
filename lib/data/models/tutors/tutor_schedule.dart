@@ -1,6 +1,6 @@
 import 'dart:developer';
 
-import 'package:let_tutor/data/models/schedule_detail.dart';
+import 'package:let_tutor/data/models/tutors/schedule_detail.dart';
 
 class TutorSchedule {
   final String id;
