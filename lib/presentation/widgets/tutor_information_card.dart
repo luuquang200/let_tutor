@@ -98,15 +98,44 @@ class TutorInformationCard extends StatelessWidget {
                   Row(
                     children: [
                       // flag
-                      SvgPicture.network(
-                        AppConfig.getFlagUrl(tutor.country ?? ''),
-                        width: 20,
-                        height: 20,
-                        placeholderBuilder: (BuildContext context) => Container(
-                          padding: const EdgeInsets.all(30.0),
-                          child: const CircularProgressIndicator(),
-                        ),
-                      ),
+                      // SvgPicture.network(
+                      //   AppConfig.getFlagUrl(tutor.country ?? ''),
+                      //   width: 20,
+                      //   height: 20,
+                      //   placeholderBuilder: (BuildContext context) => Container(
+                      //     padding: const EdgeInsets.all(30.0),
+                      //     child: const CircularProgressIndicator(),
+                      //   ),
+                      // ),
+                      // FutureBuilder<String>(
+                      //   future: AppConfig.getFlagUrl(tutor.country ?? ''),
+                      //   builder: (BuildContext context,
+                      //       AsyncSnapshot<String> snapshot) {
+                      //     if (snapshot.connectionState ==
+                      //         ConnectionState.waiting) {
+                      //       return Container(
+                      //         padding: const EdgeInsets.all(30.0),
+                      //         child: const CircularProgressIndicator(),
+                      //       );
+                      //     } else {
+                      //       if (snapshot.hasError) {
+                      //         // Return an error image or some kind of fallback
+                      //         return Icon(Icons.error);
+                      //       } else {
+                      //         return SvgPicture.network(
+                      //           snapshot.data!,
+                      //           width: 20,
+                      //           height: 20,
+                      //           placeholderBuilder: (BuildContext context) =>
+                      //               Container(
+                      //             padding: const EdgeInsets.all(30.0),
+                      //             child: const CircularProgressIndicator(),
+                      //           ),
+                      //         );
+                      //       }
+                      //     }
+                      //   },
+                      // ),
 
                       const SizedBox(width: 10),
                       Text(

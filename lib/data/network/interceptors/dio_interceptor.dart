@@ -1,6 +1,7 @@
 import 'dart:developer';
 
 import 'package:dio/dio.dart';
+import 'package:let_tutor/data/network/exceptions/dio_exception_handler.dart';
 import 'package:let_tutor/data/sharedpref/shared_preference_helper.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -40,6 +41,9 @@ class DioInterceptor extends Interceptor {
   void onError(DioException err, ErrorInterceptorHandler handler) {
     // Log the error
     log('Request error: ${err.message}');
+    throw DioExceptionHandler.fromDioError(err);
+
+    // super.onError(err, handler);
   }
 
   Future<void> initSharedPrefsHelper() async {

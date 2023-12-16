@@ -14,7 +14,7 @@ class Tutor {
   String? isNative;
   String? userId;
   String? schedulesTimes;
-  String? price;
+  int? price;
 
   Tutor(
       {this.id,
@@ -50,7 +50,7 @@ class Tutor {
     String? isNative,
     String? userId,
     String? schedulesTimes,
-    String? price,
+    int? price,
   }) {
     return Tutor(
       id: id ?? this.id,

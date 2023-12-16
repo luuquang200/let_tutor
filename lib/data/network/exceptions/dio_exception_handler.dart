@@ -6,6 +6,9 @@ class DioExceptionHandler implements Exception {
 
   DioExceptionHandler.fromDioError(DioException dioError) {
     log('Error type: ${dioError.type}');
+    log('Error message: ${dioError.message}');
+    log('Response data: ${dioError.response?.data}');
+
     switch (dioError.type) {
       case DioExceptionType.cancel:
         errorMessage = "Request to the server was cancelled.";

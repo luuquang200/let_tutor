@@ -20,7 +20,7 @@ class TutorApiClient {
     } on DioException catch (e) {
       throw DioExceptionHandler.fromDioError(e);
     } catch (e) {
-      log('error from handle search tutor api: $e');
+      log('error handling from search tutor api: $e');
       rethrow;
     }
   }

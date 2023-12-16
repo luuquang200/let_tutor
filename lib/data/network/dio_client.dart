@@ -1,6 +1,7 @@
 import 'dart:developer';
 
 import 'package:dio/dio.dart';
+import 'package:let_tutor/data/network/exceptions/dio_exception_handler.dart';
 import 'package:let_tutor/data/network/interceptors/dio_interceptor.dart';
 
 class DioClient {
@@ -54,7 +55,18 @@ class DioClient {
         path,
         data: data,
         queryParameters: queryParameters,
-        options: options,
+        options: options?.copyWith(
+              followRedirects: false,
+              validateStatus: (status) {
+                return status != null ? status < 500 : false;
+              },
+            ) ??
+            Options(
+              followRedirects: false,
+              validateStatus: (status) {
+                return status != null ? status < 500 : false;
+              },
+            ),
         cancelToken: cancelToken,
         onSendProgress: onSendProgress,
         onReceiveProgress: onReceiveProgress,
@@ -63,8 +75,11 @@ class DioClient {
         log('call success !');
         return response.data;
       }
-      throw "something went wrong";
-    } catch (e) {
+      throw response.data['message'];
+    }
+    // on DioException catch (e) {
+    //   throw DioExceptionHandler.fromDioError(e);
+    catch (e) {
       log('error: $e');
       rethrow;
     }
@@ -121,4 +136,6 @@ class DioClient {
       rethrow;
     }
   }
+
+  determineErrorType(int? statusCode) {}
 }

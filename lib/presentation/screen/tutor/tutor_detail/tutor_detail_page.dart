@@ -479,11 +479,12 @@ class _TutorDetailPageState extends State<TutorDetailPage> {
             Row(
               children: [
                 // flag
-                SvgPicture.network(
-                  AppConfig.getFlagUrl(tutor.country ?? ''),
-                  width: 20,
-                  height: 20,
-                ),
+                // SvgPicture.network(
+                //   AppConfig.getFlagUrl(tutor.country ?? ''),
+                //   width: 20,
+                //   height: 20,
+                // ),
+
                 const SizedBox(width: 10),
                 Text(
                   _getNameCountry(tutor.country ?? ''),
