@@ -5,6 +5,7 @@ import 'package:let_tutor/configs/app_config.dart';
 import 'package:let_tutor/data/models/country.dart';
 import 'package:let_tutor/data/models/tutors/tutor.dart';
 import 'package:let_tutor/presentation/styles/custom_text_style.dart';
+import 'package:let_tutor/presentation/widgets/flag.dart';
 import 'package:let_tutor/presentation/widgets/star_rating.dart';
 import 'package:let_tutor/presentation/widgets/tutor_avatar.dart';
 import 'package:let_tutor/routes.dart';
@@ -65,45 +66,7 @@ class TutorInformationCard extends StatelessWidget {
                   Row(
                     children: [
                       // flag
-                      // SvgPicture.network(
-                      //   AppConfig.getFlagUrl(tutor.country ?? ''),
-                      //   width: 20,
-                      //   height: 20,
-                      //   placeholderBuilder: (BuildContext context) => Container(
-                      //     padding: const EdgeInsets.all(30.0),
-                      //     child: const CircularProgressIndicator(),
-                      //   ),
-                      // ),
-                      // FutureBuilder<String>(
-                      //   future: AppConfig.getFlagUrl(tutor.country ?? ''),
-                      //   builder: (BuildContext context,
-                      //       AsyncSnapshot<String> snapshot) {
-                      //     if (snapshot.connectionState ==
-                      //         ConnectionState.waiting) {
-                      //       return Container(
-                      //         padding: const EdgeInsets.all(30.0),
-                      //         child: const CircularProgressIndicator(),
-                      //       );
-                      //     } else {
-                      //       if (snapshot.hasError) {
-                      //         // Return an error image or some kind of fallback
-                      //         return Icon(Icons.error);
-                      //       } else {
-                      //         return SvgPicture.network(
-                      //           snapshot.data!,
-                      //           width: 20,
-                      //           height: 20,
-                      //           placeholderBuilder: (BuildContext context) =>
-                      //               Container(
-                      //             padding: const EdgeInsets.all(30.0),
-                      //             child: const CircularProgressIndicator(),
-                      //           ),
-                      //         );
-                      //       }
-                      //     }
-                      //   },
-                      // ),
-
+                      Flag(flagCode: tutor.country ?? ''),
                       const SizedBox(width: 10),
                       Text(
                         _getNameCountry(tutor.country ?? ''),
@@ -141,10 +104,10 @@ class TutorInformationCard extends StatelessWidget {
     );
   }
 
-  String _getNameCountry(String code) {
+  String _getNameCountry(String codeOrName) {
     final country = AppConfig.countries.firstWhere(
-        (country) => country.code == code,
-        orElse: () => Country(name: 'Unknown', code: 'Unknown'));
+        (country) => country.code == codeOrName || country.name == codeOrName,
+        orElse: () => Country(name: '', code: ''));
     return country.name;
   }
 

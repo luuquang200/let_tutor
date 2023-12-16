@@ -17,7 +17,6 @@ class AppConfig {
   }
 
   // get flag url from country code
-  // get flag url from country code
   static Future<String> getFlagUrl(String code) async {
     Country country = _countries.firstWhere(
       (country) => country.code == code,
@@ -26,11 +25,6 @@ class AppConfig {
         orElse: () => Country(name: 'Unknown', code: 'Unknown'),
       ),
     );
-
-    // If the input code is equal to the country name, swap them
-    if (country.name == code) {
-      return 'https://cdnjs.cloudflare.com/ajax/libs/flag-icon-css/3.4.3/flags/4x3/${country.code.toLowerCase()}.svg';
-    }
 
     if (country.code == 'Unknown') {
       return 'https://cdnjs.cloudflare.com/ajax/libs/flag-icon-css/3.4.3/flags/4x3/saint martin.svg';
