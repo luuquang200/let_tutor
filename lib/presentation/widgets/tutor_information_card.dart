@@ -6,6 +6,7 @@ import 'package:let_tutor/data/models/country.dart';
 import 'package:let_tutor/data/models/tutors/tutor.dart';
 import 'package:let_tutor/presentation/styles/custom_text_style.dart';
 import 'package:let_tutor/presentation/widgets/star_rating.dart';
+import 'package:let_tutor/presentation/widgets/tutor_avatar.dart';
 import 'package:let_tutor/routes.dart';
 
 class TutorInformationCard extends StatelessWidget {
@@ -48,41 +49,7 @@ class TutorInformationCard extends StatelessWidget {
         children: [
           Row(
             children: [
-              // Avatar
-              // CircleAvatar(
-              //   radius: 44,
-              //   backgroundImage:
-              //       tutor.avatar != null ? NetworkImage(tutor.avatar!) : null,
-              //   child: tutor.avatar != null
-              //       ? null
-              //       : Text(getInitials(tutor.name!)),
-              //   onBackgroundImageError: (exception, stackTrace) => Text(
-              //     getInitials(tutor.name!),
-              //     style: CustomTextStyle.headlineMedium,
-              //   ),
-              // ),
-              CircleAvatar(
-                radius: 44,
-                child: tutor.avatar != null
-                    ? CachedNetworkImage(
-                        imageUrl: tutor.avatar!,
-                        imageBuilder: (context, imageProvider) => Container(
-                          decoration: BoxDecoration(
-                            shape: BoxShape.circle,
-                            image: DecorationImage(
-                              image: imageProvider,
-                              fit: BoxFit.cover,
-                            ),
-                          ),
-                        ),
-                        placeholder: (context, url) =>
-                            const CircularProgressIndicator(),
-                        errorWidget: (context, url, error) => Text(
-                            getInitials(tutor.name!),
-                            style: CustomTextStyle.initialNameOfTutor),
-                      )
-                    : Text(getInitials(tutor.name!)),
-              ),
+              TutorAvatar(imageUrl: tutor.avatar!, tutorName: tutor.name!),
               const SizedBox(
                 width: 18,
               ),

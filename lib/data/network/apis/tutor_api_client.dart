@@ -15,7 +15,6 @@ class TutorApiClient {
         Endpoints.searchTutor,
         data: {'filters': filters, 'page': page, 'perPage': perPage},
       );
-      log('response from search tutor api: $response');
       return TutorSearchResult.fromJson(response);
     } on DioException catch (e) {
       throw DioExceptionHandler.fromDioError(e);
