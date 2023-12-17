@@ -15,7 +15,7 @@ class Flag extends StatelessWidget {
     return FutureBuilder<String?>(
       future: getCheckedFlagUrl(flagCode),
       builder: (BuildContext context, AsyncSnapshot<String?> snapshot) {
-        log('flagUrl:$flagCode');
+        // log('flagCode: $flagCode');
         if (snapshot.connectionState == ConnectionState.waiting) {
           return Container(
             padding: const EdgeInsets.all(30.0),
@@ -60,7 +60,7 @@ class Flag extends StatelessWidget {
 
   Future<String?> getCheckedFlagUrl(String flagCode) async {
     String url = await AppConfig.getFlagUrl(flagCode);
-    log('url: $url');
+    // log('url: $url');
     return checkUrl(url);
   }
 }

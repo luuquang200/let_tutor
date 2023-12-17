@@ -2,6 +2,8 @@ import 'dart:convert';
 import 'dart:developer';
 
 import 'package:flutter/services.dart';
+import 'package:let_tutor/data/models/tutors/learn_topic.dart';
+import 'package:let_tutor/data/models/tutors/test_preparation.dart';
 import 'package:let_tutor/data/models/tutors/tutor.dart';
 import 'package:let_tutor/data/models/tutors/tutor_schedule.dart';
 import 'package:let_tutor/data/models/tutors/tutor_search_result.dart';
@@ -87,6 +89,28 @@ class TutorRepository {
 
   Future<List<Tutor>> getTutors() async {
     TutorSearchResult result = await tutorApiClient.searchTutor({}, 1, 12);
+    List<Tutor> tutors = result.rows;
+    return tutors;
+  }
+
+  // get learn topic
+  Future<List<LearnTopic>> getLearnTopic() async {
+    List<LearnTopic> learnTopics = await tutorApiClient.getLearnTopic();
+    return learnTopics;
+  }
+
+  // get test preparation
+  Future<List<TestPreparation>> getTestPreparation() async {
+    List<TestPreparation> testPreparations =
+        await tutorApiClient.getTestPreparation();
+    return testPreparations;
+  }
+
+  // search tutor
+  Future<List<Tutor>> searchTutor(
+      Map<String, dynamic> filters, int page, int perPage) async {
+    TutorSearchResult result =
+        await tutorApiClient.searchTutor(filters, page, perPage);
     List<Tutor> tutors = result.rows;
     return tutors;
   }

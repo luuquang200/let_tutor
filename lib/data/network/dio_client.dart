@@ -19,7 +19,7 @@ class DioClient {
       responseType: ResponseType.json));
 
   ///Get Method
-  Future<Map<String, dynamic>> get(String path,
+  Future<dynamic> get(String path,
       {Map<String, dynamic>? queryParameters,
       Options? options,
       CancelToken? cancelToken,
@@ -33,10 +33,15 @@ class DioClient {
         onReceiveProgress: onReceiveProgress,
       );
       if (response.statusCode == 200) {
-        return response.data;
+        if (response.data is Map<String, dynamic>) {
+          return response.data;
+        } else if (response.data is List) {
+          return response.data.map((e) => e as Map<String, dynamic>).toList();
+        }
       }
       throw "something went wrong";
     } catch (e) {
+      log('error from dio client: $e');
       rethrow;
     }
   }

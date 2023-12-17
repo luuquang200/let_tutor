@@ -2,6 +2,8 @@ import 'dart:developer';
 
 import 'package:dio/dio.dart';
 import 'package:let_tutor/constants/endpoints.dart';
+import 'package:let_tutor/data/models/tutors/learn_topic.dart';
+import 'package:let_tutor/data/models/tutors/test_preparation.dart';
 import 'package:let_tutor/data/models/tutors/tutor_search_result.dart';
 import 'package:let_tutor/data/network/dio_client.dart';
 import 'package:let_tutor/data/network/exceptions/dio_exception_handler.dart';
@@ -20,6 +22,40 @@ class TutorApiClient {
       throw DioExceptionHandler.fromDioError(e);
     } catch (e) {
       log('error handling from search tutor api: $e');
+      rethrow;
+    }
+  }
+
+  // get learn topic
+  Future<List<LearnTopic>> getLearnTopic() async {
+    log('calling get learn topic api');
+    try {
+      final response = await DioClient.instance.get(Endpoints.getLearnTopic);
+      return (response as List)
+          .map((e) => LearnTopic.fromJson(e))
+          .toList(growable: false);
+    } on DioException catch (e) {
+      throw DioExceptionHandler.fromDioError(e);
+    } catch (e) {
+      log('error handling from get learn topic api:');
+      log('$e');
+      rethrow;
+    }
+  }
+
+  // get test preparation
+  Future<List<TestPreparation>> getTestPreparation() async {
+    log('calling get test preparation api');
+    try {
+      final response =
+          await DioClient.instance.get(Endpoints.getTestPreparation);
+      return (response as List)
+          .map((e) => TestPreparation.fromJson(e))
+          .toList(growable: false);
+    } on DioException catch (e) {
+      throw DioExceptionHandler.fromDioError(e);
+    } catch (e) {
+      log('error handling from get test preparation api: $e');
       rethrow;
     }
   }

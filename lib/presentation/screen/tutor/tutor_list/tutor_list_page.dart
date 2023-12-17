@@ -6,6 +6,8 @@ import 'package:let_tutor/blocs/tutor/tutor_list/tutor_list_bloc.dart';
 import 'package:let_tutor/blocs/tutor/tutor_list/tutor_list_event.dart';
 import 'package:let_tutor/blocs/tutor/tutor_list/tutor_list_state.dart';
 import 'package:intl/intl.dart';
+import 'package:let_tutor/data/models/tutors/learn_topic.dart';
+import 'package:let_tutor/data/models/tutors/test_preparation.dart';
 
 import 'package:let_tutor/presentation/styles/custom_text_style.dart';
 import 'package:let_tutor/presentation/widgets/tutor_information_card.dart';
@@ -21,20 +23,6 @@ class TutorListPage extends StatefulWidget {
 }
 
 class TutorListPageState extends State<TutorListPage> {
-  // final specialities = [
-  //   'All',
-  //   'English for kids',
-  //   'English for Business',
-  //   'Conversational',
-  //   'STARTERS',
-  //   'MOVERS',
-  //   'FLYERS',
-  //   'KET',
-  //   'PET',
-  //   'IELTS',
-  //   'TOEFL',
-  //   'TOEIC'
-  // ];
   final specialities =
       "business-english,conversational-english,english-for-kids,ielts,starters,movers,flyers,ket,pet,toefl,toeic"
           .split(',');
@@ -457,15 +445,105 @@ class TutorListPageState extends State<TutorListPage> {
         const SizedBox(height: 16),
         const Text('Select speciality:', style: CustomTextStyle.headlineMedium),
         const SizedBox(height: 8),
-        Padding(
-          padding: const EdgeInsets.symmetric(vertical: 8),
-          child: _specialitiesChips(context),
+        const Padding(
+          padding: EdgeInsets.symmetric(vertical: 8),
+          child: _SpecialitiesChips(),
         ),
         Padding(
           padding: const EdgeInsets.symmetric(vertical: 8),
           child: _buttonResetFilter(),
         ),
       ],
+    );
+  }
+}
+
+class _SpecialitiesChips extends StatelessWidget {
+  const _SpecialitiesChips({Key? key}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return BlocBuilder<TutorListBloc, TutorListState>(
+      builder: (context, state) {
+        if (state is TutorListSuccess) {
+          // log('learnTopics: ${state.learnTopics.length}');
+          // log('testPreparations: ${state.testPreparations.length}');
+          // return const Text('test!');
+          log('filters: ${state.filters['specialties']}');
+          return Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Wrap(
+                spacing: 8,
+                runSpacing: 5,
+                children: List<Widget>.generate(
+                  state.learnTopics.length,
+                  (index) => ChoiceChip(
+                    label: Text(
+                      state.learnTopics[index].name ?? '',
+                      style: TextStyle(
+                        color: (state.filters['specialties'] as List<String>?)
+                                    ?.contains(state.learnTopics[index].key) ??
+                                false
+                            ? Theme.of(context).primaryColor
+                            : Colors.black54,
+                      ),
+                    ),
+                    checkmarkColor: Theme.of(context).primaryColor,
+                    backgroundColor: const Color(0xFFE4E6EB),
+                    selectedColor: const Color(0xFFDDEAFF),
+                    selected: (state.filters['specialties'] as List<String>?)
+                            ?.contains(state.learnTopics[index].key) ??
+                        false,
+                    onSelected: (bool selected) {
+                      context.read<TutorListBloc>().add(
+                            FilterTutorsBySpeciality(
+                                state.learnTopics[index].key ?? ''),
+                          );
+                    },
+                    side: BorderSide.none,
+                  ),
+                ),
+              ),
+              const SizedBox(height: 8),
+              Wrap(
+                spacing: 8,
+                runSpacing: 5,
+                children: List<Widget>.generate(
+                  state.testPreparations.length,
+                  (index) => ChoiceChip(
+                    label: Text(
+                      state.testPreparations[index].name ?? '',
+                      style: TextStyle(
+                        color: (state.filters['specialties'] as List<String>?)
+                                    ?.contains(
+                                        state.testPreparations[index].key) ??
+                                false
+                            ? Theme.of(context).primaryColor
+                            : Colors.black54,
+                      ),
+                    ),
+                    checkmarkColor: Theme.of(context).primaryColor,
+                    backgroundColor: const Color(0xFFE4E6EB),
+                    selectedColor: const Color(0xFFDDEAFF),
+                    selected: (state.filters['specialties'] as List<String>?)
+                            ?.contains(state.testPreparations[index].key) ??
+                        false,
+                    onSelected: (bool selected) {
+                      context.read<TutorListBloc>().add(
+                            FilterTutorsBySpeciality(
+                                state.testPreparations[index].key ?? ''),
+                          );
+                    },
+                    side: BorderSide.none,
+                  ),
+                ),
+              ),
+            ],
+          );
+        }
+        return Container();
+      },
     );
   }
 }

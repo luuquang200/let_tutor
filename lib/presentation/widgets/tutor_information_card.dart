@@ -1,6 +1,4 @@
-import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_svg/svg.dart';
 import 'package:let_tutor/configs/app_config.dart';
 import 'package:let_tutor/data/models/country.dart';
 import 'package:let_tutor/data/models/tutors/tutor.dart';
@@ -181,7 +179,7 @@ String getInitials(String name) {
   }
 
   for (var i = 0; i < numWords; i++) {
-    initials += '${names[i][0]}';
+    initials += names[i][0];
   }
 
   return initials;

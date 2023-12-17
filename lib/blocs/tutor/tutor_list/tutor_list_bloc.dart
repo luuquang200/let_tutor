@@ -4,12 +4,14 @@ import 'dart:developer';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:let_tutor/blocs/tutor/tutor_list/tutor_list_event.dart';
 import 'package:let_tutor/blocs/tutor/tutor_list/tutor_list_state.dart';
+import 'package:let_tutor/data/models/tutors/learn_topic.dart';
+import 'package:let_tutor/data/models/tutors/test_preparation.dart';
 import 'package:let_tutor/data/repositories/tutor_repository.dart';
 
 class TutorListBloc extends Bloc<TutorListEvent, TutorListState> {
   final TutorRepository tutorRepository;
   final page = 1;
-  final tutorPerPage = 10;
+  final tutorPerPage = 12;
 
   TutorListBloc({required this.tutorRepository}) : super(TutorListInitial()) {
     on<TutorListRequested>(_onTutorListRequested);
@@ -23,9 +25,13 @@ class TutorListBloc extends Bloc<TutorListEvent, TutorListState> {
     emit(TutorListLoading());
     try {
       final tutors = await tutorRepository.getTutors();
+      List<LearnTopic> learnTopics = await tutorRepository.getLearnTopic();
+      List<TestPreparation> testPreparations =
+          await tutorRepository.getTestPreparation();
+
       final Map<String, dynamic> filters = {}; // Initialize with no filters
 
-      emit(TutorListSuccess(tutors, filters));
+      emit(TutorListSuccess(tutors, filters, learnTopics, testPreparations));
     } catch (error) {
       log('error from tutor list bloc: $error');
       emit(TutorListFailure(error.toString()));
@@ -38,14 +44,19 @@ class TutorListBloc extends Bloc<TutorListEvent, TutorListState> {
     emit(TutorListLoading());
     try {
       if (currentState is TutorListSuccess) {
+        log(' event.speciality: ${event.speciality}');
+
         final filters = Map<String, dynamic>.from(currentState.filters);
-        filters['speciality'] =
-            event.speciality; // Update filters with new speciality filter
+        filters['specialties'] = [
+          event.speciality
+        ]; // Update filters with new speciality filter
+        log('filters - bloc: $filters');
 
         final filteredTutors =
-            await tutorRepository.filterTutors(filters, page, tutorPerPage);
+            await tutorRepository.searchTutor(filters, page, tutorPerPage);
 
-        emit(TutorListSuccess(filteredTutors, filters));
+        emit(TutorListSuccess(filteredTutors, filters, currentState.learnTopics,
+            currentState.testPreparations));
       }
     } catch (error) {
       emit(TutorListFailure(error.toString()));
@@ -64,7 +75,8 @@ class TutorListBloc extends Bloc<TutorListEvent, TutorListState> {
         final filteredTutors =
             await tutorRepository.filterTutors(filters, page, tutorPerPage);
 
-        emit(TutorListSuccess(filteredTutors, filters));
+        emit(TutorListSuccess(filteredTutors, filters, currentState.learnTopics,
+            currentState.testPreparations));
       }
     } catch (error) {
       emit(TutorListFailure(error.toString()));
@@ -84,7 +96,8 @@ class TutorListBloc extends Bloc<TutorListEvent, TutorListState> {
         final filteredTutors =
             await tutorRepository.filterTutors(filters, page, tutorPerPage);
 
-        emit(TutorListSuccess(filteredTutors, filters));
+        emit(TutorListSuccess(filteredTutors, filters, currentState.learnTopics,
+            currentState.testPreparations));
       }
     } catch (error) {
       emit(TutorListFailure(error.toString()));

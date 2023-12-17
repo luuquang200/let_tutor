@@ -64,8 +64,6 @@ class TutorAvatar extends StatelessWidget {
     for (var i = 0; i < numWords; i++) {
       initials += names[i][0];
     }
-
-    log('initials: $initials');
     return initials;
   }
 
