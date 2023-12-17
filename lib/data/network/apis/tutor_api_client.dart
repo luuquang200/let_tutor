@@ -10,12 +10,16 @@ import 'package:let_tutor/data/network/exceptions/dio_exception_handler.dart';
 
 class TutorApiClient {
   Future<TutorSearchResult> searchTutor(
-      Map<String, dynamic> filters, int page, int perPage) async {
+      Map<String, dynamic> filters, int page, int perPage, String? name) async {
     log('calling search tutor api');
     try {
+      var data = {'filters': filters, 'page': page, 'perPage': perPage};
+      if (name != null) {
+        data['search'] = name;
+      }
       final response = await DioClient.instance.post(
         Endpoints.searchTutor,
-        data: {'filters': filters, 'page': page, 'perPage': perPage},
+        data: data,
       );
       return TutorSearchResult.fromJson(response);
     } on DioException catch (e) {

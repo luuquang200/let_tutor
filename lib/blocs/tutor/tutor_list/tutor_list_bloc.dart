@@ -12,6 +12,7 @@ class TutorListBloc extends Bloc<TutorListEvent, TutorListState> {
   final TutorRepository tutorRepository;
   final page = 1;
   final tutorPerPage = 12;
+  String? tutorName;
 
   TutorListBloc({required this.tutorRepository}) : super(TutorListInitial()) {
     on<TutorListRequested>(_onTutorListRequested);
@@ -52,8 +53,8 @@ class TutorListBloc extends Bloc<TutorListEvent, TutorListState> {
         ]; // Update filters with new speciality filter
         log('filters - bloc: $filters');
 
-        final filteredTutors =
-            await tutorRepository.searchTutor(filters, page, tutorPerPage);
+        final filteredTutors = await tutorRepository.searchTutor(
+            filters, page, tutorPerPage, tutorName);
 
         emit(TutorListSuccess(filteredTutors, filters, currentState.learnTopics,
             currentState.testPreparations));
@@ -70,10 +71,8 @@ class TutorListBloc extends Bloc<TutorListEvent, TutorListState> {
     try {
       if (currentState is TutorListSuccess) {
         final filters = Map<String, dynamic>.from(currentState.filters);
-        filters['name'] = event.name; // Update filters with new name filter
-
-        final filteredTutors =
-            await tutorRepository.filterTutors(filters, page, tutorPerPage);
+        final filteredTutors = await tutorRepository.searchTutor(
+            filters, page, tutorPerPage, event.name);
 
         emit(TutorListSuccess(filteredTutors, filters, currentState.learnTopics,
             currentState.testPreparations));

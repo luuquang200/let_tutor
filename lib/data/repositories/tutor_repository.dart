@@ -88,7 +88,8 @@ class TutorRepository {
   ];
 
   Future<List<Tutor>> getTutors() async {
-    TutorSearchResult result = await tutorApiClient.searchTutor({}, 1, 12);
+    TutorSearchResult result =
+        await tutorApiClient.searchTutor({}, 1, 12, null);
     List<Tutor> tutors = result.rows;
     return tutors;
   }
@@ -108,9 +109,9 @@ class TutorRepository {
 
   // search tutor
   Future<List<Tutor>> searchTutor(
-      Map<String, dynamic> filters, int page, int perPage) async {
+      Map<String, dynamic> filters, int page, int perPage, String? name) async {
     TutorSearchResult result =
-        await tutorApiClient.searchTutor(filters, page, perPage);
+        await tutorApiClient.searchTutor(filters, page, perPage, name);
     List<Tutor> tutors = result.rows;
     return tutors;
   }
