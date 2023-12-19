@@ -46,4 +46,19 @@ class AuthenticationApiClient {
       rethrow;
     }
   }
+
+  // reset password
+  Future<void> sendPasswordResetEmail(String email) async {
+    try {
+      await DioClient.instance.post(
+        Endpoints.resetPassword,
+        data: {'email': email},
+      );
+    } on DioException catch (e) {
+      throw DioExceptionHandler.fromDioError(e);
+    } catch (e) {
+      log('error when handling response from api: $e');
+      rethrow;
+    }
+  }
 }

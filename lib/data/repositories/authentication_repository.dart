@@ -41,10 +41,13 @@ class AuthenticationRepository {
   }
 
   Future<void> sendPasswordResetEmail(String email) async {
-    if (registeredAccounts.containsKey(email)) {
-      return Future.value();
-    } else {
-      throw Exception('Email does not exist');
+    try {
+      await _authenticationApiClient.sendPasswordResetEmail(email);
+    } on DioException catch (e) {
+      throw DioExceptionHandler.fromDioError(e);
+    } catch (e) {
+      log('error handling from repo: $e');
+      rethrow;
     }
   }
 }
