@@ -18,7 +18,7 @@ class User {
   final List<dynamic>? courses;
   final String? requireNote;
   final String? level;
-  final List<LearnTopic>? learnTopics;
+  final List<LearnTopicUser>? learnTopics;
   final List<dynamic>? testPreparations;
   final bool? isPhoneActivated;
   final int? timezone;
@@ -74,7 +74,7 @@ class User {
             : null,
         learnTopics: json['learnTopics'] != null
             ? (json['learnTopics'] as List)
-                .map((i) => LearnTopic.fromJson(i))
+                .map((i) => LearnTopicUser.fromJson(i))
                 .toList()
             : null,
         testPreparations: json['testPreparations'] != null

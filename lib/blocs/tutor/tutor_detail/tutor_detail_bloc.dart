@@ -4,7 +4,7 @@ import 'dart:developer';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:let_tutor/blocs/tutor/tutor_detail/tutor_detail_event.dart';
 import 'package:let_tutor/blocs/tutor/tutor_detail/tutor_detail_state.dart';
-import 'package:let_tutor/data/models/tutors/tutor.dart';
+import 'package:let_tutor/data/models/tutors/learn_topic.dart';
 import 'package:let_tutor/data/repositories/tutor_repository.dart';
 
 class TutorDetailBloc extends Bloc<TutorDetailEvent, TutorDetailState> {
@@ -22,8 +22,12 @@ class TutorDetailBloc extends Bloc<TutorDetailEvent, TutorDetailState> {
     emit(TutorDetailLoading());
     try {
       final tutor = await tutorRepository.getTutorById(event.tutorId);
+      var learnTopics = await tutorRepository.getLearnTopic();
+      var testPreparations = await tutorRepository.getTestPreparation();
+      var listLanguages = await tutorRepository.getListLanguages();
 
-      emit(TutorDetailSuccess(tutor, DateTime.now()));
+      emit(TutorDetailSuccess(
+          tutor, DateTime.now(), learnTopics, testPreparations, listLanguages));
     } catch (error) {
       emit(TutorDetailFailure(error.toString()));
     }
@@ -40,7 +44,12 @@ class TutorDetailBloc extends Bloc<TutorDetailEvent, TutorDetailState> {
           final currentState = state as TutorDetailSuccess;
           final updatedTutor = currentState.tutor
               .copyWith(isFavorite: !(currentState.tutor.isFavorite ?? false));
-          emit(TutorDetailSuccess(updatedTutor, DateTime.now()));
+          emit(TutorDetailSuccess(
+              updatedTutor,
+              DateTime.now(),
+              currentState.learnTopics,
+              currentState.testPreparations,
+              currentState.categories));
           log('message: ${updatedTutor.isFavorite}');
           log('Favorite success');
         }

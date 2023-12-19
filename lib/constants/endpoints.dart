@@ -9,4 +9,6 @@ class Endpoints {
   static const searchTutor = '/tutor/search';
   static const getLearnTopic = '/learn-topic';
   static const getTestPreparation = '/test-preparation';
+  static const getTutorDetails = '/tutor';
+  static const getCategories = '/category';
 }

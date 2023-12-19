@@ -1,3 +1,7 @@
+import 'dart:developer';
+
+import 'package:let_tutor/data/models/user/user.dart';
+
 class Tutor {
   String? id;
   String? name;
@@ -15,6 +19,11 @@ class Tutor {
   String? userId;
   int? schedulesTimes;
   int? price;
+  String? education;
+  String? profession;
+  String? languages;
+  int? totalFeedback;
+  User? user;
 
   Tutor(
       {this.id,
@@ -32,7 +41,12 @@ class Tutor {
       this.userId,
       this.schedulesTimes,
       this.price,
-      this.isFavorite});
+      this.isFavorite,
+      this.education,
+      this.profession,
+      this.languages,
+      this.user,
+      this.totalFeedback});
 
   Tutor copyWith({
     String? id,
@@ -73,19 +87,32 @@ class Tutor {
   }
 
   factory Tutor.fromJson(Map<String, dynamic> json) {
-    return Tutor(
-      id: json['id'],
-      name: json['name'],
-      country: json['country'],
-      avatar: json['avatar'],
-      bio: json['bio'],
-      isNative: json['isNative'],
-      specialties: json['specialties'],
-      rating: json['rating'],
-      userId: json['userId'],
-      schedulesTimes: json['schedulesTimes'],
-      isFavorite: json['isFavoriteTutor'],
-      price: json['price'],
-    );
+    try {
+      return Tutor(
+        id: json['id'],
+        name: json['name'],
+        country: json['country'],
+        avatar: json['avatar'],
+        bio: json['bio'],
+        isNative: json['isNative'],
+        specialties: json['specialties'],
+        rating: json['rating'],
+        userId: json['userId'],
+        schedulesTimes: json['schedulesTimes'],
+        isFavorite: json['isFavoriteTutor'],
+        price: json['price'],
+        video: json['video'],
+        education: json['education'],
+        experience: json['experience'],
+        interests: json['interests'],
+        profession: json['profession'],
+        languages: json['languages'],
+        totalFeedback: json['totalFeedback'],
+        user: json['User'] != null ? User.fromJson(json['User']) : null,
+      );
+    } catch (e) {
+      log('Error parsing tutor data: $e');
+      throw Exception('Error parsing tutor data: $e');
+    }
   }
 }

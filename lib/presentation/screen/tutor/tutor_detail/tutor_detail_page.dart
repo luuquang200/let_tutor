@@ -8,13 +8,17 @@ import 'package:let_tutor/blocs/tutor/tutor_detail/tutor_detail_event.dart';
 import 'package:let_tutor/blocs/tutor/tutor_detail/tutor_detail_state.dart';
 import 'package:let_tutor/configs/app_config.dart';
 import 'package:let_tutor/data/models/country.dart';
+import 'package:let_tutor/data/models/tutors/category.dart';
+import 'package:let_tutor/data/models/tutors/learn_topic.dart';
+import 'package:let_tutor/data/models/tutors/test_preparation.dart';
 import 'package:let_tutor/data/models/tutors/tutor.dart';
 import 'package:let_tutor/presentation/styles/custom_button.dart';
 import 'package:let_tutor/presentation/styles/custom_chip.dart';
 import 'package:let_tutor/presentation/styles/custom_text_style.dart';
+import 'package:let_tutor/presentation/widgets/flag.dart';
 import 'package:let_tutor/presentation/widgets/icon_text_button.dart';
-import 'package:let_tutor/presentation/widgets/specialities.dart';
 import 'package:let_tutor/presentation/widgets/star_rating.dart';
+import 'package:let_tutor/presentation/widgets/tutor_avatar.dart';
 import 'package:let_tutor/presentation/widgets/video_player.dart';
 import 'package:let_tutor/routes.dart';
 
@@ -27,13 +31,20 @@ class TutorDetailPage extends StatefulWidget {
 }
 
 class _TutorDetailPageState extends State<TutorDetailPage> {
+  List<MyCategory> listLanguages = [];
+  List<LearnTopic> listLearnTopics = [];
+  List<TestPreparation> listTestPreparations = [];
+
   @override
   Widget build(BuildContext context) {
     return BlocConsumer<TutorDetailBloc, TutorDetailState>(
       listener: (context, state) {
         // Add listener code here
         if (state is TutorDetailSuccess) {
-          log('load tutor detail page - listener');
+          log('Load tutor detail page - listener');
+          listLanguages = state.categories;
+          listLearnTopics = state.learnTopics;
+          listTestPreparations = state.testPreparations;
         }
       },
       builder: (context, state) {
@@ -60,59 +71,43 @@ class _TutorDetailPageState extends State<TutorDetailPage> {
                 children: [
                   // Tutor Information
                   _tutorInformation(tutor),
-                  const SizedBox(
-                    height: 16,
-                  ),
+                  const SizedBox(height: 16),
                   Text(tutor.bio ?? '', style: CustomTextStyle.bodyRegular),
-                  const SizedBox(
-                    height: 16,
-                  ),
+                  const SizedBox(height: 16),
 
                   // Buttons: Favorite, Report and Review
                   _actionButtonsRow(context),
 
                   // Introduction Video
-                  const SizedBox(
-                    height: 16,
-                  ),
+                  const SizedBox(height: 16),
                   MyVideoPlayer(
                     url: tutor.video ?? '',
                   ),
+
+                  // Education
+                  const SizedBox(height: 16),
+                  const Text('Education',
+                      style: CustomTextStyle.headlineMedium),
+                  const SizedBox(height: 8),
+                  _education(tutor.education ?? ''),
+
                   // Languages
                   const SizedBox(
                     height: 16,
                   ),
-                  const Text(
-                    'Languages',
-                    style: CustomTextStyle.headlineMedium,
-                  ),
-                  const SizedBox(
-                    height: 8,
-                  ),
-                  _language(tutor.language),
+                  const Text('Languages',
+                      style: CustomTextStyle.headlineMedium),
+                  const SizedBox(height: 8),
+                  _language(tutor.languages),
 
                   // Specialities
                   const SizedBox(
                     height: 16,
                   ),
-                  const Text(
-                    'Specialities',
-                    style: CustomTextStyle.headlineMedium,
-                  ),
-                  const SizedBox(
-                    height: 8,
-                  ),
-                  const Specialities(),
-
-                  //Suggested courses
-                  const SizedBox(
-                    height: 16,
-                  ),
-                  const Text(
-                    'Suggested Courses',
-                    style: CustomTextStyle.headlineMedium,
-                  ),
-                  _suggestedCourses(),
+                  const Text('Specialities',
+                      style: CustomTextStyle.headlineMedium),
+                  const SizedBox(height: 8),
+                  _specialities(tutor.specialties),
 
                   //Interests
                   const SizedBox(
@@ -280,20 +275,51 @@ class _TutorDetailPageState extends State<TutorDetailPage> {
 //     );
 //   }
 
+  Widget _specialities(String? specialties) {
+    if (specialties == null || specialties.isEmpty) {
+      return Container();
+    }
+
+    List<String> specialtiesListCode = specialties.split(',');
+    List<String> specialtiesList = getTutorSpecialties(specialtiesListCode);
+
+    if (specialtiesList.isEmpty) {
+      return const CustomChip(label: 'N/A');
+    }
+
+    return Wrap(
+      spacing: 8,
+      runSpacing: 8,
+      children: specialtiesList.map((specialty) {
+        return CustomChip(label: specialty.trim());
+      }).toList(),
+    );
+  }
+
   Widget _language(String? languages) {
     if (languages == null || languages.isEmpty) {
       return Container();
     }
 
-    List<String> languagesList = languages.split(',');
+    // get list language code
+    List<String> codeLanguagesList = languages.split(',');
+
+    // get list language name
+    List<String> languagesList = [];
+    for (String code in codeLanguagesList) {
+      for (MyCategory language in listLanguages) {
+        if (language.key == code) {
+          languagesList.add(language.description ?? '');
+          break;
+        }
+      }
+    }
 
     return Wrap(
       spacing: 8,
       runSpacing: 8,
       children: languagesList.map((language) {
-        return CustomChip(
-          label: language.trim(),
-        );
+        return CustomChip(label: language.trim());
       }).toList(),
     );
   }
@@ -326,7 +352,7 @@ class _TutorDetailPageState extends State<TutorDetailPage> {
   _suggestedCourses() {
     return ListView.builder(
       shrinkWrap: true,
-      itemCount: 1,
+      itemCount: 2,
       itemBuilder: (context, index) {
         return Row(
           children: [
@@ -454,20 +480,21 @@ class _TutorDetailPageState extends State<TutorDetailPage> {
             ));
   }
 
-  String _getNameCountry(String code) {
+  String _getNameCountry(String codeOrName) {
+    codeOrName = codeOrName.toUpperCase();
     final country = AppConfig.countries.firstWhere(
-        (country) => country.code == code,
-        orElse: () => Country(name: 'Unknown', code: 'Unknown'));
+        (country) => country.code == codeOrName || country.name == codeOrName,
+        orElse: () => Country(name: '', code: ''));
     return country.name;
   }
 
   _tutorInformation(Tutor tutor) {
+    String avatar = tutor.user?.avatar ?? '';
+    String name = tutor.user?.name ?? '';
+    String country = _getNameCountry(tutor.user?.country ?? '');
     return Row(
       children: [
-        CircleAvatar(
-          backgroundImage: NetworkImage(tutor.avatar ?? ''),
-          radius: 45,
-        ),
+        TutorAvatar(imageUrl: avatar, tutorName: name),
         const SizedBox(
           width: 20,
         ),
@@ -475,19 +502,14 @@ class _TutorDetailPageState extends State<TutorDetailPage> {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             // Name
-            Text(tutor.name ?? '', style: CustomTextStyle.headlineLarge),
+            Text(name, style: CustomTextStyle.headlineLarge),
             Row(
               children: [
                 // flag
-                // SvgPicture.network(
-                //   AppConfig.getFlagUrl(tutor.country ?? ''),
-                //   width: 20,
-                //   height: 20,
-                // ),
-
+                Flag(flagCode: tutor.user?.country ?? ''),
                 const SizedBox(width: 10),
                 Text(
-                  _getNameCountry(tutor.country ?? ''),
+                  country,
                   style: CustomTextStyle.bodyRegular,
                 ),
               ],
@@ -499,6 +521,33 @@ class _TutorDetailPageState extends State<TutorDetailPage> {
         )
       ],
     );
+  }
+
+  List<String> getTutorSpecialties(List<String> specialties) {
+    List<String> specialtiesNames = [];
+
+    for (String specialty in specialties) {
+      for (LearnTopic topic in listLearnTopics) {
+        if (topic.key == specialty) {
+          specialtiesNames.add(topic.name ?? '');
+          break;
+        }
+      }
+
+      for (TestPreparation test in listTestPreparations) {
+        if (test.key == specialty) {
+          specialtiesNames.add(test.name ?? '');
+          break;
+        }
+      }
+    }
+
+    return specialtiesNames;
+  }
+
+  _education(String education) {
+    return Padding(
+        padding: const EdgeInsets.only(left: 10), child: Text(education));
   }
 }
 

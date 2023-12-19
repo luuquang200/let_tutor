@@ -2,6 +2,7 @@ import 'dart:convert';
 import 'dart:developer';
 
 import 'package:flutter/services.dart';
+import 'package:let_tutor/data/models/tutors/category.dart';
 import 'package:let_tutor/data/models/tutors/learn_topic.dart';
 import 'package:let_tutor/data/models/tutors/test_preparation.dart';
 import 'package:let_tutor/data/models/tutors/tutor.dart';
@@ -168,8 +169,8 @@ class TutorRepository {
 
   // get tutor by id
   Future<Tutor> getTutorById(String id) async {
-    await Future.delayed(const Duration(seconds: 1));
-    return tutors.firstWhere((tutor) => tutor.id == id);
+    Tutor tutor = await tutorApiClient.getTutorById(id);
+    return tutor;
   }
 
   Future<List<TutorSchedule>> getScheduleOfTutor(String tutorId) async {
@@ -198,4 +199,10 @@ class TutorRepository {
   }
 
   reportTutor(String tutorId, String content) {}
+
+  // get categories
+  Future<List<MyCategory>> getListLanguages() async {
+    List<MyCategory> categories = await tutorApiClient.getListLanguages();
+    return categories;
+  }
 }

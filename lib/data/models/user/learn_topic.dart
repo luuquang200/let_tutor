@@ -1,16 +1,16 @@
-class LearnTopic {
+class LearnTopicUser {
   final int id;
   final String key;
   final String name;
 
-  LearnTopic({
+  LearnTopicUser({
     required this.id,
     required this.key,
     required this.name,
   });
 
-  factory LearnTopic.fromJson(Map<String, dynamic> json) {
-    return LearnTopic(
+  factory LearnTopicUser.fromJson(Map<String, dynamic> json) {
+    return LearnTopicUser(
       id: json['id'],
       key: json['key'],
       name: json['name'],
