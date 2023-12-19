@@ -13,7 +13,7 @@ class Tutor {
   String? video;
   String? isNative;
   String? userId;
-  String? schedulesTimes;
+  int? schedulesTimes;
   int? price;
 
   Tutor(
@@ -49,7 +49,7 @@ class Tutor {
     bool? isFavorite,
     String? isNative,
     String? userId,
-    String? schedulesTimes,
+    int? schedulesTimes,
     int? price,
   }) {
     return Tutor(

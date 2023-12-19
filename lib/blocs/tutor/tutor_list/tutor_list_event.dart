@@ -28,9 +28,17 @@ class FilterTutorsByName extends TutorListEvent {
 // Nationality filter
 class FilterTutorsByNationality extends TutorListEvent {
   final Map<String, bool> nationality;
+  final String selectedNationality;
 
-  FilterTutorsByNationality({required this.nationality});
+  FilterTutorsByNationality(
+      {required this.nationality, required this.selectedNationality});
 
   @override
-  List<Object> get props => [nationality];
+  List<Object> get props => [nationality, selectedNationality];
+}
+
+// reset filters
+class ResetFilters extends TutorListEvent {
+  @override
+  List<Object> get props => [];
 }

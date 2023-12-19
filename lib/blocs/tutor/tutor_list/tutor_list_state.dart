@@ -3,7 +3,9 @@ import 'package:let_tutor/data/models/tutors/learn_topic.dart';
 import 'package:let_tutor/data/models/tutors/test_preparation.dart';
 import 'package:let_tutor/data/models/tutors/tutor.dart';
 
-abstract class TutorListState extends Equatable {}
+abstract class TutorListState extends Equatable {
+  const TutorListState();
+}
 
 class TutorListInitial extends TutorListState {
   @override
@@ -20,18 +22,27 @@ class TutorListSuccess extends TutorListState {
   final Map<String, dynamic> filters;
   final List<LearnTopic> learnTopics;
   final List<TestPreparation> testPreparations;
+  final bool isReset;
+  final String selectedNationality;
 
-  TutorListSuccess(
-      this.tutors, this.filters, this.learnTopics, this.testPreparations);
+  const TutorListSuccess(this.tutors, this.filters, this.learnTopics,
+      this.testPreparations, this.isReset, this.selectedNationality);
 
   @override
-  List<Object> get props => [tutors, filters, learnTopics, testPreparations];
+  List<Object> get props => [
+        tutors,
+        filters,
+        learnTopics,
+        testPreparations,
+        isReset,
+        selectedNationality
+      ];
 }
 
 class TutorListFailure extends TutorListState {
   final String error;
 
-  TutorListFailure(this.error);
+  const TutorListFailure(this.error);
 
   @override
   List<Object> get props => [error];

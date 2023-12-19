@@ -23,16 +23,8 @@ class TutorListPage extends StatefulWidget {
 }
 
 class TutorListPageState extends State<TutorListPage> {
-  final specialities =
-      "business-english,conversational-english,english-for-kids,ielts,starters,movers,flyers,ket,pet,toefl,toeic"
-          .split(',');
   final dateController = TextEditingController();
   int selectedSpecialityIndex = 0;
-  final Map<String, Map<String, bool>> listNationalities = {
-    'Vietnamese Tutor': {'isVietnamese': true},
-    'Native English Tutor': {'isNative': true},
-    'Foreign Tutor': {'isVietnamese': false, 'isNative': false},
-  };
   final startTimeController = TextEditingController();
   final endTimeController = TextEditingController();
   bool isShowFilter = false;
@@ -75,7 +67,6 @@ class TutorListPageState extends State<TutorListPage> {
                           if (state.tutors.isEmpty) {
                             return _noTutorsFoundMessage();
                           }
-
                           return _listTutorInformationCard(state.tutors);
                         } else if (state is TutorListFailure) {
                           return Text('Error: ${state.error}');
@@ -179,65 +170,91 @@ class TutorListPageState extends State<TutorListPage> {
   }
 
   Widget _selectNationality() {
-    return DropdownButtonFormField<String>(
-      decoration: const InputDecoration(
-        border: OutlineInputBorder(
-          borderSide: BorderSide(
-            color: Colors.black,
-            width: 2,
-          ),
-        ),
-        contentPadding: EdgeInsets.symmetric(vertical: 16.0),
-      ),
-      isExpanded: true,
-      value: listNationalities.keys.first,
-      items:
-          listNationalities.keys.map<DropdownMenuItem<String>>((String value) {
-        return DropdownMenuItem<String>(
-          value: value,
-          child: Row(
-            children: <Widget>[
-              const SizedBox(width: 8),
-              // SvgPicture.asset(
-              //   'assets/flags/$value.svg',
-              //   width: 20,
-              //   height: 20,
-              // ),
-              const SizedBox(width: 8),
-              Flexible(
-                child: Text(
-                  value,
-                  overflow: TextOverflow.ellipsis,
-                ),
+    return BlocBuilder<TutorListBloc, TutorListState>(
+      builder: (context, state) {
+        final Map<String, Map<String, bool>> listNationalities = {
+          'Select nationality': {},
+          'Vietnamese Tutor': {'isVietNamese': true},
+          'Native English Tutor': {'isNative': true},
+          'Foreign Tutor': {'isVietNamese': false, 'isNative': false},
+        };
+        String selectedNationality = 'Select nationality';
+        if (state is TutorListSuccess && !state.isReset) {
+          if (listNationalities.keys.contains(state.selectedNationality)) {
+            selectedNationality = state.selectedNationality;
+          }
+        }
+        return DropdownButtonFormField<String>(
+          decoration: const InputDecoration(
+            border: OutlineInputBorder(
+              borderSide: BorderSide(
+                color: Colors.black,
+                width: 2,
               ),
-            ],
+            ),
+            contentPadding: EdgeInsets.symmetric(vertical: 16.0),
+          ),
+          isExpanded: true,
+          value: selectedNationality,
+          items: listNationalities.keys
+              .map<DropdownMenuItem<String>>((String value) {
+            return DropdownMenuItem<String>(
+              value: value,
+              child: Row(
+                children: <Widget>[
+                  const SizedBox(width: 8),
+                  const SizedBox(width: 8),
+                  Flexible(
+                    child: Text(
+                      value,
+                      overflow: TextOverflow.ellipsis,
+                    ),
+                  ),
+                ],
+              ),
+            );
+          }).toList(),
+          onChanged: (String? value) {
+            selectedNationality = value!;
+            context.read<TutorListBloc>().add(FilterTutorsByNationality(
+                nationality: listNationalities[value]!,
+                selectedNationality: selectedNationality));
+          },
+          style: const TextStyle(
+            color: Colors.black,
           ),
         );
-      }).toList(),
-      onChanged: (String? value) {
-        context.read<TutorListBloc>().add(
-            FilterTutorsByNationality(nationality: listNationalities[value]!));
       },
-      style: const TextStyle(
-        color: Colors.black,
-      ),
     );
   }
 
-  Widget _searchByName(BuildContext context) {
-    return TextField(
-      onChanged: (value) =>
-          context.read<TutorListBloc>().add(FilterTutorsByName(value)),
-      decoration: const InputDecoration(
-        prefixIcon: Icon(Icons.type_specimen_outlined),
-        hintText: 'Enter a tutor name',
-        hintStyle: TextStyle(
-          color: Color(0xFFB0B0B0),
+  Widget _searchByName() {
+    TextEditingController controller = TextEditingController();
+    return BlocListener<TutorListBloc, TutorListState>(
+      listener: (context, state) {
+        if (state is TutorListSuccess) {
+          log('isReset: ${state.isReset}');
+          if (state.isReset == true) {
+            log('reset search by name');
+            controller.clear();
+          }
+        }
+      },
+      child: TextField(
+        controller: controller,
+        onChanged: (value) =>
+            context.read<TutorListBloc>().add(FilterTutorsByName(value)),
+        decoration: const InputDecoration(
+          prefixIcon: Icon(Icons.type_specimen_outlined),
+          hintText: 'Enter a tutor name',
+          hintStyle: TextStyle(
+            color: Color(0xFFB0B0B0),
+          ),
+          border: OutlineInputBorder(
+            borderSide: BorderSide(color: Colors.red, width: 1.0),
+          ),
+          contentPadding: EdgeInsets.symmetric(vertical: 16.0),
         ),
-        border: OutlineInputBorder(
-          borderSide: BorderSide(color: Colors.red, width: 1.0),
-        ),
-        contentPadding: EdgeInsets.symmetric(vertical: 16.0),
       ),
     );
   }
@@ -321,55 +338,6 @@ class TutorListPageState extends State<TutorListPage> {
     );
   }
 
-  _specialitiesChips(BuildContext context) {
-    return Wrap(
-      spacing: 8,
-      runSpacing: 5,
-      children: List<Widget>.generate(
-        specialities.length,
-        (index) => ChoiceChip(
-          label: Text(
-            specialities[index],
-            style: TextStyle(
-              color: selectedSpecialityIndex == index
-                  ? Theme.of(context).primaryColor
-                  : Colors.black54,
-            ),
-          ),
-          checkmarkColor: Theme.of(context).primaryColor,
-          backgroundColor: const Color(0xFFE4E6EB),
-          selectedColor: const Color(0xFFDDEAFF),
-          selected: selectedSpecialityIndex == index,
-          onSelected: (bool selected) {
-            setState(() {
-              selectedSpecialityIndex = index;
-            });
-            // Add this line to dispatch the FilterTutorsBySpeciality event
-            context
-                .read<TutorListBloc>()
-                .add(FilterTutorsBySpeciality(specialities[index]));
-          },
-          side: BorderSide.none,
-        ),
-      ),
-    );
-  }
-
-  _buttonResetFilter() {
-    return OutlinedButton(
-      onPressed: () {
-        setState(() {
-          selectedSpecialityIndex = 0;
-          dateController.clear();
-        });
-      },
-      style: OutlinedButton.styleFrom(
-        side: const BorderSide(color: Color(0xFF0058C6), width: 1),
-      ),
-      child: const Text('Reset Filters'),
-    );
-  }
-
   _listTutorInformationCard(List<Tutor> tutors) {
     // Sort tutors by favorite status and rating
     tutors.sort((a, b) {
@@ -414,7 +382,7 @@ class TutorListPageState extends State<TutorListPage> {
           children: [
             Expanded(
               flex: 3,
-              child: _searchByName(context),
+              child: _searchByName(),
             ),
             const SizedBox(width: 10),
             Expanded(
@@ -445,13 +413,9 @@ class TutorListPageState extends State<TutorListPage> {
         const SizedBox(height: 16),
         const Text('Select speciality:', style: CustomTextStyle.headlineMedium),
         const SizedBox(height: 8),
-        const Padding(
-          padding: EdgeInsets.symmetric(vertical: 8),
-          child: _SpecialitiesChips(),
-        ),
         Padding(
           padding: const EdgeInsets.symmetric(vertical: 8),
-          child: _buttonResetFilter(),
+          child: _SpecialitiesChips(),
         ),
       ],
     );
@@ -459,17 +423,20 @@ class TutorListPageState extends State<TutorListPage> {
 }
 
 class _SpecialitiesChips extends StatelessWidget {
-  const _SpecialitiesChips({Key? key}) : super(key: key);
+  _SpecialitiesChips({Key? key}) : super(key: key);
+
+  List<LearnTopic> learnTopics = [];
+  List<TestPreparation> testPreparations = [];
 
   @override
   Widget build(BuildContext context) {
     return BlocBuilder<TutorListBloc, TutorListState>(
       builder: (context, state) {
         if (state is TutorListSuccess) {
-          // log('learnTopics: ${state.learnTopics.length}');
-          // log('testPreparations: ${state.testPreparations.length}');
-          // return const Text('test!');
-          log('filters: ${state.filters['specialties']}');
+          learnTopics = state.learnTopics;
+          testPreparations = state.testPreparations;
+
+          log('filters specialties: ${state.filters['specialties']}');
           return Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
@@ -477,13 +444,13 @@ class _SpecialitiesChips extends StatelessWidget {
                 spacing: 8,
                 runSpacing: 5,
                 children: List<Widget>.generate(
-                  state.learnTopics.length,
+                  learnTopics.length,
                   (index) => ChoiceChip(
                     label: Text(
-                      state.learnTopics[index].name ?? '',
+                      learnTopics[index].name ?? '',
                       style: TextStyle(
                         color: (state.filters['specialties'] as List<String>?)
-                                    ?.contains(state.learnTopics[index].key) ??
+                                    ?.contains(learnTopics[index].key) ??
                                 false
                             ? Theme.of(context).primaryColor
                             : Colors.black54,
@@ -493,12 +460,12 @@ class _SpecialitiesChips extends StatelessWidget {
                     backgroundColor: const Color(0xFFE4E6EB),
                     selectedColor: const Color(0xFFDDEAFF),
                     selected: (state.filters['specialties'] as List<String>?)
-                            ?.contains(state.learnTopics[index].key) ??
+                            ?.contains(learnTopics[index].key) ??
                         false,
                     onSelected: (bool selected) {
                       context.read<TutorListBloc>().add(
                             FilterTutorsBySpeciality(
-                                state.learnTopics[index].key ?? ''),
+                                learnTopics[index].key ?? ''),
                           );
                     },
                     side: BorderSide.none,
@@ -510,14 +477,13 @@ class _SpecialitiesChips extends StatelessWidget {
                 spacing: 8,
                 runSpacing: 5,
                 children: List<Widget>.generate(
-                  state.testPreparations.length,
+                  testPreparations.length,
                   (index) => ChoiceChip(
                     label: Text(
-                      state.testPreparations[index].name ?? '',
+                      testPreparations[index].name ?? '',
                       style: TextStyle(
                         color: (state.filters['specialties'] as List<String>?)
-                                    ?.contains(
-                                        state.testPreparations[index].key) ??
+                                    ?.contains(testPreparations[index].key) ??
                                 false
                             ? Theme.of(context).primaryColor
                             : Colors.black54,
@@ -527,17 +493,27 @@ class _SpecialitiesChips extends StatelessWidget {
                     backgroundColor: const Color(0xFFE4E6EB),
                     selectedColor: const Color(0xFFDDEAFF),
                     selected: (state.filters['specialties'] as List<String>?)
-                            ?.contains(state.testPreparations[index].key) ??
+                            ?.contains(testPreparations[index].key) ??
                         false,
                     onSelected: (bool selected) {
                       context.read<TutorListBloc>().add(
                             FilterTutorsBySpeciality(
-                                state.testPreparations[index].key ?? ''),
+                                testPreparations[index].key ?? ''),
                           );
                     },
                     side: BorderSide.none,
                   ),
                 ),
+              ),
+              const SizedBox(height: 8),
+              OutlinedButton(
+                onPressed: () {
+                  context.read<TutorListBloc>().add(ResetFilters());
+                },
+                style: OutlinedButton.styleFrom(
+                  side: const BorderSide(color: Color(0xFF0058C6), width: 1),
+                ),
+                child: const Text('Reset Filters'),
               ),
             ],
           );
