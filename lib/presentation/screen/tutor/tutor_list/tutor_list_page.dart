@@ -170,19 +170,21 @@ class TutorListPageState extends State<TutorListPage> {
   }
 
   Widget _selectNationality() {
+    final Map<String, Map<String, bool>> listNationalities = {
+      'Select nationality': {},
+      'Vietnamese Tutor': {'isVietNamese': true},
+      'Native English Tutor': {'isNative': true},
+      'Foreign Tutor': {'isVietNamese': false, 'isNative': false},
+    };
+    String selectedNationality = listNationalities.keys.first;
     return BlocBuilder<TutorListBloc, TutorListState>(
       builder: (context, state) {
-        final Map<String, Map<String, bool>> listNationalities = {
-          'Select nationality': {},
-          'Vietnamese Tutor': {'isVietNamese': true},
-          'Native English Tutor': {'isNative': true},
-          'Foreign Tutor': {'isVietNamese': false, 'isNative': false},
-        };
-        String selectedNationality = 'Select nationality';
         if (state is TutorListSuccess && !state.isReset) {
           if (listNationalities.keys.contains(state.selectedNationality)) {
             selectedNationality = state.selectedNationality;
           }
+        } else {
+          selectedNationality = listNationalities.keys.first;
         }
         return DropdownButtonFormField<String>(
           decoration: const InputDecoration(

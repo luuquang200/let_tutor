@@ -3,7 +3,7 @@ import 'dart:developer';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:let_tutor/blocs/sign_in/sign_in_event.dart';
 import 'package:let_tutor/blocs/sign_in/sign_in_state.dart';
-import 'package:let_tutor/data/models/user/login_response.dart';
+import 'package:let_tutor/data/models/user/authentication_response.dart';
 import 'package:let_tutor/data/repositories/authentication_repository.dart';
 import 'package:let_tutor/data/sharedpref/shared_preference_helper.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -48,7 +48,7 @@ class SignInBloc extends Bloc<SignInEvent, SignInState> {
 
     emit(SignInLoading());
     try {
-      LoginResponse loginResponse =
+      AuthenticationResponse loginResponse =
           await authenticationRepository.signIn(event.email, event.password);
       log('loginResponse: $loginResponse');
 

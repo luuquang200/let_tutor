@@ -49,35 +49,48 @@ class User {
   });
 
   factory User.fromJson(Map<String, dynamic> json) {
-    log('json from user: $json');
-    // xuất tất cả các key và value của json
-    json.forEach((key, value) {
-      log('key: $key, value: $value');
-    });
+    try {
+      log('json from user: $json');
+      json.forEach((key, value) {
+        log('key: $key, value: $value');
+      });
 
-    return User(
-      id: json['id'],
-      email: json['email'],
-      name: json['name'],
-      avatar: json['avatar'],
-      country: json['country'],
-      phone: json['phone'],
-      roles: List<String>.from(json['roles']),
-      language: json['language'],
-      birthday: json['birthday'],
-      isActivated: json['isActivated'],
-      walletInfo: WalletInfo.fromJson(json['walletInfo']),
-      courses: json['courses'],
-      requireNote: json['requireNote'],
-      level: json['level'],
-      learnTopics: (json['learnTopics'] as List)
-          .map((i) => LearnTopic.fromJson(i))
-          .toList(),
-      testPreparations: json['testPreparations'],
-      isPhoneActivated: json['isPhoneActivated'],
-      timezone: json['timezone'],
-      studySchedule: json['studySchedule'],
-      canSendMessage: json['canSendMessage'],
-    );
+      return User(
+        id: json['id'],
+        email: json['email'],
+        name: json['name'],
+        avatar: json['avatar'],
+        country: json['country'],
+        phone: json['phone'],
+        roles: json['roles'] != null ? List<String>.from(json['roles']) : null,
+        language: json['language'],
+        birthday: json['birthday'],
+        isActivated: json['isActivated'],
+        walletInfo: json['walletInfo'] != null
+            ? WalletInfo.fromJson(json['walletInfo'])
+            : null,
+        courses: json['courses'] != null
+            ? List<dynamic>.from(json['courses'])
+            : null,
+        learnTopics: json['learnTopics'] != null
+            ? (json['learnTopics'] as List)
+                .map((i) => LearnTopic.fromJson(i))
+                .toList()
+            : null,
+        testPreparations: json['testPreparations'] != null
+            ? List<dynamic>.from(json['testPreparations'])
+            : null,
+        requireNote: json['requireNote'],
+        level: json['level'],
+        isPhoneActivated: json['isPhoneActivated'],
+        timezone: json['timezone'],
+        studySchedule: json['studySchedule'],
+        canSendMessage: json['canSendMessage'],
+      );
+    } catch (e) {
+      log('Error when parsing json to User:');
+      log('$e');
+      throw Exception('Error when parsing json to User');
+    }
   }
 }

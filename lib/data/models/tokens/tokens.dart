@@ -9,10 +9,15 @@ class Tokens {
   Tokens({required this.access, required this.refresh});
 
   factory Tokens.fromJson(Map<String, dynamic> json) {
-    log('json from tokens: $json');
-    return Tokens(
-      access: Access.fromJson(json['access']),
-      refresh: Refresh.fromJson(json['refresh']),
-    );
+    try {
+      return Tokens(
+        access: Access.fromJson(json['access']),
+        refresh: Refresh.fromJson(json['refresh']),
+      );
+    } catch (e) {
+      log('error when parsing json to Tokens:');
+      log('$e');
+      throw Exception('Error when parsing json to Tokens');
+    }
   }
 }
