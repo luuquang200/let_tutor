@@ -1,8 +1,13 @@
 import 'package:flutter/material.dart';
+import 'package:let_tutor/data/models/tutors/feedback.dart';
 import 'package:let_tutor/presentation/styles/custom_text_style.dart';
+import 'package:let_tutor/presentation/widgets/star_rating.dart';
+import 'package:let_tutor/presentation/widgets/tutor_avatar.dart';
+import 'package:timeago/timeago.dart' as timeago;
 
 class ReviewCard extends StatelessWidget {
-  const ReviewCard({Key? key}) : super(key: key);
+  final TutorFeedback feedback;
+  const ReviewCard({Key? key, required this.feedback}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -15,36 +20,45 @@ class ReviewCard extends StatelessWidget {
           children: [
             Row(
               children: [
-                const CircleAvatar(
-                  radius: 35,
-                  backgroundImage: AssetImage('assets/tutor_avatar.jpg'),
-                ),
+                TutorAvatar(
+                    imageUrl: feedback.firstInfo?.avatar ?? '',
+                    tutorName: feedback.firstInfo?.name ?? '',
+                    radius: 35),
                 const SizedBox(width: 8),
                 Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    const Text('Adelia Rice',
-                        style: CustomTextStyle.headlineLarge),
-                    const Text('288 days ago'),
                     Row(
-                        children: List<Widget>.generate(
-                      5,
-                      (index) =>
-                          const Icon(Icons.star, color: Colors.amber, size: 16),
-                    ))
+                      children: [
+                        Text(feedback.firstInfo?.name ?? '',
+                            style: CustomTextStyle.headlineLarge),
+                        const SizedBox(height: 20),
+                        Text(_getTimeAgo(feedback.createdAt)),
+                      ],
+                    ),
+                    StarRating(rating: feedback.rating ?? 0, size: 20),
+                    const SizedBox(height: 8),
+                    Text(feedback.content ?? '',
+                        style: CustomTextStyle.bodyRegular),
                   ],
                 )
               ],
-            ),
-            const SizedBox(
-              height: 8,
-            ),
-            const Text(
-              'I appreciated the tutors willingness to answer my questions, but I would have liked more feedback on my progress.',
             ),
           ],
         ),
       ),
     );
+  }
+
+  String _getTimeAgo(String? createdAt) {
+    if (createdAt == null) {
+      return '';
+    }
+
+    final dateTime = DateTime.parse(createdAt);
+    final now = DateTime.now();
+    final difference = now.difference(dateTime);
+
+    return timeago.format(now.subtract(difference));
   }
 }

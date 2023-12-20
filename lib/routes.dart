@@ -7,6 +7,7 @@ import 'package:let_tutor/presentation/screen/schedule/schedule_screen.dart';
 import 'package:let_tutor/presentation/screen/authentication/sign_in_screen.dart';
 import 'package:let_tutor/presentation/screen/courses/topic_detail.dart';
 import 'package:let_tutor/presentation/screen/tutor/booking/booking_screen.dart';
+import 'package:let_tutor/presentation/screen/tutor/review/tutor_review_screen.dart';
 
 import 'package:let_tutor/presentation/screen/tutor/tutor_detail/tutor_detail_screen.dart';
 import 'package:let_tutor/presentation/screen/tutor/tutor_list/tutor_list_screen.dart';
@@ -50,7 +51,9 @@ class Routes {
             builder: (_) =>
                 BookingScreen(tutorId: settings.arguments as String));
       case tutorReviewScreen:
-        return MaterialPageRoute(builder: (_) => const TutorReviewScreen());
+        return MaterialPageRoute(
+            builder: (_) =>
+                TutorReviewScreen(tutorId: settings.arguments as String));
       case home:
         return MaterialPageRoute(builder: (_) => const Home());
       case coursesScreen:

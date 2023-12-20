@@ -4,6 +4,8 @@ import 'package:dio/dio.dart';
 import 'package:let_tutor/constants/endpoints.dart';
 import 'package:let_tutor/data/models/tutors/category.dart';
 import 'package:let_tutor/data/models/tutors/category_reponse.dart';
+import 'package:let_tutor/data/models/tutors/feedback.dart';
+import 'package:let_tutor/data/models/tutors/feedback_response.dart';
 import 'package:let_tutor/data/models/tutors/learn_topic.dart';
 import 'package:let_tutor/data/models/tutors/test_preparation.dart';
 import 'package:let_tutor/data/models/tutors/tutor.dart';
@@ -112,6 +114,25 @@ class TutorApiClient {
       throw DioExceptionHandler.fromDioError(e);
     } catch (e) {
       log('Error handling from favourite tutor api:');
+      log('$e');
+      rethrow;
+    }
+  }
+
+  // get feedbacks
+  Future<List<TutorFeedback>> getFeedbacks(String tutorId) async {
+    log('calling get feedbacks api');
+    try {
+      var response = await DioClient.instance.get(
+        '${Endpoints.getFeedbacks}/$tutorId',
+      );
+      FeedbackResponse feedbackResponse =
+          FeedbackResponse.fromJson(response["data"]);
+      return feedbackResponse.rows ?? [];
+    } on DioException catch (e) {
+      throw DioExceptionHandler.fromDioError(e);
+    } catch (e) {
+      log('Error handling from get feedbacks api:');
       log('$e');
       rethrow;
     }

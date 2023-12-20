@@ -220,7 +220,8 @@ class _TutorDetailPageState extends State<TutorDetailPage> {
           text: 'Review',
           color: Theme.of(context).primaryColor,
           onTap: () {
-            Navigator.pushNamed(context, Routes.tutorReviewScreen);
+            Navigator.pushNamed(context, Routes.tutorReviewScreen,
+                arguments: widget.tutorId);
           },
         ),
       ],

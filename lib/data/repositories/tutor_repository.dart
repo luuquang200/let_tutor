@@ -3,6 +3,7 @@ import 'dart:developer';
 
 import 'package:flutter/services.dart';
 import 'package:let_tutor/data/models/tutors/category.dart';
+import 'package:let_tutor/data/models/tutors/feedback.dart';
 import 'package:let_tutor/data/models/tutors/learn_topic.dart';
 import 'package:let_tutor/data/models/tutors/test_preparation.dart';
 import 'package:let_tutor/data/models/tutors/tutor.dart';
@@ -203,5 +204,11 @@ class TutorRepository {
   Future<List<MyCategory>> getListLanguages() async {
     List<MyCategory> categories = await tutorApiClient.getListLanguages();
     return categories;
+  }
+
+  // get feedbacks
+  Future<List<TutorFeedback>> getFeedbacks(String tutorId) async {
+    List<TutorFeedback> feedbacks = await tutorApiClient.getFeedbacks(tutorId);
+    return feedbacks;
   }
 }

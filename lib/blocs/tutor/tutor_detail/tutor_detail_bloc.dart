@@ -4,7 +4,6 @@ import 'dart:developer';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:let_tutor/blocs/tutor/tutor_detail/tutor_detail_event.dart';
 import 'package:let_tutor/blocs/tutor/tutor_detail/tutor_detail_state.dart';
-import 'package:let_tutor/data/models/tutors/learn_topic.dart';
 import 'package:let_tutor/data/repositories/tutor_repository.dart';
 
 class TutorDetailBloc extends Bloc<TutorDetailEvent, TutorDetailState> {

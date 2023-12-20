@@ -8,14 +8,19 @@ import 'package:let_tutor/presentation/styles/custom_text_style.dart';
 class TutorAvatar extends StatelessWidget {
   final String imageUrl;
   final String tutorName;
+  final double radius;
 
-  const TutorAvatar(
-      {super.key, required this.imageUrl, required this.tutorName});
+  const TutorAvatar({
+    Key? key,
+    required this.imageUrl,
+    required this.tutorName,
+    this.radius = 46,
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return CircleAvatar(
-      radius: 46,
+      radius: radius,
       backgroundColor: Colors.grey,
       child: FutureBuilder<String?>(
         future: checkUrl(imageUrl),
