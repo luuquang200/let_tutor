@@ -1,5 +1,6 @@
 import 'dart:developer';
 
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:let_tutor/blocs/tutor/tutor_list/tutor_list_bloc.dart';
@@ -341,10 +342,13 @@ class TutorListPageState extends State<TutorListPage> {
   }
 
   _listTutorInformationCard(List<Tutor> tutors) {
-    // Sort tutors by favorite status and rating
+    // Sort tutors by favorite status, favorite tutor status and rating
     tutors.sort((a, b) {
       if (b.isFavorite != a.isFavorite) {
         return (b.isFavorite ?? false) ? 1 : -1;
+      }
+      if (b.isFavoriteTutor != a.isFavoriteTutor) {
+        return (b.isFavoriteTutor ?? false) ? 1 : -1;
       }
       return (b.rating ?? 0).compareTo(a.rating ?? 0);
     });
@@ -417,26 +421,33 @@ class TutorListPageState extends State<TutorListPage> {
         const SizedBox(height: 8),
         Padding(
           padding: const EdgeInsets.symmetric(vertical: 8),
-          child: _SpecialitiesChips(),
+          child: _specialitiesChips(),
         ),
       ],
     );
   }
-}
 
-class _SpecialitiesChips extends StatelessWidget {
-  _SpecialitiesChips({Key? key}) : super(key: key);
-
-  List<LearnTopic> learnTopics = [];
-  List<TestPreparation> testPreparations = [];
-
-  @override
-  Widget build(BuildContext context) {
+  Widget _specialitiesChips() {
     return BlocBuilder<TutorListBloc, TutorListState>(
+      buildWhen: (previousState, currentState) {
+        if (currentState is TutorListSuccess) {
+          if (previousState is TutorListSuccess) {
+            return listEquals(
+                    previousState.learnTopics, currentState.learnTopics) &&
+                listEquals(previousState.testPreparations,
+                    currentState.testPreparations);
+          }
+          return true;
+        }
+        return false;
+      },
       builder: (context, state) {
         if (state is TutorListSuccess) {
-          learnTopics = state.learnTopics;
-          testPreparations = state.testPreparations;
+          var combinedList =
+              getTopicsMap(state.learnTopics, state.testPreparations)
+                  .entries
+                  .map((e) => LearnTopic(key: e.key, name: e.value))
+                  .toList();
 
           log('filters specialties: ${state.filters['specialties']}');
           return Column(
@@ -444,67 +455,10 @@ class _SpecialitiesChips extends StatelessWidget {
             children: [
               Wrap(
                 spacing: 8,
-                runSpacing: 5,
+                runSpacing: 2,
                 children: List<Widget>.generate(
-                  learnTopics.length,
-                  (index) => ChoiceChip(
-                    label: Text(
-                      learnTopics[index].name ?? '',
-                      style: TextStyle(
-                        color: (state.filters['specialties'] as List<String>?)
-                                    ?.contains(learnTopics[index].key) ??
-                                false
-                            ? Theme.of(context).primaryColor
-                            : Colors.black54,
-                      ),
-                    ),
-                    checkmarkColor: Theme.of(context).primaryColor,
-                    backgroundColor: const Color(0xFFE4E6EB),
-                    selectedColor: const Color(0xFFDDEAFF),
-                    selected: (state.filters['specialties'] as List<String>?)
-                            ?.contains(learnTopics[index].key) ??
-                        false,
-                    onSelected: (bool selected) {
-                      context.read<TutorListBloc>().add(
-                            FilterTutorsBySpeciality(
-                                learnTopics[index].key ?? ''),
-                          );
-                    },
-                    side: BorderSide.none,
-                  ),
-                ),
-              ),
-              const SizedBox(height: 8),
-              Wrap(
-                spacing: 8,
-                runSpacing: 5,
-                children: List<Widget>.generate(
-                  testPreparations.length,
-                  (index) => ChoiceChip(
-                    label: Text(
-                      testPreparations[index].name ?? '',
-                      style: TextStyle(
-                        color: (state.filters['specialties'] as List<String>?)
-                                    ?.contains(testPreparations[index].key) ??
-                                false
-                            ? Theme.of(context).primaryColor
-                            : Colors.black54,
-                      ),
-                    ),
-                    checkmarkColor: Theme.of(context).primaryColor,
-                    backgroundColor: const Color(0xFFE4E6EB),
-                    selectedColor: const Color(0xFFDDEAFF),
-                    selected: (state.filters['specialties'] as List<String>?)
-                            ?.contains(testPreparations[index].key) ??
-                        false,
-                    onSelected: (bool selected) {
-                      context.read<TutorListBloc>().add(
-                            FilterTutorsBySpeciality(
-                                testPreparations[index].key ?? ''),
-                          );
-                    },
-                    side: BorderSide.none,
-                  ),
+                  combinedList.length,
+                  (index) => _buildChip(combinedList[index], state),
                 ),
               ),
               const SizedBox(height: 8),
@@ -524,4 +478,50 @@ class _SpecialitiesChips extends StatelessWidget {
       },
     );
   }
+
+  Widget _buildChip(LearnTopic topic, TutorListSuccess state) {
+    return ChoiceChip(
+      label: Text(
+        topic.name ?? '',
+        style: TextStyle(
+          color: (state.filters['specialties'] as List<String>?)
+                      ?.contains(topic.key) ??
+                  false
+              ? Theme.of(context).primaryColor
+              : Colors.black54,
+        ),
+      ),
+      checkmarkColor: Theme.of(context).primaryColor,
+      backgroundColor: const Color(0xFFE4E6EB),
+      selectedColor: const Color(0xFFDDEAFF),
+      selected: (state.filters['specialties'] as List<String>?)
+              ?.contains(topic.key) ??
+          false,
+      onSelected: (bool selected) {
+        context.read<TutorListBloc>().add(
+              FilterTutorsBySpeciality(topic.key ?? ''),
+            );
+      },
+      side: BorderSide.none,
+    );
+  }
+}
+
+Map<String, String> getTopicsMap(
+    List<LearnTopic> learnTopics, List<TestPreparation> testPreparations) {
+  Map<String, String> topicsMap = {};
+
+  for (LearnTopic topic in learnTopics) {
+    if (topic.key != null && topic.name != null) {
+      topicsMap[topic.key!] = topic.name!;
+    }
+  }
+
+  for (TestPreparation test in testPreparations) {
+    if (test.key != null && test.name != null) {
+      topicsMap[test.key!] = test.name!;
+    }
+  }
+
+  return topicsMap;
 }

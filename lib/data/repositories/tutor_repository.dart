@@ -193,9 +193,8 @@ class TutorRepository {
     return tutorSchedules;
   }
 
-  favouriteTutor(String tutorId) {
-    tutors.firstWhere((tutor) => tutor.id == tutorId).isFavorite = true;
-    return true;
+  Future<bool> favouriteTutor(String tutorId) async {
+    return await tutorApiClient.favouriteTutor(tutorId);
   }
 
   reportTutor(String tutorId, String content) {}

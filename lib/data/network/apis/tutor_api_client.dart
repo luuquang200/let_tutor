@@ -98,4 +98,22 @@ class TutorApiClient {
       rethrow;
     }
   }
+
+  // favourite tutor
+  Future<bool> favouriteTutor(String tutorId) async {
+    log('calling favourite tutor api');
+    try {
+      var response = await DioClient.instance.post(
+        Endpoints.manageFavoriteTutor,
+        data: {'tutorId': tutorId},
+      );
+      return response['message'] == "Manage success";
+    } on DioException catch (e) {
+      throw DioExceptionHandler.fromDioError(e);
+    } catch (e) {
+      log('Error handling from favourite tutor api:');
+      log('$e');
+      rethrow;
+    }
+  }
 }

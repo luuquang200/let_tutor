@@ -1,4 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:let_tutor/blocs/tutor/tutor_list/tutor_list_bloc.dart';
+import 'package:let_tutor/blocs/tutor/tutor_list/tutor_list_event.dart';
 import 'package:let_tutor/configs/app_config.dart';
 import 'package:let_tutor/data/models/country.dart';
 import 'package:let_tutor/data/models/tutors/tutor.dart';
@@ -15,12 +18,14 @@ class TutorInformationCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
-        onTap: () {
-          Navigator.pushNamed(
+        onTap: () async {
+          final bloc = context.read<TutorListBloc>();
+          await Navigator.pushNamed(
             context,
             Routes.tutorDetail,
             arguments: tutor.id,
           );
+          bloc.add(TutorListRequested());
         },
         child: Card(
           elevation: 5,
@@ -134,10 +139,10 @@ class TutorInformationCard extends StatelessWidget {
       child: IconButton(
         onPressed: () {},
         icon: Icon(
-          (tutor.isFavorite ?? false)
+          (tutor.isFavoriteTutor ?? false)
               ? Icons.favorite
               : Icons.favorite_border_outlined,
-          color: (tutor.isFavorite ?? false)
+          color: (tutor.isFavoriteTutor ?? false)
               ? Colors.red
               : const Color(0xFF0058C6),
         ),
@@ -153,8 +158,8 @@ class TutorInformationCard extends StatelessWidget {
     List<String> specialtiesList = specialties.split(',');
 
     return Wrap(
-      spacing: 8,
-      runSpacing: 8,
+      spacing: 5,
+      runSpacing: 2,
       children: specialtiesList.map((specialty) {
         return Chip(
           backgroundColor: const Color(0xFFDDEAFF),

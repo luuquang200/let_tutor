@@ -11,4 +11,5 @@ class Endpoints {
   static const getTestPreparation = '/test-preparation';
   static const getTutorDetails = '/tutor';
   static const getCategories = '/category';
+  static const manageFavoriteTutor = '/user/manageFavoriteTutor';
 }

@@ -24,6 +24,7 @@ class Tutor {
   String? languages;
   int? totalFeedback;
   User? user;
+  bool? isFavoriteTutor;
 
   Tutor(
       {this.id,
@@ -46,7 +47,8 @@ class Tutor {
       this.profession,
       this.languages,
       this.user,
-      this.totalFeedback});
+      this.totalFeedback,
+      this.isFavoriteTutor});
 
   Tutor copyWith({
     String? id,
@@ -65,6 +67,12 @@ class Tutor {
     String? userId,
     int? schedulesTimes,
     int? price,
+    String? education,
+    String? profession,
+    String? languages,
+    int? totalFeedback,
+    User? user,
+    bool? isFavoriteTutor,
   }) {
     return Tutor(
       id: id ?? this.id,
@@ -83,6 +91,12 @@ class Tutor {
       userId: userId ?? this.userId,
       schedulesTimes: schedulesTimes ?? this.schedulesTimes,
       price: price ?? this.price,
+      education: education ?? this.education,
+      profession: profession ?? this.profession,
+      languages: languages ?? this.languages,
+      totalFeedback: totalFeedback ?? this.totalFeedback,
+      user: user ?? this.user,
+      isFavoriteTutor: isFavoriteTutor ?? this.isFavoriteTutor,
     );
   }
 
@@ -99,7 +113,7 @@ class Tutor {
         rating: json['rating'],
         userId: json['userId'],
         schedulesTimes: json['schedulesTimes'],
-        isFavorite: json['isFavoriteTutor'],
+        isFavorite: json['isFavorite'],
         price: json['price'],
         video: json['video'],
         education: json['education'],
@@ -107,6 +121,7 @@ class Tutor {
         interests: json['interests'],
         profession: json['profession'],
         languages: json['languages'],
+        isFavoriteTutor: json['isFavoriteTutor'],
         totalFeedback: json['totalFeedback'],
         user: json['User'] != null ? User.fromJson(json['User']) : null,
       );
