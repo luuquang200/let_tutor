@@ -5,7 +5,7 @@ class TutorFeedback {
   final String? bookingId;
   final String? firstId;
   final String? secondId;
-  final double? rating;
+  final int? rating;
   final String? content;
   final String? createdAt;
   final String? updatedAt;

@@ -198,7 +198,10 @@ class TutorRepository {
     return await tutorApiClient.favouriteTutor(tutorId);
   }
 
-  reportTutor(String tutorId, String content) {}
+  // report tutor
+  Future<bool> reportTutor(String tutorId, String content) async {
+    return await tutorApiClient.reportTutor(tutorId, content);
+  }
 
   // get categories
   Future<List<MyCategory>> getListLanguages() async {

@@ -15,7 +15,7 @@ class ReviewCard extends StatelessWidget {
       surfaceTintColor: Colors.white,
       elevation: 3,
       child: Padding(
-        padding: const EdgeInsets.all(16.0),
+        padding: const EdgeInsets.only(left: 16, top: 16, bottom: 16),
         child: Column(
           children: [
             Row(
@@ -28,15 +28,10 @@ class ReviewCard extends StatelessWidget {
                 Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    Row(
-                      children: [
-                        Text(feedback.firstInfo?.name ?? '',
-                            style: CustomTextStyle.headlineLarge),
-                        const SizedBox(height: 20),
-                        Text(_getTimeAgo(feedback.createdAt)),
-                      ],
-                    ),
-                    StarRating(rating: feedback.rating ?? 0, size: 20),
+                    Text(feedback.firstInfo?.name ?? '',
+                        style: CustomTextStyle.headlineLarge),
+                    Text(_getTimeAgo(feedback.createdAt)),
+                    _StarRating(rating: feedback.rating ?? 0, size: 20),
                     const SizedBox(height: 8),
                     Text(feedback.content ?? '',
                         style: CustomTextStyle.bodyRegular),
@@ -60,5 +55,31 @@ class ReviewCard extends StatelessWidget {
     final difference = now.difference(dateTime);
 
     return timeago.format(now.subtract(difference));
+  }
+}
+
+class _StarRating extends StatelessWidget {
+  final int rating;
+  final double size;
+
+  const _StarRating({Key? key, required this.rating, required this.size})
+      : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    if (rating == 0) {
+      return const Text('No reviews yet');
+    } else {
+      return Row(
+        children: List<Widget>.generate(
+          5,
+          (index) => Icon(
+            Icons.star,
+            color: index < rating ? Colors.amber : Colors.grey,
+            size: size,
+          ),
+        ),
+      );
+    }
   }
 }

@@ -22,13 +22,44 @@ class TutorDetailSuccess extends TutorDetailState {
   final List<LearnTopic> learnTopics;
   final List<TestPreparation> testPreparations;
   final List<MyCategory> categories;
+  final bool reportSuccess;
+  final bool updateFavoriteSuccess;
 
   TutorDetailSuccess(this.tutor, this.updated, this.learnTopics,
-      this.testPreparations, this.categories);
+      this.testPreparations, this.categories,
+      {this.reportSuccess = false, this.updateFavoriteSuccess = false});
 
   @override
-  List<Object> get props =>
-      [tutor, updated, learnTopics, testPreparations, categories];
+  List<Object> get props => [
+        tutor,
+        updated,
+        learnTopics,
+        testPreparations,
+        categories,
+        reportSuccess,
+        updateFavoriteSuccess,
+      ];
+
+  TutorDetailSuccess copyWith({
+    Tutor? tutor,
+    DateTime? lastUpdated,
+    List<LearnTopic>? learnTopics,
+    List<TestPreparation>? testPreparations,
+    List<MyCategory>? categories,
+    bool? reportSuccess,
+    bool? updateFavoriteSuccess,
+  }) {
+    return TutorDetailSuccess(
+      tutor ?? this.tutor,
+      lastUpdated ?? updated,
+      learnTopics ?? this.learnTopics,
+      testPreparations ?? this.testPreparations,
+      categories ?? this.categories,
+      reportSuccess: reportSuccess ?? this.reportSuccess,
+      updateFavoriteSuccess:
+          updateFavoriteSuccess ?? this.updateFavoriteSuccess,
+    );
+  }
 }
 
 class TutorDetailFailure extends TutorDetailState {

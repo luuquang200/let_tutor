@@ -41,15 +41,33 @@ class _TutorDetailPageState extends State<TutorDetailPage> {
   Widget build(BuildContext context) {
     return BlocConsumer<TutorDetailBloc, TutorDetailState>(
       listener: (context, state) {
-        // Add listener code here
         if (state is TutorDetailSuccess) {
           log('Load tutor detail page - listener');
           listLanguages = state.categories;
           listLearnTopics = state.learnTopics;
           listTestPreparations = state.testPreparations;
+
+          if (state.reportSuccess) {
+            ScaffoldMessenger.of(context).showSnackBar(
+              const SnackBar(
+                content: Text('Report success !'),
+                backgroundColor: Colors.green,
+              ),
+            );
+          }
+
+          if (state.updateFavoriteSuccess) {
+            ScaffoldMessenger.of(context).showSnackBar(
+              const SnackBar(
+                content: Text('Update favorite success !'),
+                backgroundColor: Colors.green,
+              ),
+            );
+          }
         }
       },
       builder: (context, state) {
+        BuildContext pContext = context;
         if (state is TutorDetailLoading) {
           return const Center(
             child: SizedBox(
@@ -78,13 +96,11 @@ class _TutorDetailPageState extends State<TutorDetailPage> {
                   const SizedBox(height: 16),
 
                   // Buttons: Favorite, Report and Review
-                  _actionButtonsRow(context),
+                  _actionButtonsRow(context, pContext),
 
                   // Introduction Video
                   const SizedBox(height: 16),
-                  MyVideoPlayer(
-                    url: tutor.video ?? '',
-                  ),
+                  MyVideoPlayer(url: tutor.video ?? ''),
 
                   // Education
                   const SizedBox(height: 16),
@@ -94,9 +110,7 @@ class _TutorDetailPageState extends State<TutorDetailPage> {
                   _education(tutor.education ?? ''),
 
                   // Languages
-                  const SizedBox(
-                    height: 16,
-                  ),
+                  const SizedBox(height: 16),
                   const Text('Languages',
                       style: CustomTextStyle.headlineMedium),
                   const SizedBox(height: 8),
@@ -202,7 +216,7 @@ class _TutorDetailPageState extends State<TutorDetailPage> {
     );
   }
 
-  Row _actionButtonsRow(BuildContext context) {
+  Row _actionButtonsRow(BuildContext context, BuildContext pContext) {
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceEvenly,
       children: [
@@ -212,7 +226,11 @@ class _TutorDetailPageState extends State<TutorDetailPage> {
           text: 'Report',
           color: Theme.of(context).primaryColor,
           onTap: () {
-            _showReportDialog();
+            showDialog(
+              context: context,
+              builder: (context) =>
+                  ReportDialog(tutorId: widget.tutorId, pContext: pContext),
+            );
           },
         ),
         IconTextButton(
@@ -277,87 +295,12 @@ class _TutorDetailPageState extends State<TutorDetailPage> {
         });
   }
 
-  void _showReportDialog() {
-    final textController = TextEditingController();
-    showDialog(
-        context: context,
-        builder: (context) => SingleChildScrollView(
-              child: AlertDialog(
-                title: const Row(
-                  children: [
-                    Icon(Icons.warning),
-                    SizedBox(width: 8),
-                    Text('Report Tutor'),
-                  ],
-                ),
-                content: SingleChildScrollView(
-                    child: Column(
-                  mainAxisSize: MainAxisSize.min,
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    const Text("Help us understand what's happening:",
-                        style: CustomTextStyle.boldRegular),
-                    const SizedBox(height: 8),
-                    Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        CheckboxListTile(
-                          title: const Text('This tutor is annoying me'),
-                          value: false,
-                          onChanged: (value) {
-                            value = true;
-                          },
-                          controlAffinity: ListTileControlAffinity.leading,
-                        ),
-                        CheckboxListTile(
-                          title: const Text(
-                              'This profile is pretending to be someone or is fake'),
-                          value: false,
-                          onChanged: (value) {
-                            value = true;
-                          },
-                          controlAffinity: ListTileControlAffinity.leading,
-                        ),
-                        CheckboxListTile(
-                          title: const Text('Inappropriate profile photo'),
-                          value: false,
-                          onChanged: (value) {
-                            value = true;
-                          },
-                          controlAffinity: ListTileControlAffinity.leading,
-                        ),
-                      ],
-                    ),
-                    const SizedBox(height: 16),
-                    const Text('Additional Information:',
-                        style: CustomTextStyle.boldRegular),
-                    const SizedBox(height: 8),
-                    TextField(
-                      controller: textController,
-                      decoration: const InputDecoration(
-                        hintText: 'Enter your report here',
-                        border: OutlineInputBorder(),
-                      ),
-                      maxLines: 5,
-                    ),
-                  ],
-                )),
-                actions: [
-                  TextButton(
-                    onPressed: () => Navigator.pop(context),
-                    child: const Text('Cancel',
-                        style: TextStyle(color: Colors.red)),
-                  ),
-                  TextButton(
-                    onPressed: () {
-                      Navigator.pop(context);
-                    },
-                    child: const Text('Submit'),
-                  ),
-                ],
-              ),
-            ));
-  }
+  // void _showReportDialog(BuildContext context) {
+  //   showDialog(
+  //     context: context,
+  //     builder: (context) => ReportDialog(tutorId: widget.tutorId),
+  //   );
+  // }
 
   String _getNameCountry(String codeOrName) {
     codeOrName = codeOrName.toUpperCase();
@@ -460,6 +403,118 @@ class FavoriteButton extends StatelessWidget {
         }
         return Container();
       },
+    );
+  }
+}
+
+class ReportDialog extends StatefulWidget {
+  final String tutorId;
+  final BuildContext pContext;
+  const ReportDialog(
+      {super.key, required this.tutorId, required this.pContext});
+
+  @override
+  _ReportDialogState createState() => _ReportDialogState();
+}
+
+class _ReportDialogState extends State<ReportDialog> {
+  Map<String, bool> reportReasons = {
+    'This tutor is annoying me': false,
+    'This profile is pretending to be someone or is fake': false,
+    'Inappropriate profile photo': false,
+  };
+  TextEditingController textController = TextEditingController();
+
+  void updateText(String text, bool isChecked) {
+    if (isChecked) {
+      textController.text = '${textController.text}$text\n';
+    } else {
+      textController.text = textController.text.replaceAll('$text\n', '');
+    }
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return SingleChildScrollView(
+      child: AlertDialog(
+        title: const Row(
+          children: [
+            Icon(Icons.warning),
+            SizedBox(width: 8),
+            Text('Report Tutor'),
+          ],
+        ),
+        content: SingleChildScrollView(
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              const Text("Help us understand what's happening:",
+                  style: CustomTextStyle.boldRegular),
+              const SizedBox(height: 8),
+              Column(
+                mainAxisSize: MainAxisSize.min,
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  const Text("Help us understand what's happening:",
+                      style: CustomTextStyle.boldRegular),
+                  const SizedBox(height: 8),
+                  Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: reportReasons.keys.map((String key) {
+                      return CheckboxListTile(
+                        title: Text(key),
+                        value: reportReasons[key],
+                        onChanged: (value) {
+                          setState(() {
+                            reportReasons[key] = value ?? false;
+                          });
+                          updateText(key, reportReasons[key]!);
+                        },
+                        controlAffinity: ListTileControlAffinity.leading,
+                      );
+                    }).toList(),
+                  ),
+                ],
+              ),
+              const SizedBox(height: 16),
+              const Text('Additional Information:',
+                  style: CustomTextStyle.boldRegular),
+              const SizedBox(height: 8),
+              TextField(
+                controller: textController,
+                decoration: const InputDecoration(
+                  hintText: 'Enter your report here',
+                  border: OutlineInputBorder(),
+                ),
+                maxLines: 5,
+              ),
+            ],
+          ),
+        ),
+        actions: [
+          MyOutlineButton(
+            text: 'Cancel',
+            height: 25,
+            radius: 5,
+            onPressed: () => Navigator.pop(context),
+            width: 26,
+            textSize: 18,
+          ),
+          MyElevatedButton(
+            text: 'Submit',
+            height: 25,
+            radius: 5,
+            onPressed: () {
+              widget.pContext.read<TutorDetailBloc>().add(ReportTutorEvent(
+                  tutorId: widget.tutorId, content: textController.text));
+              Navigator.pop(context);
+            },
+            width: 26,
+            textSize: 18,
+          )
+        ],
+      ),
     );
   }
 }

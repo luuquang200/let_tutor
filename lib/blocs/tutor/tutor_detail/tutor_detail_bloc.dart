@@ -48,7 +48,8 @@ class TutorDetailBloc extends Bloc<TutorDetailEvent, TutorDetailState> {
               DateTime.now(),
               currentState.learnTopics,
               currentState.testPreparations,
-              currentState.categories));
+              currentState.categories,
+              updateFavoriteSuccess: true));
           log('message: ${updatedTutor.isFavorite}');
           log('Favorite success');
         }
@@ -61,7 +62,13 @@ class TutorDetailBloc extends Bloc<TutorDetailEvent, TutorDetailState> {
   FutureOr<void> _onReportTutor(
       ReportTutorEvent event, Emitter<TutorDetailState> emit) async {
     try {
+      log('Report tutor');
       await tutorRepository.reportTutor(event.tutorId, event.content);
+      log('Report success');
+      if (state is TutorDetailSuccess) {
+        final currentState = state as TutorDetailSuccess;
+        emit(currentState.copyWith(reportSuccess: true));
+      }
     } catch (error) {
       emit(TutorDetailFailure(error.toString()));
     }

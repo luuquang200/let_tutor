@@ -137,4 +137,22 @@ class TutorApiClient {
       rethrow;
     }
   }
+
+  // report tutor
+  Future<bool> reportTutor(String tutorId, String content) async {
+    log('calling report tutor api');
+    try {
+      await DioClient.instance.post(
+        Endpoints.reportTutor,
+        data: {'tutorId': tutorId, 'content': content},
+      );
+      return true;
+    } on DioException catch (e) {
+      throw DioExceptionHandler.fromDioError(e);
+    } catch (e) {
+      log('Error handling from report tutor api:');
+      log('$e');
+      rethrow;
+    }
+  }
 }
