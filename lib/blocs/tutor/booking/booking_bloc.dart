@@ -8,6 +8,7 @@ import 'package:let_tutor/data/repositories/tutor_repository.dart';
 
 class BookingBloc extends Bloc<BookingEvent, BookingState> {
   final TutorRepository tutorRepository;
+  DateTime selectedDate = DateTime.now();
 
   BookingBloc({required this.tutorRepository}) : super(BookingInitial()) {
     on<BookingInitialRequested>(_onBookingInitialRequested);
@@ -22,6 +23,10 @@ class BookingBloc extends Bloc<BookingEvent, BookingState> {
     try {
       final List<TutorSchedule> schedules =
           await tutorRepository.getScheduleOfTutor(event.tutorId);
+      if (schedules.isEmpty) {
+        emit(const BookingLoadFailure('No available slots'));
+        return;
+      }
 
       Map<DateTime, List<String>> availableSlots = {};
 
@@ -48,9 +53,12 @@ class BookingBloc extends Bloc<BookingEvent, BookingState> {
         }
       }
 
+      selectedDate = availableSlots.keys.first;
+
       log(availableSlots.toString());
-      emit(BookingLoadSuccess(availableSlots));
+      emit(BookingLoadSuccess(availableSlots, selectedDate));
     } catch (error) {
+      log('Error from booking_bloc.dart: $error');
       emit(BookingLoadFailure(error.toString()));
     }
   }
@@ -58,6 +66,12 @@ class BookingBloc extends Bloc<BookingEvent, BookingState> {
   FutureOr<void> _onSelectDate(
       SelectDate event, Emitter<BookingState> emit) async {
     emit(BookingLoading());
+
+    selectedDate = event.selectedDate;
+    if (state is BookingLoadSuccess) {
+      final currentState = state as BookingLoadSuccess;
+      emit(currentState.copyWith(selectedDate: selectedDate));
+    }
   }
 
   FutureOr<void> _onSelectTime(

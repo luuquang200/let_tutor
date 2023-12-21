@@ -41,4 +41,10 @@ class CustomTextStyle {
     fontSize: 32,
     fontWeight: FontWeight.bold,
   );
+
+  static const TextStyle headlineOpps = TextStyle(
+    fontSize: 44,
+    fontWeight: FontWeight.w500,
+    color: Color.fromARGB(255, 98, 95, 95),
+  );
 }

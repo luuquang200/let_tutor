@@ -9,6 +9,7 @@ import 'package:let_tutor/data/models/tutors/feedback_response.dart';
 import 'package:let_tutor/data/models/tutors/learn_topic.dart';
 import 'package:let_tutor/data/models/tutors/test_preparation.dart';
 import 'package:let_tutor/data/models/tutors/tutor.dart';
+import 'package:let_tutor/data/models/tutors/tutor_schedule.dart';
 import 'package:let_tutor/data/models/tutors/tutor_search_result.dart';
 import 'package:let_tutor/data/network/dio_client.dart';
 import 'package:let_tutor/data/network/exceptions/dio_exception_handler.dart';
@@ -151,6 +152,32 @@ class TutorApiClient {
       throw DioExceptionHandler.fromDioError(e);
     } catch (e) {
       log('Error handling from report tutor api:');
+      log('$e');
+      rethrow;
+    }
+  }
+
+  Future<List<TutorSchedule>> getScheduleOfTutor(String tutorId) async {
+    log('calling get schedule of tutor api');
+    try {
+      Map<String, dynamic> response = await DioClient.instance.get(
+        Endpoints.getSchedule,
+        queryParameters: {'tutorId': tutorId, 'page': 0},
+      );
+      List<TutorSchedule> schedules;
+      if (response["scheduleOfTutor"] == null) {
+        schedules = <TutorSchedule>[];
+      } else {
+        schedules = (response["scheduleOfTutor"] as List)
+            .map((e) => TutorSchedule.fromJson(e))
+            .toList(growable: false);
+      }
+
+      return schedules;
+    } on DioException catch (e) {
+      throw DioExceptionHandler.fromDioError(e);
+    } catch (e) {
+      log('Error handling from get schedule of tutor api:');
       log('$e');
       rethrow;
     }

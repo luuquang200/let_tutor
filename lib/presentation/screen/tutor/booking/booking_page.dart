@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:intl/intl.dart';
 import 'package:let_tutor/blocs/tutor/booking/booking_bloc.dart';
+import 'package:let_tutor/blocs/tutor/booking/booking_event.dart';
 import 'package:let_tutor/blocs/tutor/booking/booking_state.dart';
 import 'package:let_tutor/presentation/styles/custom_button.dart';
 import 'package:let_tutor/presentation/styles/custom_text_style.dart';
@@ -25,7 +26,11 @@ class BookingPageState extends State<BookingPage> {
     return BlocBuilder<BookingBloc, BookingState>(
       builder: (context, state) {
         if (state is BookingLoadSuccess) {
-          _selectedDate = state.availableSlots.keys.first;
+          if (state.availableSlots.isNotEmpty) {
+            _selectedDate = state.selectedDate;
+          } else {
+            return const Text('No available date');
+          }
           return Scaffold(
             appBar: AppBar(
                 title: Text('Booking', style: CustomTextStyle.topHeadline),
@@ -50,16 +55,14 @@ class BookingPageState extends State<BookingPage> {
                   const SizedBox(height: 16),
                   priceInformation(),
                   const SizedBox(height: 16),
-                  Expanded(
-                    child: Container(),
-                  ),
+                  Expanded(child: Container()),
                   bookButton(),
                 ],
               ),
             ),
           );
         } else if (state is BookingLoadFailure) {
-          return const Text('Failed to load booking data');
+          return BookingPageFailed(error: state.error);
         } else {
           return const Center(
             child: SizedBox(
@@ -192,8 +195,7 @@ class BookingPageState extends State<BookingPage> {
   }
 
   void _showConfirmDialog(BuildContext context) {
-    final textController =
-        TextEditingController(); // controller để lấy giá trị của TextField
+    final textController = TextEditingController();
     showDialog(
       context: context,
       builder: (context) => AlertDialog(
@@ -292,6 +294,31 @@ class BookingPageState extends State<BookingPage> {
   }
 }
 
+class BookingPageFailed extends StatelessWidget {
+  final String error;
+
+  const BookingPageFailed({super.key, required this.error});
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        title: Text('Booking', style: CustomTextStyle.topHeadline),
+        iconTheme: IconThemeData(color: Theme.of(context).primaryColor),
+      ),
+      body: Center(
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            const Icon(Icons.blur_linear_outlined, size: 100),
+            Text(error, style: CustomTextStyle.headlineLarge),
+          ],
+        ),
+      ),
+    );
+  }
+}
+
 class _CalendarPicker extends StatelessWidget {
   const _CalendarPicker({Key? key, required this.availableDate})
       : super(key: key);
@@ -318,7 +345,9 @@ class _CalendarPicker extends StatelessWidget {
       selectableDayPredicate: (DateTime date) {
         return availableDate.contains(date);
       },
-      onDateChanged: (DateTime value) {},
+      onDateChanged: (DateTime value) {
+        BlocProvider.of<BookingBloc>(context).add(SelectDate(value));
+      },
     );
   }
 }

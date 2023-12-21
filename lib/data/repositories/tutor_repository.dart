@@ -175,21 +175,13 @@ class TutorRepository {
   }
 
   Future<List<TutorSchedule>> getScheduleOfTutor(String tutorId) async {
-    await Future.delayed(const Duration(seconds: 1));
-    log('message');
-    // Load and decode the JSON file
-    String jsonString =
-        await rootBundle.loadString('assets/jsons/test_schedule.json');
-    Map<String, dynamic> jsonData = jsonDecode(jsonString);
-    log('Load schedule of tutor $tutorId');
-    // Create a list of TutorSchedule objects from the JSON data
-    var list = jsonData['scheduleOfTutor'] as List;
     List<TutorSchedule> tutorSchedules =
-        list.map((data) => TutorSchedule.fromJson(data)).toList();
-    // log('Schedule: $tutorSchedules');
-    // for (var tutorSchedule in tutorSchedules) {
-    //   log('Schedule: ${tutorSchedule.scheduleDetails}');
-    // }
+        await tutorApiClient.getScheduleOfTutor(tutorId);
+
+    log('Schedule: $tutorSchedules');
+    for (var tutorSchedule in tutorSchedules) {
+      log('Schedule: ${tutorSchedule.scheduleDetails}');
+    }
 
     return tutorSchedules;
   }
