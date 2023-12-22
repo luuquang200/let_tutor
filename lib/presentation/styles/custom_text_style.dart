@@ -13,6 +13,12 @@ class CustomTextStyle {
     color: Colors.black,
   );
 
+  static const TextStyle headlineLargeWhite = TextStyle(
+    fontSize: 26,
+    fontWeight: FontWeight.w500,
+    color: Colors.white,
+  );
+
   static const TextStyle bodyRegular = TextStyle(
     fontSize: 16,
     fontWeight: FontWeight.normal,

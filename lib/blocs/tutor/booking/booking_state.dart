@@ -14,19 +14,23 @@ class BookingLoading extends BookingState {}
 class BookingLoadSuccess extends BookingState {
   final Map<DateTime, List<String>> availableSlots;
   final DateTime selectedDate;
+  final int balance;
 
-  const BookingLoadSuccess(this.availableSlots, this.selectedDate);
+  const BookingLoadSuccess(
+      this.availableSlots, this.selectedDate, this.balance);
 
   @override
-  List<Object> get props => [availableSlots, selectedDate];
+  List<Object> get props => [availableSlots, selectedDate, balance];
 
   BookingLoadSuccess copyWith({
     Map<DateTime, List<String>>? availableSlots,
     DateTime? selectedDate,
+    int? balance,
   }) {
     return BookingLoadSuccess(
       availableSlots ?? this.availableSlots,
       selectedDate ?? this.selectedDate,
+      balance ?? this.balance,
     );
   }
 }

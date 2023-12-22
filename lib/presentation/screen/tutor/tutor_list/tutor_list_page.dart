@@ -38,7 +38,7 @@ class TutorListPageState extends State<TutorListPage> {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              _buildUpcomingLesson(),
+              _BuildUpcomingLesson(),
               const SizedBox(
                 height: 8,
               ),
@@ -127,46 +127,6 @@ class TutorListPageState extends State<TutorListPage> {
         log(index.toString());
         setState(() {});
       },
-    );
-  }
-
-  Widget _buildUpcomingLesson() {
-    return Container(
-      color: Theme.of(context).primaryColor,
-      height: 250,
-      width: double.infinity,
-      child: Column(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: [
-          const Text(
-            'Upcoming lesson',
-            textAlign: TextAlign.center,
-            style: TextStyle(
-              fontSize: 26,
-              fontWeight: FontWeight.w500,
-              color: Colors.white,
-            ),
-          ),
-          const SizedBox(height: 8),
-          const Text(
-            'Sat, 28 Oct 23 02:30 - 02:55',
-            textAlign: TextAlign.center,
-            style: TextStyle(fontSize: 20, color: Colors.white),
-          ),
-          const SizedBox(height: 8),
-          ElevatedButton.icon(
-            onPressed: () {},
-            label: const Text("Enter lesson room"),
-            icon: const Icon(Icons.play_circle_fill_outlined),
-          ),
-          const SizedBox(height: 20),
-          const Text(
-            'Total lesson time is 507 hours 5 minutes',
-            textAlign: TextAlign.center,
-            style: TextStyle(fontSize: 20, color: Colors.white),
-          ),
-        ],
-      ),
     );
   }
 
@@ -503,6 +463,52 @@ class TutorListPageState extends State<TutorListPage> {
             );
       },
       side: BorderSide.none,
+    );
+  }
+}
+
+class _BuildUpcomingLesson extends StatefulWidget {
+  const _BuildUpcomingLesson();
+
+  @override
+  State<_BuildUpcomingLesson> createState() => __BuildUpcomingLessonState();
+}
+
+class __BuildUpcomingLessonState extends State<_BuildUpcomingLesson> {
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      color: Theme.of(context).primaryColor,
+      height: 250,
+      width: double.infinity,
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          const Text(
+            'Upcoming lesson',
+            textAlign: TextAlign.center,
+            style: CustomTextStyle.headlineLargeWhite,
+          ),
+          const SizedBox(height: 8),
+          const Text(
+            'Sat, 28 Oct 23 02:30 - 02:55',
+            textAlign: TextAlign.center,
+            style: TextStyle(fontSize: 20, color: Colors.white),
+          ),
+          const SizedBox(height: 8),
+          ElevatedButton.icon(
+            onPressed: () {},
+            label: const Text("Enter lesson room"),
+            icon: const Icon(Icons.play_circle_fill_outlined),
+          ),
+          const SizedBox(height: 20),
+          const Text(
+            'Total lesson time is 507 hours 5 minutes',
+            textAlign: TextAlign.center,
+            style: TextStyle(fontSize: 20, color: Colors.white),
+          ),
+        ],
+      ),
     );
   }
 }

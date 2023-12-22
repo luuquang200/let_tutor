@@ -4,6 +4,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:let_tutor/blocs/sign_in/sign_in_event.dart';
 import 'package:let_tutor/blocs/sign_in/sign_in_state.dart';
 import 'package:let_tutor/data/models/user/authentication_response.dart';
+import 'package:let_tutor/data/models/user/user.dart';
 import 'package:let_tutor/data/repositories/authentication_repository.dart';
 import 'package:let_tutor/data/sharedpref/shared_preference_helper.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -50,7 +51,6 @@ class SignInBloc extends Bloc<SignInEvent, SignInState> {
     try {
       AuthenticationResponse loginResponse =
           await authenticationRepository.signIn(event.email, event.password);
-      log('loginResponse: $loginResponse');
 
       String accessToken = loginResponse.tokens.access.token;
       String refreshToken = loginResponse.tokens.refresh.token;
@@ -60,12 +60,8 @@ class SignInBloc extends Bloc<SignInEvent, SignInState> {
 
       // Save the tokens for later use
       await saveTokens(accessToken, refreshToken);
+      await saveUser(loginResponse.user);
 
-      // test get token
-      String? accessToken1 = await sharedPrefsHelper.accessToken;
-      String? refreshToken1 = await sharedPrefsHelper.refreshToken;
-      log('accessToken1: $accessToken1');
-      log('refreshToken1: $refreshToken1');
       emit(SignInSuccess());
     } catch (e) {
       log('error from bloc: $e');
@@ -94,6 +90,10 @@ class SignInBloc extends Bloc<SignInEvent, SignInState> {
   Future<void> saveTokens(String accessToken, String refreshToken) async {
     sharedPrefsHelper.saveAcessToken(accessToken);
     sharedPrefsHelper.saveRefreshToken(refreshToken);
+  }
+
+  Future<void> saveUser(User user) {
+    return sharedPrefsHelper.saveUser(user);
   }
 }
 

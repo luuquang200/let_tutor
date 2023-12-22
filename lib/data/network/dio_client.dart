@@ -18,7 +18,7 @@ class DioClient {
       receiveTimeout: const Duration(seconds: 60),
       responseType: ResponseType.json));
 
-  ///Get Method
+  //Get Method
   Future<dynamic> get(String path,
       {Map<String, dynamic>? queryParameters,
       Options? options,
@@ -46,7 +46,7 @@ class DioClient {
     }
   }
 
-  ///Post Method
+  //Post Method
   Future<Map<String, dynamic>> post(String path,
       {data,
       Map<String, dynamic>? queryParameters,
@@ -90,7 +90,7 @@ class DioClient {
     }
   }
 
-  ///Put Method
+  //Put Method
   Future<Map<String, dynamic>> put(String path,
       {data,
       Map<String, dynamic>? queryParameters,
@@ -117,7 +117,7 @@ class DioClient {
     }
   }
 
-  ///Delete Method
+  //Delete Method
   Future<dynamic> delete(String path,
       {data,
       Map<String, dynamic>? queryParameters,
@@ -141,6 +141,4 @@ class DioClient {
       rethrow;
     }
   }
-
-  determineErrorType(int? statusCode) {}
 }

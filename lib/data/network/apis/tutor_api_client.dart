@@ -11,6 +11,7 @@ import 'package:let_tutor/data/models/tutors/test_preparation.dart';
 import 'package:let_tutor/data/models/tutors/tutor.dart';
 import 'package:let_tutor/data/models/tutors/tutor_schedule.dart';
 import 'package:let_tutor/data/models/tutors/tutor_search_result.dart';
+import 'package:let_tutor/data/models/user/user.dart';
 import 'package:let_tutor/data/network/dio_client.dart';
 import 'package:let_tutor/data/network/exceptions/dio_exception_handler.dart';
 
@@ -104,13 +105,14 @@ class TutorApiClient {
 
   // favourite tutor
   Future<bool> favouriteTutor(String tutorId) async {
+    String manageSuccess = 'Manage success';
     log('calling favourite tutor api');
     try {
       var response = await DioClient.instance.post(
         Endpoints.manageFavoriteTutor,
         data: {'tutorId': tutorId},
       );
-      return response['message'] == "Manage success";
+      return response['message'] == manageSuccess;
     } on DioException catch (e) {
       throw DioExceptionHandler.fromDioError(e);
     } catch (e) {

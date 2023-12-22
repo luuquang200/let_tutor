@@ -26,11 +26,12 @@ class BookingPageState extends State<BookingPage> {
     return BlocBuilder<BookingBloc, BookingState>(
       builder: (context, state) {
         if (state is BookingLoadSuccess) {
-          if (state.availableSlots.isNotEmpty) {
-            _selectedDate = state.selectedDate;
-          } else {
+          if (state.availableSlots.isEmpty) {
             return const Text('No available date');
           }
+
+          _selectedDate = state.selectedDate;
+          log('balance: ${state.balance}');
           return Scaffold(
             appBar: AppBar(
                 title: Text('Booking', style: CustomTextStyle.topHeadline),
@@ -51,7 +52,7 @@ class BookingPageState extends State<BookingPage> {
                           ? timePicker(state.availableSlots[_selectedDate]!)
                           : const Text('No available time on this date')),
                   const SizedBox(height: 16),
-                  balanceInformation(),
+                  balanceInformation(state.balance),
                   const SizedBox(height: 16),
                   priceInformation(),
                   const SizedBox(height: 16),
@@ -74,37 +75,6 @@ class BookingPageState extends State<BookingPage> {
         }
       },
     );
-  }
-
-  void _selectTime(BuildContext context) async {
-    final List<String> availableHours = [
-      '18:30 - 18:55',
-      '19:00 - 19:25',
-      '20:00 - 20:25',
-      '20:30 - 20:55',
-      '21:00 - 21:25'
-    ];
-    String? selectedHour = await showDialog<String>(
-      context: context,
-      builder: (BuildContext context) {
-        return SimpleDialog(
-          title: const Text('Select an available hour'),
-          children: availableHours
-              .map((hour) => SimpleDialogOption(
-                    onPressed: () {
-                      Navigator.pop(context, hour);
-                    },
-                    child: Text(hour),
-                  ))
-              .toList(),
-        );
-      },
-    );
-    if (selectedHour != null) {
-      setState(() {
-        _selectedTime = selectedHour;
-      });
-    }
   }
 
   Widget header(BuildContext context, String title) {
@@ -168,17 +138,17 @@ class BookingPageState extends State<BookingPage> {
     );
   }
 
-  balanceInformation() {
-    return const Row(
+  balanceInformation(int balance) {
+    return Row(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [
-        Text(
+        const Text(
           'Balance:',
           style: CustomTextStyle.headlineMedium,
         ),
         Text(
-          'You have 9664 lessons left',
-          style: TextStyle(fontSize: 18, color: Color(0xFF0058C6)),
+          'You have $balance lessons left',
+          style: const TextStyle(fontSize: 18, color: Color(0xFF0058C6)),
         ),
       ],
     );

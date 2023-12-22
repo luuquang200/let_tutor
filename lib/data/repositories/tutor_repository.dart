@@ -9,10 +9,13 @@ import 'package:let_tutor/data/models/tutors/test_preparation.dart';
 import 'package:let_tutor/data/models/tutors/tutor.dart';
 import 'package:let_tutor/data/models/tutors/tutor_schedule.dart';
 import 'package:let_tutor/data/models/tutors/tutor_search_result.dart';
+import 'package:let_tutor/data/models/user/user.dart';
 import 'package:let_tutor/data/network/apis/tutor_api_client.dart';
+import 'package:let_tutor/data/network/apis/user_api_client.dart';
 
 class TutorRepository {
   final tutorApiClient = TutorApiClient();
+  final userApiClient = UserApiClient();
   List<Tutor> tutors = [
     Tutor(
       id: '1',
@@ -205,5 +208,11 @@ class TutorRepository {
   Future<List<TutorFeedback>> getFeedbacks(String tutorId) async {
     List<TutorFeedback> feedbacks = await tutorApiClient.getFeedbacks(tutorId);
     return feedbacks;
+  }
+
+  // get user by id
+  Future<User> getUser(String id) async {
+    User user = await userApiClient.getUserById(id);
+    return user;
   }
 }

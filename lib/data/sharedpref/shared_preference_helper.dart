@@ -1,5 +1,6 @@
 import 'dart:async';
 
+import 'package:let_tutor/data/models/user/user.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import 'constants/preferences.dart';
@@ -57,5 +58,13 @@ class SharedPreferenceHelper {
 
   Future<void> changeLanguage(String language) {
     return _sharedPreference.setString(Preferences.current_language, language);
+  }
+
+  Future<void> saveUser(User user) {
+    return _sharedPreference.setString(Preferences.user_id, user.id!);
+  }
+
+  Future<String?> get userId async {
+    return _sharedPreference.getString(Preferences.user_id);
   }
 }

@@ -16,4 +16,7 @@ class Endpoints {
   static const reportTutor = '/report';
 
   static const getSchedule = '/schedule';
+
+  // User
+  static const userInformation = '/user/info';
 }

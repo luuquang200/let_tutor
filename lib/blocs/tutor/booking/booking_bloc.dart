@@ -4,11 +4,13 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:let_tutor/blocs/tutor/booking/booking_event.dart';
 import 'package:let_tutor/blocs/tutor/booking/booking_state.dart';
 import 'package:let_tutor/data/models/tutors/tutor_schedule.dart';
+import 'package:let_tutor/data/models/user/user.dart';
 import 'package:let_tutor/data/repositories/tutor_repository.dart';
 
 class BookingBloc extends Bloc<BookingEvent, BookingState> {
   final TutorRepository tutorRepository;
   DateTime selectedDate = DateTime.now();
+  int balance = 0;
 
   BookingBloc({required this.tutorRepository}) : super(BookingInitial()) {
     on<BookingInitialRequested>(_onBookingInitialRequested);
@@ -27,7 +29,8 @@ class BookingBloc extends Bloc<BookingEvent, BookingState> {
         emit(const BookingLoadFailure('No available slots'));
         return;
       }
-
+      User user = await tutorRepository.getUser(event.tutorId);
+      balance = (int.parse(user.walletInfo?.amount ?? '0') / 10000).floor();
       Map<DateTime, List<String>> availableSlots = {};
 
       for (var schedule in schedules) {
@@ -56,7 +59,7 @@ class BookingBloc extends Bloc<BookingEvent, BookingState> {
       selectedDate = availableSlots.keys.first;
 
       log(availableSlots.toString());
-      emit(BookingLoadSuccess(availableSlots, selectedDate));
+      emit(BookingLoadSuccess(availableSlots, selectedDate, balance));
     } catch (error) {
       log('Error from booking_bloc.dart: $error');
       emit(BookingLoadFailure(error.toString()));
@@ -65,12 +68,15 @@ class BookingBloc extends Bloc<BookingEvent, BookingState> {
 
   FutureOr<void> _onSelectDate(
       SelectDate event, Emitter<BookingState> emit) async {
+    final currentState = state as BookingLoadSuccess;
     emit(BookingLoading());
 
-    selectedDate = event.selectedDate;
-    if (state is BookingLoadSuccess) {
-      final currentState = state as BookingLoadSuccess;
+    try {
+      selectedDate = event.selectedDate;
       emit(currentState.copyWith(selectedDate: selectedDate));
+    } catch (error) {
+      log('Error from booking_bloc.dart: $error');
+      emit(BookingLoadFailure(error.toString()));
     }
   }
 
