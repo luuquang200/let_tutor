@@ -1,3 +1,5 @@
+import 'package:intl/intl.dart';
+
 class ScheduleDetail {
   final int startPeriodTimestamp;
   final int endPeriodTimestamp;
@@ -36,5 +38,17 @@ class ScheduleDetail {
       bookingInfo: json['bookingInfo'],
       isBooked: json['isBooked'],
     );
+  }
+
+  String get timeRange {
+    final startTime =
+        DateTime.fromMillisecondsSinceEpoch(startPeriodTimestamp * 1000)
+            .toLocal();
+    final endTime =
+        DateTime.fromMillisecondsSinceEpoch(endPeriodTimestamp * 1000)
+            .toLocal();
+
+    final timeFormat = DateFormat.Hm(); // Use 24-hour format without AM/PM.
+    return "${timeFormat.format(startTime)} - ${timeFormat.format(endTime)}";
   }
 }

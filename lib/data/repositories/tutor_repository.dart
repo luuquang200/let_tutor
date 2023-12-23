@@ -215,4 +215,15 @@ class TutorRepository {
     User user = await userApiClient.getUserById(id);
     return user;
   }
+
+  // book tutor
+  Future<void> bookTutor(String scheduleId, String note) async {
+    try {
+      return await tutorApiClient.bookTutor(scheduleId, note);
+    } catch (e) {
+      log('Error from book tutor reposiory: $e');
+      log('$e');
+      rethrow;
+    }
+  }
 }

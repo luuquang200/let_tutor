@@ -6,6 +6,7 @@ import 'package:intl/intl.dart';
 import 'package:let_tutor/blocs/tutor/booking/booking_bloc.dart';
 import 'package:let_tutor/blocs/tutor/booking/booking_event.dart';
 import 'package:let_tutor/blocs/tutor/booking/booking_state.dart';
+import 'package:let_tutor/data/models/schedule/schedule_slot.dart';
 import 'package:let_tutor/presentation/styles/custom_button.dart';
 import 'package:let_tutor/presentation/styles/custom_text_style.dart';
 
@@ -18,12 +19,19 @@ class BookingPage extends StatefulWidget {
 }
 
 class BookingPageState extends State<BookingPage> {
-  DateTime _selectedDate = DateTime.now();
-  String _selectedTime = '00:00 - 00:00';
+  late DateTime _selectedDate;
+  ScheduleSlot? _selectedSlot;
 
   @override
   Widget build(BuildContext context) {
-    return BlocBuilder<BookingBloc, BookingState>(
+    return BlocConsumer<BookingBloc, BookingState>(
+      listener: (context, state) {
+        if (state is BookingSuccess) {
+          _showDialog('Success', state.message, Icons.check_circle_outline);
+        } else if (state is BookingFailure) {
+          _showDialog('Failure', state.error, Icons.error_outline);
+        }
+      },
       builder: (context, state) {
         if (state is BookingLoadSuccess) {
           if (state.availableSlots.isEmpty) {
@@ -31,6 +39,8 @@ class BookingPageState extends State<BookingPage> {
           }
 
           _selectedDate = state.selectedDate;
+          _selectedSlot = state.availableSlots[_selectedDate]?.first;
+
           log('balance: ${state.balance}');
           return Scaffold(
             appBar: AppBar(
@@ -57,7 +67,7 @@ class BookingPageState extends State<BookingPage> {
                   priceInformation(),
                   const SizedBox(height: 16),
                   Expanded(child: Container()),
-                  bookButton(),
+                  bookButton(state.balance),
                 ],
               ),
             ),
@@ -87,21 +97,24 @@ class BookingPageState extends State<BookingPage> {
     );
   }
 
-  Widget timePicker(List<String> availableTimes) {
-    if (availableTimes.isEmpty) {
-      _selectedTime = "";
-    } else if (!availableTimes.contains(_selectedTime)) {
-      _selectedTime = availableTimes.first;
+  Widget timePicker(List<ScheduleSlot> availableSlots) {
+    if (availableSlots.isEmpty) {
+      _selectedSlot = null;
+    } else if (_selectedSlot == null ||
+        !availableSlots.contains(_selectedSlot)) {
+      _selectedSlot = availableSlots.first;
     }
 
+    List<String> availableTimes =
+        availableSlots.map((slot) => slot.timeRange).toList();
+
     return Row(
-      // mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [
         // icon
         const Icon(Icons.access_time),
         const SizedBox(width: 8),
         DropdownButton<String>(
-          value: _selectedTime,
+          value: _selectedSlot?.timeRange ?? availableTimes.first,
           items: availableTimes.map<DropdownMenuItem<String>>((String value) {
             final List<String> times = value.split(' - ');
             final String startTime = formatTime(times[0]);
@@ -114,7 +127,8 @@ class BookingPageState extends State<BookingPage> {
           }).toList(),
           onChanged: (String? newValue) {
             setState(() {
-              _selectedTime = newValue!;
+              _selectedSlot = availableSlots
+                  .firstWhere((slot) => slot.timeRange == newValue);
             });
           },
         )
@@ -154,18 +168,20 @@ class BookingPageState extends State<BookingPage> {
     );
   }
 
-  Widget bookButton() {
+  Widget bookButton(int balance) {
     return MyElevatedButton(
         text: 'Book now',
         height: 50,
         radius: 8,
         onPressed: () {
-          _showConfirmDialog(context);
+          _showConfirmDialog(context, balance);
         });
   }
 
-  void _showConfirmDialog(BuildContext context) {
+  void _showConfirmDialog(BuildContext context, int balance) {
     final textController = TextEditingController();
+    BuildContext originalContext = context;
+
     showDialog(
       context: context,
       builder: (context) => AlertDialog(
@@ -193,20 +209,20 @@ class BookingPageState extends State<BookingPage> {
                   'Lesson Time: :',
                 ),
                 Text(
-                  _selectedTime,
+                  _selectedSlot?.timeRange ?? '',
                   style: const TextStyle(color: Color(0xFF0058C6)),
                 ),
               ],
             ),
-            const Row(
+            Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                Text(
+                const Text(
                   'Balance:',
                 ),
                 Text(
-                  '9664 lessons left',
-                  style: TextStyle(color: Color(0xFF0058C6)),
+                  '$balance lessons left',
+                  style: const TextStyle(color: Color(0xFF0058C6)),
                 ),
               ],
             ),
@@ -248,7 +264,13 @@ class BookingPageState extends State<BookingPage> {
             text: 'Book',
             height: 25,
             radius: 5,
-            onPressed: () => Navigator.pop(context),
+            onPressed: () {
+              BlocProvider.of<BookingBloc>(originalContext).add(BookTutor(
+                  _selectedDate,
+                  _selectedSlot!.scheduleId,
+                  textController.text));
+              Navigator.pop(context);
+            },
             width: 26,
             textSize: 18,
           )
@@ -261,6 +283,40 @@ class BookingPageState extends State<BookingPage> {
     final int hour = int.parse(time.split(':')[0]);
     final String suffix = hour >= 12 ? 'PM' : 'AM';
     return '$time $suffix';
+  }
+
+  void _showDialog(String title, String message, IconData icon) {
+    BuildContext originalContext = context;
+    showDialog(
+      context: context,
+      builder: (context) {
+        return AlertDialog(
+          title: Row(
+            children: [
+              Icon(icon),
+              const SizedBox(width: 10),
+              Text(title),
+            ],
+          ),
+          content: Text(message),
+          actions: <Widget>[
+            MyElevatedButton(
+              text: 'OK',
+              height: 25,
+              radius: 5,
+              onPressed: () {
+                Navigator.pop(context);
+                originalContext
+                    .read<BookingBloc>()
+                    .add(BookingInitialRequested(tutorId: widget.tutorId));
+              },
+              width: 26,
+              textSize: 18,
+            ),
+          ],
+        );
+      },
+    );
   }
 }
 

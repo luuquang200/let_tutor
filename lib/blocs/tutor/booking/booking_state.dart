@@ -1,4 +1,5 @@
 import 'package:equatable/equatable.dart';
+import 'package:let_tutor/data/models/schedule/schedule_slot.dart';
 
 abstract class BookingState extends Equatable {
   const BookingState();
@@ -12,7 +13,7 @@ class BookingInitial extends BookingState {}
 class BookingLoading extends BookingState {}
 
 class BookingLoadSuccess extends BookingState {
-  final Map<DateTime, List<String>> availableSlots;
+  final Map<DateTime, List<ScheduleSlot>> availableSlots;
   final DateTime selectedDate;
   final int balance;
 
@@ -23,7 +24,7 @@ class BookingLoadSuccess extends BookingState {
   List<Object> get props => [availableSlots, selectedDate, balance];
 
   BookingLoadSuccess copyWith({
-    Map<DateTime, List<String>>? availableSlots,
+    Map<DateTime, List<ScheduleSlot>>? availableSlots,
     DateTime? selectedDate,
     int? balance,
   }) {
@@ -52,6 +53,23 @@ class BookingBookFailed extends BookingState {
   final String error;
 
   const BookingBookFailed(this.error);
+
+  @override
+  List<Object> get props => [error];
+}
+
+class BookingSuccess extends BookingState {
+  final String message;
+
+  const BookingSuccess(this.message);
+
+  @override
+  List<Object> get props => [message];
+}
+
+class BookingFailure extends BookingState {
+  final String error;
+  const BookingFailure(this.error);
 
   @override
   List<Object> get props => [error];

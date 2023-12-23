@@ -63,13 +63,13 @@ class DioClient {
         options: options?.copyWith(
               followRedirects: false,
               validateStatus: (status) {
-                return status != null ? status < 500 : false;
+                return status != null ? status <= 500 : false;
               },
             ) ??
             Options(
               followRedirects: false,
               validateStatus: (status) {
-                return status != null ? status < 500 : false;
+                return status != null ? status <= 500 : false;
               },
             ),
         cancelToken: cancelToken,
@@ -81,10 +81,7 @@ class DioClient {
         return response.data;
       }
       throw response.data['message'];
-    }
-    // on DioException catch (e) {
-    //   throw DioExceptionHandler.fromDioError(e);
-    catch (e) {
+    } catch (e) {
       log('error: $e');
       rethrow;
     }

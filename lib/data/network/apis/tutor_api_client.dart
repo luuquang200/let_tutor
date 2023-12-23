@@ -184,4 +184,22 @@ class TutorApiClient {
       rethrow;
     }
   }
+
+  // book tutor
+  Future<void> bookTutor(String scheduleId, String note) async {
+    log('calling book tutor api');
+    try {
+      await DioClient.instance.post(
+        Endpoints.bookTutor,
+        data: {
+          'scheduleDetailIds': [scheduleId],
+          'note': note,
+        },
+      );
+    } catch (e) {
+      log('Error handling from book tutor api:');
+      log('$e');
+      rethrow;
+    }
+  }
 }

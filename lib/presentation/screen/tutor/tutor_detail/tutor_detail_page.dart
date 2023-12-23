@@ -59,6 +59,7 @@ class _TutorDetailPageState extends State<TutorDetailPage> {
           if (state.updateFavoriteSuccess) {
             ScaffoldMessenger.of(context).showSnackBar(
               const SnackBar(
+                showCloseIcon: true,
                 content: Text('Update favorite success !'),
                 backgroundColor: Colors.green,
               ),

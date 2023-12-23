@@ -41,9 +41,9 @@ class DioInterceptor extends Interceptor {
   void onError(DioException err, ErrorInterceptorHandler handler) {
     // Log the error
     log('Request error: ${err.message}');
-    throw DioExceptionHandler.fromDioError(err);
 
-    // super.onError(err, handler);
+    DioExceptionHandler.fromDioError(err);
+    super.onError(err, handler);
   }
 
   Future<void> initSharedPrefsHelper() async {

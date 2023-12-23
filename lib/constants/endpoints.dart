@@ -14,6 +14,7 @@ class Endpoints {
   static const manageFavoriteTutor = '/user/manageFavoriteTutor';
   static const getFeedbacks = '/feedback/v2';
   static const reportTutor = '/report';
+  static const bookTutor = '/booking';
 
   static const getSchedule = '/schedule';
 

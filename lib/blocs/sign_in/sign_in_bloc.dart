@@ -24,10 +24,6 @@ class SignInBloc extends Bloc<SignInEvent, SignInState> {
   void _getPres() async {
     sharedPrefsHelper =
         SharedPreferenceHelper(await SharedPreferences.getInstance());
-    // String? accessToken = await sharedPrefsHelper.getAccessToken();
-    // String? refreshToken = await sharedPrefsHelper.getRefreshToken();
-    // log('accessToken: $accessToken');
-    // log('refreshToken: $refreshToken');
   }
 
   void _onSignInSubmitted(

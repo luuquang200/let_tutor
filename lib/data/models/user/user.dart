@@ -50,11 +50,6 @@ class User {
 
   factory User.fromJson(Map<String, dynamic> json) {
     try {
-      log('json from user: $json');
-      json.forEach((key, value) {
-        log('key: $key, value: $value');
-      });
-
       return User(
         id: json['id'],
         email: json['email'],

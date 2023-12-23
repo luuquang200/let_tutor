@@ -35,8 +35,11 @@ class SelectTime extends BookingEvent {
 }
 
 class BookTutor extends BookingEvent {
-  const BookTutor();
+  final String selectedId;
+  final DateTime selectedDate;
+  final String note;
+  const BookTutor(this.selectedDate, this.selectedId, this.note);
 
   @override
-  List<Object> get props => [];
+  List<Object> get props => [selectedId, selectedDate, note];
 }
