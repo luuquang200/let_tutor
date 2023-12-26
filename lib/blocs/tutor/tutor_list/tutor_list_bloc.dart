@@ -7,12 +7,15 @@ import 'package:let_tutor/blocs/tutor/tutor_list/tutor_list_state.dart';
 import 'package:let_tutor/data/models/schedule/booking.dart';
 import 'package:let_tutor/data/models/tutors/learn_topic.dart';
 import 'package:let_tutor/data/models/tutors/test_preparation.dart';
+import 'package:let_tutor/data/models/user/user.dart';
 import 'package:let_tutor/data/repositories/schedule_repository.dart';
 import 'package:let_tutor/data/repositories/tutor_repository.dart';
+import 'package:let_tutor/data/repositories/user_repository.dart';
 
 class TutorListBloc extends Bloc<TutorListEvent, TutorListState> {
   final TutorRepository tutorRepository;
   final ScheduleRepository scheduleRepository;
+  final UserRepository userRepository;
   final page = 1;
   final tutorPerPage = 12;
   String? tutorName;
@@ -21,7 +24,9 @@ class TutorListBloc extends Bloc<TutorListEvent, TutorListState> {
   late BookedSchedule upcomingSchedule;
 
   TutorListBloc(
-      {required this.tutorRepository, required this.scheduleRepository})
+      {required this.tutorRepository,
+      required this.scheduleRepository,
+      required this.userRepository})
       : super(TutorListInitial()) {
     on<TutorListRequested>(_onTutorListRequested);
     on<FilterTutorsBySpeciality>(_onFilterTutorsBySpeciality);
@@ -65,10 +70,13 @@ class TutorListBloc extends Bloc<TutorListEvent, TutorListState> {
         upcomingSchedule = BookedSchedule();
       }
 
-      final Map<String, dynamic> filters = {}; // Initialize with no filters
+      // Initialize with no filters
+      final Map<String, dynamic> filters = {};
+
+      int totalCall = await userRepository.getTotalCall();
 
       emit(TutorListSuccess(tutors, filters, learnTopics, testPreparations,
-          isReset, selectedNationality, upcomingSchedule));
+          isReset, selectedNationality, upcomingSchedule, totalCall));
     } catch (error) {
       log('error from tutor list bloc: $error');
       emit(TutorListFailure(error.toString()));
@@ -154,6 +162,7 @@ class TutorListBloc extends Bloc<TutorListEvent, TutorListState> {
 
   FutureOr<void> _onResetFilters(
       ResetFilters event, Emitter<TutorListState> emit) async {
+    final currentState = state;
     emit(TutorListLoading());
     try {
       final tutors = await tutorRepository.getTutors();
@@ -163,8 +172,16 @@ class TutorListBloc extends Bloc<TutorListEvent, TutorListState> {
       final Map<String, dynamic> filters = {}; // Initialize with no filters
       isReset = true;
 
-      emit(TutorListSuccess(tutors, filters, learnTopics, testPreparations,
-          isReset, selectedNationality, upcomingSchedule));
+      if (currentState is TutorListSuccess) {
+        emit(currentState.copyWith(
+            tutors: tutors,
+            filters: filters,
+            learnTopics: learnTopics,
+            testPreparations: testPreparations,
+            isReset: isReset,
+            selectedNationality: selectedNationality));
+      }
+
       tutorName = null;
     } catch (error) {
       log('error from tutor list bloc: $error');

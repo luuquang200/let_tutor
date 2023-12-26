@@ -20,6 +20,7 @@ class Endpoints {
 
   // User
   static const userInformation = '/user/info';
+  static const getTotalCall = '/call/total';
 
   // schedule
   static const getNextBookedSchedule = '/booking/next';

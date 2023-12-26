@@ -40,7 +40,7 @@ class TutorListPageState extends State<TutorListPage> {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              _BuildUpcomingLesson(),
+              const _BuildUpcomingLesson(),
               const SizedBox(
                 height: 8,
               ),
@@ -499,70 +499,90 @@ class __BuildUpcomingLessonState extends State<_BuildUpcomingLesson> {
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
-          const Text(
-            'Upcoming lesson',
-            textAlign: TextAlign.center,
-            style: CustomTextStyle.headlineLargeWhite,
-          ),
-          const SizedBox(height: 8),
           BlocBuilder<TutorListBloc, TutorListState>(
             builder: (context, state) {
               if (state is TutorListSuccess) {
-                final upcomingSchedule = state.upcomingSchedule;
-                final startTime = DateTime.fromMillisecondsSinceEpoch(
-                    upcomingSchedule.scheduleDetailInfo?.startPeriodTimestamp ??
-                        0);
-                final endTime = DateTime.fromMillisecondsSinceEpoch(
-                    upcomingSchedule.scheduleDetailInfo?.endPeriodTimestamp ??
-                        0);
+                if (state.upcomingSchedule.id != null) {
+                  final upcomingSchedule = state.upcomingSchedule;
+                  final startTime = DateTime.fromMillisecondsSinceEpoch(
+                      upcomingSchedule
+                              .scheduleDetailInfo?.startPeriodTimestamp ??
+                          0);
+                  final endTime = DateTime.fromMillisecondsSinceEpoch(
+                      upcomingSchedule.scheduleDetailInfo?.endPeriodTimestamp ??
+                          0);
 
-                // final countdownDuration = startTime.difference(DateTime.now());
-                // final countdownString =
-                //     '${countdownDuration.inHours}:${(countdownDuration.inMinutes % 60).toString().padLeft(2, '0')}:${(countdownDuration.inSeconds % 60).toString().padLeft(2, '0')}';
-
-                return Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    Text(
-                      '${DateFormat('EEE, dd MMM yy', locale).format(startTime)} ${DateFormat('HH:mm', locale).format(startTime)} - ${DateFormat('HH:mm', locale).format(endTime)}',
-                      textAlign: TextAlign.center,
-                      style: const TextStyle(fontSize: 20, color: Colors.white),
-                    ),
-                    const SizedBox(width: 8),
-                    StreamBuilder<int>(
-                      stream:
-                          Stream.periodic(const Duration(seconds: 1), (i) => i),
-                      builder: (context, snapshot) {
-                        final countdownDuration =
-                            startTime.difference(DateTime.now());
-                        final countdownString =
-                            '${countdownDuration.inHours}:${(countdownDuration.inMinutes % 60).toString().padLeft(2, '0')}:${(countdownDuration.inSeconds % 60).toString().padLeft(2, '0')}';
-                        return Text(
-                          '(starts in $countdownString)',
-                          style: CustomTextStyle.timer,
-                        );
-                      },
-                    ),
-                  ],
-                );
+                  return Column(
+                    children: [
+                      const Text(
+                        'Upcoming lesson',
+                        textAlign: TextAlign.center,
+                        style: CustomTextStyle.headlineLargeWhite,
+                      ),
+                      const SizedBox(height: 8),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          Text(
+                            '${DateFormat('EEE, dd MMM yy', locale).format(startTime)} ${DateFormat('HH:mm', locale).format(startTime)} - ${DateFormat('HH:mm', locale).format(endTime)}',
+                            textAlign: TextAlign.center,
+                            style: const TextStyle(
+                                fontSize: 20, color: Colors.white),
+                          ),
+                          const SizedBox(width: 8),
+                          StreamBuilder<int>(
+                            stream: Stream.periodic(
+                                const Duration(seconds: 1), (i) => i),
+                            builder: (context, snapshot) {
+                              final countdownDuration =
+                                  startTime.difference(DateTime.now());
+                              final countdownString =
+                                  '${countdownDuration.inHours}:${(countdownDuration.inMinutes % 60).toString().padLeft(2, '0')}:${(countdownDuration.inSeconds % 60).toString().padLeft(2, '0')}';
+                              return Text(
+                                '(starts in $countdownString)',
+                                style: CustomTextStyle.timer,
+                              );
+                            },
+                          ),
+                        ],
+                      ),
+                      const SizedBox(height: 8),
+                      ElevatedButton.icon(
+                        onPressed: () {},
+                        label: const Text("Enter lesson room"),
+                        icon: const Icon(Icons.play_circle_fill_outlined),
+                      ),
+                    ],
+                  );
+                } else {
+                  return const Text(
+                    'You have no upcoming lesson.',
+                    textAlign: TextAlign.center,
+                    style: CustomTextStyle.headlineLargeWhite,
+                  );
+                }
               } else {
                 return const SizedBox
                     .shrink(); // Return an empty widget if there is no upcoming schedule
               }
             },
           ),
-          const SizedBox(height: 8),
-          ElevatedButton.icon(
-            onPressed: () {},
-            label: const Text("Enter lesson room"),
-            icon: const Icon(Icons.play_circle_fill_outlined),
-          ),
           const SizedBox(height: 20),
-          const Text(
-            'Total lesson time is 507 hours 5 minutes',
-            textAlign: TextAlign.center,
-            style: TextStyle(fontSize: 20, color: Colors.white),
-          ),
+          BlocBuilder<TutorListBloc, TutorListState>(
+            builder: (context, state) {
+              if (state is TutorListSuccess) {
+                final hours = state.totalCall ~/ 60;
+                final minutes = state.totalCall % 60;
+                return Text(
+                  'Total lesson time is $hours hours $minutes minutes',
+                  textAlign: TextAlign.center,
+                  style: const TextStyle(fontSize: 20, color: Colors.white),
+                );
+              }
+              // Return an empty Container when state is not TutorListSuccess
+              return Container();
+            },
+          )
         ],
       ),
     );

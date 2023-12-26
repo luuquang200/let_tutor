@@ -23,4 +23,21 @@ class UserApiClient {
       rethrow;
     }
   }
+
+  // get total call
+  Future<int> getTotalCall() async {
+    log('calling get total call api');
+    try {
+      final response = await DioClient.instance.get(
+        Endpoints.getTotalCall,
+      );
+      return response['total'];
+    } on DioException catch (e) {
+      throw DioExceptionHandler.fromDioError(e);
+    } catch (e) {
+      log('Error handling from get total call api:');
+      log('$e');
+      rethrow;
+    }
+  }
 }

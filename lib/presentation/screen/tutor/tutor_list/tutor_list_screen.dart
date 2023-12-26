@@ -4,6 +4,7 @@ import 'package:let_tutor/blocs/tutor/tutor_list/tutor_list_bloc.dart';
 import 'package:let_tutor/blocs/tutor/tutor_list/tutor_list_event.dart';
 import 'package:let_tutor/data/repositories/schedule_repository.dart';
 import 'package:let_tutor/data/repositories/tutor_repository.dart';
+import 'package:let_tutor/data/repositories/user_repository.dart';
 import 'package:let_tutor/presentation/screen/tutor/tutor_list/tutor_list_page.dart';
 
 class TutorListScreen extends StatefulWidget {
@@ -19,6 +20,7 @@ class _TutorListScreenState extends State<TutorListScreen> {
       create: (context) => TutorListBloc(
         tutorRepository: TutorRepository(),
         scheduleRepository: ScheduleRepository(),
+        userRepository: UserRepository(),
       )..add(TutorListRequested()),
       child: const TutorListPage(),
     );

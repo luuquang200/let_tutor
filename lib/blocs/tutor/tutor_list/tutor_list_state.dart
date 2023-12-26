@@ -26,6 +26,7 @@ class TutorListSuccess extends TutorListState {
   final bool isReset;
   final String selectedNationality;
   final BookedSchedule upcomingSchedule;
+  final int totalCall;
 
   const TutorListSuccess(
       this.tutors,
@@ -34,7 +35,8 @@ class TutorListSuccess extends TutorListState {
       this.testPreparations,
       this.isReset,
       this.selectedNationality,
-      this.upcomingSchedule);
+      this.upcomingSchedule,
+      this.totalCall);
 
   @override
   List<Object> get props => [
@@ -43,27 +45,29 @@ class TutorListSuccess extends TutorListState {
         learnTopics,
         testPreparations,
         isReset,
-        selectedNationality
+        selectedNationality,
+        upcomingSchedule,
+        totalCall
       ];
 
-  TutorListSuccess copyWith({
-    List<Tutor>? tutors,
-    Map<String, dynamic>? filters,
-    List<LearnTopic>? learnTopics,
-    List<TestPreparation>? testPreparations,
-    bool? isReset,
-    String? selectedNationality,
-    BookedSchedule? upcomingSchedule,
-  }) {
+  TutorListSuccess copyWith(
+      {List<Tutor>? tutors,
+      Map<String, dynamic>? filters,
+      List<LearnTopic>? learnTopics,
+      List<TestPreparation>? testPreparations,
+      bool? isReset,
+      String? selectedNationality,
+      BookedSchedule? upcomingSchedule,
+      int? totalCall}) {
     return TutorListSuccess(
-      tutors ?? this.tutors,
-      filters ?? this.filters,
-      learnTopics ?? this.learnTopics,
-      testPreparations ?? this.testPreparations,
-      isReset ?? this.isReset,
-      selectedNationality ?? this.selectedNationality,
-      upcomingSchedule ?? this.upcomingSchedule,
-    );
+        tutors ?? this.tutors,
+        filters ?? this.filters,
+        learnTopics ?? this.learnTopics,
+        testPreparations ?? this.testPreparations,
+        isReset ?? this.isReset,
+        selectedNationality ?? this.selectedNationality,
+        upcomingSchedule ?? this.upcomingSchedule,
+        totalCall ?? this.totalCall);
   }
 }
 
