@@ -7,7 +7,6 @@ import 'package:let_tutor/data/network/exceptions/dio_exception_handler.dart';
 
 class AuthenticationRepository {
   final AuthenticationApiClient _authenticationApiClient;
-  final Map<String, String> registeredAccounts = {};
 
   AuthenticationRepository({AuthenticationApiClient? authenticationApiClient})
       : _authenticationApiClient =

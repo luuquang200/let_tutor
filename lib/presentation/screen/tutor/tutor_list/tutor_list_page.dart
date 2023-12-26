@@ -9,12 +9,14 @@ import 'package:let_tutor/blocs/tutor/tutor_list/tutor_list_state.dart';
 import 'package:intl/intl.dart';
 import 'package:let_tutor/data/models/tutors/learn_topic.dart';
 import 'package:let_tutor/data/models/tutors/test_preparation.dart';
+import 'package:let_tutor/data/sharedpref/shared_preference_helper.dart';
 
 import 'package:let_tutor/presentation/styles/custom_text_style.dart';
 import 'package:let_tutor/presentation/widgets/tutor_information_card.dart';
 import 'package:number_paginator/number_paginator.dart';
 
 import 'package:let_tutor/data/models/tutors/tutor.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class TutorListPage extends StatefulWidget {
   const TutorListPage({Key? key}) : super(key: key);
@@ -469,12 +471,25 @@ class TutorListPageState extends State<TutorListPage> {
 
 class _BuildUpcomingLesson extends StatefulWidget {
   const _BuildUpcomingLesson();
-
   @override
   State<_BuildUpcomingLesson> createState() => __BuildUpcomingLessonState();
 }
 
 class __BuildUpcomingLessonState extends State<_BuildUpcomingLesson> {
+  String? locale;
+
+  @override
+  void initState() {
+    loadLocale();
+    super.initState();
+  }
+
+  Future<void> loadLocale() async {
+    locale = await getLocale();
+    log('locale: $locale');
+    setState(() {});
+  }
+
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -490,10 +505,51 @@ class __BuildUpcomingLessonState extends State<_BuildUpcomingLesson> {
             style: CustomTextStyle.headlineLargeWhite,
           ),
           const SizedBox(height: 8),
-          const Text(
-            'Sat, 28 Oct 23 02:30 - 02:55',
-            textAlign: TextAlign.center,
-            style: TextStyle(fontSize: 20, color: Colors.white),
+          BlocBuilder<TutorListBloc, TutorListState>(
+            builder: (context, state) {
+              if (state is TutorListSuccess) {
+                final upcomingSchedule = state.upcomingSchedule;
+                final startTime = DateTime.fromMillisecondsSinceEpoch(
+                    upcomingSchedule.scheduleDetailInfo?.startPeriodTimestamp ??
+                        0);
+                final endTime = DateTime.fromMillisecondsSinceEpoch(
+                    upcomingSchedule.scheduleDetailInfo?.endPeriodTimestamp ??
+                        0);
+
+                // final countdownDuration = startTime.difference(DateTime.now());
+                // final countdownString =
+                //     '${countdownDuration.inHours}:${(countdownDuration.inMinutes % 60).toString().padLeft(2, '0')}:${(countdownDuration.inSeconds % 60).toString().padLeft(2, '0')}';
+
+                return Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Text(
+                      '${DateFormat('EEE, dd MMM yy', locale).format(startTime)} ${DateFormat('HH:mm', locale).format(startTime)} - ${DateFormat('HH:mm', locale).format(endTime)}',
+                      textAlign: TextAlign.center,
+                      style: const TextStyle(fontSize: 20, color: Colors.white),
+                    ),
+                    const SizedBox(width: 8),
+                    StreamBuilder<int>(
+                      stream:
+                          Stream.periodic(const Duration(seconds: 1), (i) => i),
+                      builder: (context, snapshot) {
+                        final countdownDuration =
+                            startTime.difference(DateTime.now());
+                        final countdownString =
+                            '${countdownDuration.inHours}:${(countdownDuration.inMinutes % 60).toString().padLeft(2, '0')}:${(countdownDuration.inSeconds % 60).toString().padLeft(2, '0')}';
+                        return Text(
+                          '(starts in $countdownString)',
+                          style: CustomTextStyle.timer,
+                        );
+                      },
+                    ),
+                  ],
+                );
+              } else {
+                return const SizedBox
+                    .shrink(); // Return an empty widget if there is no upcoming schedule
+              }
+            },
           ),
           const SizedBox(height: 8),
           ElevatedButton.icon(
@@ -530,4 +586,10 @@ Map<String, String> getTopicsMap(
   }
 
   return topicsMap;
+}
+
+Future<String?> getLocale() async {
+  SharedPreferenceHelper sharedPreferences =
+      SharedPreferenceHelper(await SharedPreferences.getInstance());
+  return sharedPreferences.locale;
 }

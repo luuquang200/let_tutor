@@ -6,6 +6,7 @@ import 'package:let_tutor/blocs/tutor/booking/booking_bloc.dart';
 import 'package:let_tutor/blocs/tutor/tutor_detail/tutor_detail_bloc.dart';
 import 'package:let_tutor/blocs/tutor/tutor_list/tutor_list_bloc.dart';
 import 'package:let_tutor/data/repositories/authentication_repository.dart';
+import 'package:let_tutor/data/repositories/schedule_repository.dart';
 import 'package:let_tutor/data/repositories/tutor_repository.dart';
 import 'package:let_tutor/data/sharedpref/shared_preference_helper.dart';
 import 'package:let_tutor/presentation/screen/tutor/tutor_detail/tutor_detail_page.dart';
@@ -39,6 +40,7 @@ List<BlocProvider> buildBlocs(BuildContext context) {
     BlocProvider<TutorListBloc>(
       create: (context) => TutorListBloc(
         tutorRepository: context.read<TutorRepository>(),
+        scheduleRepository: context.read<ScheduleRepository>(),
       ),
     ),
     // tutor detail bloc

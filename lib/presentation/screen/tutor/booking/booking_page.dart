@@ -293,7 +293,7 @@ class BookingPageState extends State<BookingPage> {
         return AlertDialog(
           title: Row(
             children: [
-              Icon(icon),
+              Icon(icon, size: 30),
               const SizedBox(width: 10),
               Text(title),
             ],
@@ -354,10 +354,6 @@ class _CalendarPicker extends StatelessWidget {
   Widget build(BuildContext context) {
     // sort availableDate
     availableDate.sort((a, b) => a.compareTo(b));
-
-    // remove date before today
-    // DateTime today = DateTime.(DateTime.now().year, DateTime.now().month, DateTime.now().day));
-    // availableDate.removeWhere((date) => date.isBefore(today));
 
     if (availableDate.isEmpty) {
       return const Text("No available dates");

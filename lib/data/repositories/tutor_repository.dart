@@ -2,6 +2,7 @@ import 'dart:convert';
 import 'dart:developer';
 
 import 'package:flutter/services.dart';
+import 'package:let_tutor/data/models/schedule/booking.dart';
 import 'package:let_tutor/data/models/tutors/category.dart';
 import 'package:let_tutor/data/models/tutors/feedback.dart';
 import 'package:let_tutor/data/models/tutors/learn_topic.dart';
@@ -10,12 +11,14 @@ import 'package:let_tutor/data/models/tutors/tutor.dart';
 import 'package:let_tutor/data/models/tutors/tutor_schedule.dart';
 import 'package:let_tutor/data/models/tutors/tutor_search_result.dart';
 import 'package:let_tutor/data/models/user/user.dart';
+import 'package:let_tutor/data/network/apis/schedule_api_client.dart';
 import 'package:let_tutor/data/network/apis/tutor_api_client.dart';
 import 'package:let_tutor/data/network/apis/user_api_client.dart';
 
 class TutorRepository {
   final tutorApiClient = TutorApiClient();
   final userApiClient = UserApiClient();
+  final scheduleApiClient = ScheduleApiClient();
   List<Tutor> tutors = [
     Tutor(
       id: '1',

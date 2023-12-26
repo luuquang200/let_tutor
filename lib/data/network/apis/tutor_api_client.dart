@@ -166,6 +166,7 @@ class TutorApiClient {
         Endpoints.getSchedule,
         queryParameters: {'tutorId': tutorId, 'page': 0},
       );
+
       List<TutorSchedule> schedules;
       if (response["scheduleOfTutor"] == null) {
         schedules = <TutorSchedule>[];

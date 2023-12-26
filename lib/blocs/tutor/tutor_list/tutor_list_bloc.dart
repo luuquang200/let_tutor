@@ -4,19 +4,25 @@ import 'dart:developer';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:let_tutor/blocs/tutor/tutor_list/tutor_list_event.dart';
 import 'package:let_tutor/blocs/tutor/tutor_list/tutor_list_state.dart';
+import 'package:let_tutor/data/models/schedule/booking.dart';
 import 'package:let_tutor/data/models/tutors/learn_topic.dart';
 import 'package:let_tutor/data/models/tutors/test_preparation.dart';
+import 'package:let_tutor/data/repositories/schedule_repository.dart';
 import 'package:let_tutor/data/repositories/tutor_repository.dart';
 
 class TutorListBloc extends Bloc<TutorListEvent, TutorListState> {
   final TutorRepository tutorRepository;
+  final ScheduleRepository scheduleRepository;
   final page = 1;
   final tutorPerPage = 12;
   String? tutorName;
   bool isReset = false;
   String selectedNationality = "";
+  late BookedSchedule upcomingSchedule;
 
-  TutorListBloc({required this.tutorRepository}) : super(TutorListInitial()) {
+  TutorListBloc(
+      {required this.tutorRepository, required this.scheduleRepository})
+      : super(TutorListInitial()) {
     on<TutorListRequested>(_onTutorListRequested);
     on<FilterTutorsBySpeciality>(_onFilterTutorsBySpeciality);
     on<FilterTutorsByName>(_onFilterTutorsByName);
@@ -33,10 +39,36 @@ class TutorListBloc extends Bloc<TutorListEvent, TutorListState> {
       List<TestPreparation> testPreparations =
           await tutorRepository.getTestPreparation();
 
+      List<BookedSchedule> bookedSchedules =
+          await scheduleRepository.getBookedSchedule();
+
+      log('bookedSchedules: $bookedSchedules');
+
+      // Get the current timestamp
+      int currentTimestamp = DateTime.now().millisecondsSinceEpoch;
+
+      // Filter out past schedules
+      List<BookedSchedule> futureSchedules = bookedSchedules.where((schedule) {
+        return schedule.scheduleDetailInfo!.startPeriodTimestamp! >
+            currentTimestamp;
+      }).toList();
+
+      // Find the earliest schedule
+      if (futureSchedules.isNotEmpty) {
+        upcomingSchedule = futureSchedules.reduce((schedule1, schedule2) {
+          return schedule1.scheduleDetailInfo!.startPeriodTimestamp! <
+                  schedule2.scheduleDetailInfo!.startPeriodTimestamp!
+              ? schedule1
+              : schedule2;
+        });
+      } else {
+        upcomingSchedule = BookedSchedule();
+      }
+
       final Map<String, dynamic> filters = {}; // Initialize with no filters
 
       emit(TutorListSuccess(tutors, filters, learnTopics, testPreparations,
-          isReset, selectedNationality));
+          isReset, selectedNationality, upcomingSchedule));
     } catch (error) {
       log('error from tutor list bloc: $error');
       emit(TutorListFailure(error.toString()));
@@ -61,8 +93,11 @@ class TutorListBloc extends Bloc<TutorListEvent, TutorListState> {
         final filteredTutors = await tutorRepository.searchTutor(
             filters, page, tutorPerPage, tutorName);
 
-        emit(TutorListSuccess(filteredTutors, filters, currentState.learnTopics,
-            currentState.testPreparations, isReset, selectedNationality));
+        emit(currentState.copyWith(
+            tutors: filteredTutors,
+            filters: filters,
+            isReset: isReset,
+            selectedNationality: selectedNationality));
       }
     } catch (error) {
       emit(TutorListFailure(error.toString()));
@@ -81,8 +116,11 @@ class TutorListBloc extends Bloc<TutorListEvent, TutorListState> {
         final filteredTutors = await tutorRepository.searchTutor(
             filters, page, tutorPerPage, tutorName);
 
-        emit(TutorListSuccess(filteredTutors, filters, currentState.learnTopics,
-            currentState.testPreparations, isReset, selectedNationality));
+        emit(currentState.copyWith(
+            tutors: filteredTutors,
+            filters: filters,
+            isReset: isReset,
+            selectedNationality: selectedNationality));
       }
     } catch (error) {
       emit(TutorListFailure(error.toString()));
@@ -103,8 +141,11 @@ class TutorListBloc extends Bloc<TutorListEvent, TutorListState> {
         final filteredTutors = await tutorRepository.searchTutor(
             filters, page, tutorPerPage, tutorName);
 
-        emit(TutorListSuccess(filteredTutors, filters, currentState.learnTopics,
-            currentState.testPreparations, isReset, selectedNationality));
+        emit(currentState.copyWith(
+            tutors: filteredTutors,
+            filters: filters,
+            isReset: isReset,
+            selectedNationality: selectedNationality));
       }
     } catch (error) {
       emit(TutorListFailure(error.toString()));
@@ -123,7 +164,7 @@ class TutorListBloc extends Bloc<TutorListEvent, TutorListState> {
       isReset = true;
 
       emit(TutorListSuccess(tutors, filters, learnTopics, testPreparations,
-          isReset = true, selectedNationality));
+          isReset, selectedNationality, upcomingSchedule));
       tutorName = null;
     } catch (error) {
       log('error from tutor list bloc: $error');

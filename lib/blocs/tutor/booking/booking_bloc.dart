@@ -1,7 +1,6 @@
 import 'dart:async';
 import 'dart:developer';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:intl/intl.dart';
 import 'package:let_tutor/blocs/tutor/booking/booking_event.dart';
 import 'package:let_tutor/blocs/tutor/booking/booking_state.dart';
 import 'package:let_tutor/data/models/schedule/schedule_slot.dart';

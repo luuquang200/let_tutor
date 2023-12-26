@@ -20,4 +20,7 @@ class Endpoints {
 
   // User
   static const userInformation = '/user/info';
+
+  // schedule
+  static const getNextBookedSchedule = '/booking/next';
 }

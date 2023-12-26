@@ -38,6 +38,7 @@ class _SignInScreenState extends State<SignInScreen> {
           } else if (state is PasswordValid) {
             passwordErrorText = null;
           } else if (state is SignInLoading) {
+            ScaffoldMessenger.of(context).hideCurrentSnackBar();
             ScaffoldMessenger.of(context).showSnackBar(
               const SnackBar(
                 content: Text('Signing in...'),
@@ -47,6 +48,7 @@ class _SignInScreenState extends State<SignInScreen> {
             ScaffoldMessenger.of(context).hideCurrentSnackBar();
             Routes.navigateToReplacement(context, Routes.home);
           } else if (state is SignInFailure) {
+            ScaffoldMessenger.of(context).hideCurrentSnackBar();
             ScaffoldMessenger.of(context).showSnackBar(
               SnackBar(
                 content: Text(state.error),

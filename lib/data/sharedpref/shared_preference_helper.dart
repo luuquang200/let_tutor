@@ -67,4 +67,13 @@ class SharedPreferenceHelper {
   Future<String?> get userId async {
     return _sharedPreference.getString(Preferences.user_id);
   }
+
+  // Locale:-----------------------------------------------------
+  String? get locale {
+    return _sharedPreference.getString(Preferences.locale);
+  }
+
+  Future<void> changeLocale(String locale) {
+    return _sharedPreference.setString(Preferences.locale, locale);
+  }
 }
