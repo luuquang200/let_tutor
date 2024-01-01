@@ -19,4 +19,14 @@ class ScheduleRepository {
       rethrow;
     }
   }
+
+  Future<List<BookedSchedule>> getScheduleList(
+      {required int page, int perPage = 20}) async {
+    try {
+      return await _scheduleApiClient.getScheduleList(page, perPage);
+    } catch (e) {
+      log('Error from get schedule list repository: $e');
+      rethrow;
+    }
+  }
 }

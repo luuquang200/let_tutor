@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:let_tutor/blocs/schedule/schedule_bloc.dart';
 import 'package:let_tutor/blocs/sign_in/sign_in_bloc.dart';
 import 'package:let_tutor/blocs/sign_up/sign_up_bloc.dart';
 import 'package:let_tutor/blocs/tutor/booking/booking_bloc.dart';
@@ -60,6 +61,12 @@ List<BlocProvider> buildBlocs(BuildContext context) {
     BlocProvider<BookingBloc>(
       create: (context) => BookingBloc(
         tutorRepository: context.read<TutorRepository>(),
+      ),
+    ),
+    // schedule bloc
+    BlocProvider<ScheduleBloc>(
+      create: (context) => ScheduleBloc(
+        scheduleRepository: context.read<ScheduleRepository>(),
       ),
     ),
 

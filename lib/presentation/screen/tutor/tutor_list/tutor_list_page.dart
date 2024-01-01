@@ -562,8 +562,7 @@ class __BuildUpcomingLessonState extends State<_BuildUpcomingLesson> {
                   );
                 }
               } else {
-                return const SizedBox
-                    .shrink(); // Return an empty widget if there is no upcoming schedule
+                return const SizedBox.shrink();
               }
             },
           ),

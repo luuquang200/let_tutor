@@ -16,7 +16,7 @@ class Home extends StatefulWidget {
 class _HomeState extends State<Home> {
   List<Widget> screens = [
     const TutorListScreen(),
-    const ScheduleSceen(),
+    const ScheduleScreen(),
     const CoursesScreen(),
     const AccountScreen(),
   ];

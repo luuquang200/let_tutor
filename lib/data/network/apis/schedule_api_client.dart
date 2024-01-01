@@ -34,4 +34,30 @@ class ScheduleApiClient {
       rethrow;
     }
   }
+
+  // getScheduleList(int page, int perPage) {}
+  Future<List<BookedSchedule>> getScheduleList(int page, int perPage) async {
+    log('calling get schedule list api');
+    try {
+      var response = await DioClient.instance.get(
+        Endpoints.getScheduleList,
+        queryParameters: {
+          "page": page,
+          "perPage": perPage,
+          "inFuture": 1,
+          "orderBy": "meeting",
+          "sortedBy": "asc"
+        },
+      );
+      ScheduleResponse scheduleResponse =
+          ScheduleResponse.fromJson(response['data']);
+      return scheduleResponse.rows;
+    } on DioException catch (e) {
+      throw DioExceptionHandler.fromDioError(e);
+    } catch (e) {
+      log('Error handling from get schedule list api:');
+      log('$e');
+      rethrow;
+    }
+  }
 }

@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:let_tutor/data/models/schedule/booking.dart';
 
 class ScheduleResponse {
@@ -18,6 +20,7 @@ class ScheduleResponse {
         count: json['count'] ?? 0,
       );
     } catch (e) {
+      log('Error when parsing json to ScheduleResponse: $e');
       throw Exception('Error when parsing json to ScheduleResponse: $e');
     }
   }

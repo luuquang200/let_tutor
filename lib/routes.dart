@@ -3,9 +3,9 @@ import 'package:let_tutor/presentation/screen/authentication/sign_up_screen.dart
 import 'package:let_tutor/presentation/screen/courses/course_detail.dart';
 import 'package:let_tutor/presentation/screen/courses/courses_screen.dart';
 import 'package:let_tutor/presentation/screen/home.dart';
-import 'package:let_tutor/presentation/screen/schedule/schedule_screen.dart';
 import 'package:let_tutor/presentation/screen/authentication/sign_in_screen.dart';
 import 'package:let_tutor/presentation/screen/courses/topic_detail.dart';
+import 'package:let_tutor/presentation/screen/schedule/schedule_screen.dart';
 import 'package:let_tutor/presentation/screen/tutor/booking/booking_screen.dart';
 import 'package:let_tutor/presentation/screen/tutor/review/tutor_review_screen.dart';
 
@@ -63,7 +63,7 @@ class Routes {
       case topicDetail:
         return MaterialPageRoute(builder: (_) => const TopicDetail());
       case scheduleScreen:
-        return MaterialPageRoute(builder: (_) => const ScheduleSceen());
+        return MaterialPageRoute(builder: (_) => const ScheduleScreen());
       case videoCallScreen:
         return MaterialPageRoute(builder: (_) => const VideoCallScreen());
       case writeReview:

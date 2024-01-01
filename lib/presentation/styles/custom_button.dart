@@ -88,6 +88,7 @@ class MyOutlineButton extends StatelessWidget {
   final double width;
   final double textSize;
   final VoidCallback onPressed;
+  final Color color;
 
   const MyOutlineButton({
     Key? key,
@@ -97,13 +98,14 @@ class MyOutlineButton extends StatelessWidget {
     this.width = double.infinity,
     this.textSize = 20.0,
     required this.onPressed,
+    this.color = const Color(0xFF0058C6),
   }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return OutlinedButton(
       style: OutlinedButton.styleFrom(
-        side: const BorderSide(color: Color(0xFF0058C6), width: 1),
+        side: BorderSide(color: color, width: 1),
         minimumSize: Size(width, height),
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(radius),
@@ -113,7 +115,7 @@ class MyOutlineButton extends StatelessWidget {
       child: Text(
         text,
         style: TextStyle(
-          color: const Color(0xFF0058C6),
+          color: color,
           fontSize: textSize,
         ),
       ),
