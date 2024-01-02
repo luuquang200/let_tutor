@@ -11,6 +11,7 @@ class ScheduleBloc extends Bloc<ScheduleEvent, ScheduleState> {
 
   ScheduleBloc({required this.scheduleRepository}) : super(ScheduleInitial()) {
     on<GetScheduleList>(_onGetScheduleList);
+    on<CancelSchedule>(_onCancelSchedule);
   }
 
   Future<void> _onGetScheduleList(
@@ -52,5 +53,29 @@ class ScheduleBloc extends Bloc<ScheduleEvent, ScheduleState> {
         lastSchedule.scheduleDetailInfo?.scheduleInfo?.tutorInfo?.name ==
             currentSchedule.scheduleDetailInfo?.scheduleInfo?.tutorInfo?.name;
     return startTime.difference(endTime).inMinutes <= 5 && checkSameTeacher;
+  }
+
+  Future<void> _onCancelSchedule(
+      CancelSchedule event, Emitter<ScheduleState> emit) async {
+    final ScheduleState currentState;
+    if (state is! ScheduleLoadSuccess) {
+      return;
+    }
+    currentState = state;
+
+    emit(ScheduleLoading());
+    try {
+      await scheduleRepository.cancelSchedule(event.scheduleId);
+
+      if (currentState is ScheduleLoadSuccess) {
+        final schedules = currentState.schedules;
+        schedules.removeWhere((group) =>
+            group.any((schedule) => schedule.id == event.scheduleId));
+
+        emit(ScheduleLoadSuccess(schedules, isCancelSuccess: true));
+      }
+    } catch (e) {
+      emit(ScheduleLoadFailure(e.toString()));
+    }
   }
 }

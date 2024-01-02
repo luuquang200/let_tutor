@@ -1,8 +1,11 @@
 import 'dart:developer';
 
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:intl/intl.dart';
+import 'package:let_tutor/blocs/schedule/schedule_bloc.dart';
+import 'package:let_tutor/blocs/schedule/schedule_event.dart';
 import 'package:let_tutor/configs/app_config.dart';
 import 'package:let_tutor/data/models/country.dart';
 import 'package:let_tutor/data/models/schedule/booking.dart';
@@ -10,6 +13,7 @@ import 'package:let_tutor/presentation/screen/tutor/tutor_list/tutor_list_page.d
 import 'package:let_tutor/presentation/styles/custom_button.dart';
 import 'package:let_tutor/presentation/styles/custom_text_style.dart';
 import 'package:let_tutor/presentation/widgets/flag.dart';
+import 'package:let_tutor/presentation/widgets/separator_divider.dart';
 import 'package:let_tutor/presentation/widgets/tutor_avatar.dart';
 import 'package:let_tutor/routes.dart';
 
@@ -230,25 +234,102 @@ class _DetailLessonTimeState extends State<_DetailLessonTime> {
         widget.bookedSchedule.scheduleDetailInfo?.startPeriodTimestamp ?? 0);
     DateTime endTime = DateTime.fromMillisecondsSinceEpoch(
         widget.bookedSchedule.scheduleDetailInfo?.endPeriodTimestamp ?? 0);
+    String tutorName = widget
+            .bookedSchedule.scheduleDetailInfo?.scheduleInfo?.tutorInfo?.name ??
+        '';
+    String time =
+        '${DateFormat('hh:mm a').format(startTime)} - ${DateFormat('hh:mm a').format(endTime)}';
 
     return Column(
       children: [
-        _separatorDivider(),
+        const SeparatorDivider(marginLeft: 8.0, marginRight: 0),
         SizedBox(
           width: double.infinity, // Set a specific width
           child: Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              _timeInfo(startTime, endTime),
-              MyOutlineButton(
-                text: 'Cancel',
-                onPressed: () {},
-                height: 33,
-                width: 100,
-                radius: 3,
-                textSize: 16,
-                color: Colors.red,
-              ),
+              _timeInfo(time),
+              // Check if the start time is more than 2 hours from now
+              if (startTime.difference(DateTime.now()).inHours >= 2)
+                MyOutlineButton(
+                  text: 'Cancel',
+                  onPressed: () async {
+                    final originContext = context;
+                    final dialogResult = await showDialog<bool>(
+                      context: context,
+                      builder: (context) => AlertDialog(
+                          title: const Text('Cancel lesson'),
+                          content: Column(
+                            mainAxisSize: MainAxisSize.min,
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Row(
+                                children: [
+                                  TutorAvatar(
+                                      imageUrl: widget
+                                              .bookedSchedule
+                                              .scheduleDetailInfo
+                                              ?.scheduleInfo
+                                              ?.tutorInfo
+                                              ?.avatar ??
+                                          '',
+                                      tutorName: tutorName,
+                                      radius: 38),
+                                  const SizedBox(width: 16),
+                                  Column(
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.start,
+                                    children: [
+                                      Text(tutorName,
+                                          style: CustomTextStyle.headlineLarge),
+                                      // Text('Lesson Time: '),
+                                      // Text('Monday, 31 Oct 2023'),
+                                      Text(
+                                          DateFormat('EEE, dd MMM yy')
+                                              .format(startTime),
+                                          style: CustomTextStyle.bodyRegular),
+                                      Text(time,
+                                          style: CustomTextStyle.bodyRegular),
+                                    ],
+                                  ),
+                                ],
+                              ),
+                              const SizedBox(height: 8),
+                              const Text(
+                                  'Are you sure you want to cancel this lesson?',
+                                  style: CustomTextStyle.bodyLarge),
+                            ],
+                          ),
+                          actions: [
+                            MyOutlineButton(
+                              text: 'No',
+                              height: 25,
+                              radius: 5,
+                              onPressed: () => Navigator.pop(context, false),
+                              width: 26,
+                              textSize: 18,
+                            ),
+                            MyElevatedButton(
+                              text: 'Yes',
+                              height: 25,
+                              radius: 5,
+                              onPressed: () => Navigator.pop(context, true),
+                              width: 26,
+                              textSize: 18,
+                            )
+                          ]),
+                    );
+                    if (dialogResult ?? false) {
+                      BlocProvider.of<ScheduleBloc>(originContext)
+                          .add(CancelSchedule(widget.bookedSchedule.id ?? ''));
+                    }
+                  },
+                  height: 33,
+                  width: 100,
+                  radius: 3,
+                  textSize: 16,
+                  color: Colors.red,
+                ),
             ],
           ),
         ),
@@ -257,9 +338,7 @@ class _DetailLessonTimeState extends State<_DetailLessonTime> {
     );
   }
 
-  _timeInfo(DateTime startTime, DateTime endTime) {
-    String time =
-        '${DateFormat('hh:mm a').format(startTime)} - ${DateFormat('hh:mm a').format(endTime)}';
+  _timeInfo(String time) {
     return Padding(
         padding: const EdgeInsets.symmetric(horizontal: 0),
         child: Row(
@@ -270,19 +349,6 @@ class _DetailLessonTimeState extends State<_DetailLessonTime> {
             Text(time, style: CustomTextStyle.bodyRegular)
           ],
         ));
-  }
-
-  _separatorDivider() {
-    return const Padding(
-      padding: EdgeInsets.only(left: 8),
-      child: Column(
-        children: [
-          SizedBox(height: 8),
-          Divider(height: 1, color: Color.fromARGB(255, 200, 197, 197)),
-          SizedBox(height: 8),
-        ],
-      ),
-    );
   }
 
   _requestForLesson(BuildContext context) {
@@ -318,10 +384,15 @@ class _DetailLessonTimeState extends State<_DetailLessonTime> {
               ],
             ),
             if (isRequestExpanded)
-              const Padding(
-                padding: EdgeInsets.only(left: 48, right: 8),
-                child: Text(
-                  'I would like to learn about the history of the internet',
+              Padding(
+                padding: const EdgeInsets.only(left: 16, right: 6),
+                child: Column(
+                  children: [
+                    Text(
+                      widget.bookedSchedule.studentRequest ??
+                          'Currently there are no requests for this class. Please write down any requests for the teacher.',
+                    ),
+                  ],
                 ),
               ),
           ],

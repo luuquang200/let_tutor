@@ -13,3 +13,12 @@ class GetScheduleList extends ScheduleEvent {
   @override
   List<Object> get props => [];
 }
+
+class CancelSchedule extends ScheduleEvent {
+  final String scheduleId;
+
+  const CancelSchedule(this.scheduleId);
+
+  @override
+  List<Object> get props => [scheduleId];
+}

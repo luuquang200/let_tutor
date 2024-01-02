@@ -29,4 +29,13 @@ class ScheduleRepository {
       rethrow;
     }
   }
+
+  Future<void> cancelSchedule(String scheduleId) async {
+    try {
+      await _scheduleApiClient.cancelSchedule(scheduleId);
+    } catch (e) {
+      log('Error from cancel schedule repository: $e');
+      rethrow;
+    }
+  }
 }

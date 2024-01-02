@@ -130,7 +130,34 @@ class BookedScheduleTab extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return BlocBuilder<ScheduleBloc, ScheduleState>(
+    return BlocConsumer<ScheduleBloc, ScheduleState>(
+      listener: (context, state) {
+        if (state is ScheduleLoadFailure) {
+          ScaffoldMessenger.of(context)
+            ..hideCurrentSnackBar()
+            ..showSnackBar(
+              SnackBar(
+                content: Text(state.message),
+              ),
+            );
+        }
+        if (state is ScheduleLoadSuccess && state.isCancelSuccess) {
+          ScaffoldMessenger.of(context)
+            ..hideCurrentSnackBar()
+            ..showSnackBar(
+              const SnackBar(
+                content: Row(
+                  children: <Widget>[
+                    Icon(Icons.check_circle, color: Colors.white),
+                    SizedBox(width: 8.0),
+                    Text('Cancel schedule success !'),
+                  ],
+                ),
+                backgroundColor: Colors.green,
+              ),
+            );
+        }
+      },
       builder: (context, state) {
         if (state is ScheduleLoading) {
           return const Center(
@@ -139,10 +166,13 @@ class BookedScheduleTab extends StatelessWidget {
           );
         } else if (state is ScheduleLoadSuccess) {
           log('load success ${state.schedules.length}');
-          // Group schedules into groups with the previous schedule's end time 5 minutes from the next schedule's start time.
-          // The schedules have the same teacher and date
-          var groupedSchedules = state.schedules;
+          if (state.schedules.isEmpty) {
+            return const Center(
+              child: Text('No schedule found'),
+            );
+          }
 
+          var groupedSchedules = state.schedules;
           return Padding(
             padding: const EdgeInsets.symmetric(vertical: 8, horizontal: 16),
             child: ListView.builder(
@@ -150,13 +180,8 @@ class BookedScheduleTab extends StatelessWidget {
               scrollDirection: Axis.vertical,
               itemCount: groupedSchedules.length,
               itemBuilder: (context, index) {
-                return GestureDetector(
-                  onTap: () {
-                    Routes.navigateTo(context, Routes.courseDetail);
-                  },
-                  child: BookedScheduleCard(
-                    bookedSchedules: groupedSchedules[index],
-                  ),
+                return BookedScheduleCard(
+                  bookedSchedules: groupedSchedules[index],
                 );
               },
             ),
@@ -164,7 +189,7 @@ class BookedScheduleTab extends StatelessWidget {
         } else if (state is ScheduleLoadFailure) {
           return Text('Error: ${state.message}');
         } else {
-          return Text('Please click the button to load the schedules');
+          return const Text('Please click the button to load the schedules');
         }
       },
     );

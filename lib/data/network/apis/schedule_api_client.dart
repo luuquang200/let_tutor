@@ -60,4 +60,25 @@ class ScheduleApiClient {
       rethrow;
     }
   }
+
+  // cancelSchedule(String scheduleId) {}
+  Future<void> cancelSchedule(String scheduleId) async {
+    log('calling cancel schedule api');
+    try {
+      await DioClient.instance.delete(
+        Endpoints.cancelSchedule,
+        data: {
+          'scheduleDetailId': scheduleId,
+          'cancelInfo': {'cancelReasonId': 1}
+        },
+      );
+    } on DioException catch (e) {
+      log('Error handling from cancel schedule api: $e');
+      throw DioExceptionHandler.fromDioError(e);
+    } catch (e) {
+      log('Error handling from cancel schedule api:');
+      log('$e');
+      rethrow;
+    }
+  }
 }

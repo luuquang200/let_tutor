@@ -127,10 +127,21 @@ class DioClient {
         path,
         data: data,
         queryParameters: queryParameters,
-        options: options,
+        options: options?.copyWith(
+              followRedirects: false,
+              validateStatus: (status) {
+                return status != null ? status <= 500 : false;
+              },
+            ) ??
+            Options(
+              followRedirects: false,
+              validateStatus: (status) {
+                return status != null ? status <= 500 : false;
+              },
+            ),
         cancelToken: cancelToken,
       );
-      if (response.statusCode == 204) {
+      if (response.statusCode == 204 || response.statusCode == 200) {
         return response.data;
       }
       throw "something went wrong";

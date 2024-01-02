@@ -14,14 +14,17 @@ class ScheduleLoading extends ScheduleState {}
 
 class ScheduleLoadSuccess extends ScheduleState {
   final List<List<BookedSchedule>> schedules;
+  final bool isCancelSuccess;
 
-  const ScheduleLoadSuccess(this.schedules);
+  const ScheduleLoadSuccess(this.schedules, {this.isCancelSuccess = false});
 
   @override
-  List<Object> get props => [schedules];
+  List<Object> get props => [schedules, isCancelSuccess];
 
-  ScheduleLoadSuccess copyWith({List<List<BookedSchedule>>? schedules}) {
-    return ScheduleLoadSuccess(schedules ?? this.schedules);
+  ScheduleLoadSuccess copyWith(
+      {List<List<BookedSchedule>>? schedules, bool? isCancelSuccess}) {
+    return ScheduleLoadSuccess(schedules ?? this.schedules,
+        isCancelSuccess: isCancelSuccess ?? this.isCancelSuccess);
   }
 }
 

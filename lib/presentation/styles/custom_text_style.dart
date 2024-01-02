@@ -59,4 +59,10 @@ class CustomTextStyle {
     fontWeight: FontWeight.w500,
     color: Color.fromARGB(255, 255, 255, 0),
   );
+
+  static const bodyLarge = TextStyle(
+    fontSize: 18,
+    fontWeight: FontWeight.w500,
+    color: Colors.black,
+  );
 }
