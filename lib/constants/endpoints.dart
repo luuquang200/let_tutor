@@ -26,4 +26,5 @@ class Endpoints {
   static const getNextBookedSchedule = '/booking/next';
   static const getScheduleList = '/booking/list/student';
   static const cancelSchedule = '/booking/schedule-detail';
+  static const updateRequest = '/booking/student-request';
 }

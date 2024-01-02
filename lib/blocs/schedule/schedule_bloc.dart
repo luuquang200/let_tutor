@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'dart:developer';
 
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -12,6 +13,7 @@ class ScheduleBloc extends Bloc<ScheduleEvent, ScheduleState> {
   ScheduleBloc({required this.scheduleRepository}) : super(ScheduleInitial()) {
     on<GetScheduleList>(_onGetScheduleList);
     on<CancelSchedule>(_onCancelSchedule);
+    on<UpdateRequest>(_onUpdateRequest);
   }
 
   Future<void> _onGetScheduleList(
@@ -69,10 +71,39 @@ class ScheduleBloc extends Bloc<ScheduleEvent, ScheduleState> {
 
       if (currentState is ScheduleLoadSuccess) {
         final schedules = currentState.schedules;
-        schedules.removeWhere((group) =>
-            group.any((schedule) => schedule.id == event.scheduleId));
+        for (var group in schedules) {
+          group.removeWhere((schedule) => schedule.id == event.scheduleId);
+        }
 
         emit(ScheduleLoadSuccess(schedules, isCancelSuccess: true));
+      }
+    } catch (e) {
+      emit(ScheduleLoadFailure(e.toString()));
+    }
+  }
+
+  FutureOr<void> _onUpdateRequest(
+      UpdateRequest event, Emitter<ScheduleState> emit) async {
+    final ScheduleState currentState;
+    if (state is! ScheduleLoadSuccess) {
+      return;
+    }
+    currentState = state;
+    emit(ScheduleLoading());
+    try {
+      await scheduleRepository.updateRequest(event.scheduleId, event.request);
+
+      if (currentState is ScheduleLoadSuccess) {
+        final schedules = currentState.schedules;
+        for (final group in schedules) {
+          for (var schedule in group) {
+            if (schedule.id == event.scheduleId) {
+              schedule.studentRequest = event.request;
+            }
+          }
+        }
+
+        emit(ScheduleLoadSuccess(schedules));
       }
     } catch (e) {
       emit(ScheduleLoadFailure(e.toString()));

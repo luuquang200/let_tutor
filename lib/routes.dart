@@ -11,7 +11,6 @@ import 'package:let_tutor/presentation/screen/tutor/review/tutor_review_screen.d
 
 import 'package:let_tutor/presentation/screen/tutor/tutor_detail/tutor_detail_screen.dart';
 import 'package:let_tutor/presentation/screen/tutor/tutor_list/tutor_list_screen.dart';
-import 'package:let_tutor/presentation/screen/tutor/tutor_review_screen.dart';
 import 'package:let_tutor/presentation/screen/video_call/video_call_screen.dart';
 import 'package:let_tutor/presentation/screen/schedule/write_review.dart';
 import 'package:let_tutor/presentation/screen/authentication/forgot_password_screen.dart';

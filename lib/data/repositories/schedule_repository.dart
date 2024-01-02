@@ -38,4 +38,13 @@ class ScheduleRepository {
       rethrow;
     }
   }
+
+  Future<void> updateRequest(String scheduleId, String request) async {
+    try {
+      await _scheduleApiClient.updateRequest(scheduleId, request);
+    } catch (e) {
+      log('Error from update request repository: $e');
+      rethrow;
+    }
+  }
 }

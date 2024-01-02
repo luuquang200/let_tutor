@@ -4,14 +4,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:let_tutor/blocs/schedule/schedule_bloc.dart';
 import 'package:let_tutor/blocs/schedule/schedule_state.dart';
-import 'package:let_tutor/configs/app_config.dart';
-import 'package:let_tutor/data/models/country.dart';
-import 'package:let_tutor/data/models/schedule/booking.dart';
 import 'package:let_tutor/presentation/widgets/booked_schedule_card.dart';
 import 'package:let_tutor/presentation/widgets/history_card.dart';
-import 'package:let_tutor/routes.dart';
 import 'package:number_paginator/number_paginator.dart';
-import 'package:collection/collection.dart';
 
 class SchedulePage extends StatefulWidget {
   const SchedulePage({super.key});
@@ -75,24 +70,6 @@ class _SchedulePageState extends State<SchedulePage> {
       ),
     );
   }
-
-  // _bookedScheduleTab() {
-  //   return Padding(
-  //       padding: const EdgeInsets.symmetric(vertical: 8, horizontal: 16),
-  //       child: ListView.builder(
-  //         shrinkWrap: true,
-  //         scrollDirection: Axis.vertical,
-  //         itemCount: 10,
-  //         itemBuilder: (context, index) {
-  //           return GestureDetector(
-  //             onTap: () {
-  //               Routes.navigateTo(context, Routes.courseDetail);
-  //             },
-  //             child: const BookedScheduleCard(),
-  //           );
-  //         },
-  //       ));
-  // }
 
   _historyTab() {
     return SingleChildScrollView(
@@ -166,9 +143,9 @@ class BookedScheduleTab extends StatelessWidget {
           );
         } else if (state is ScheduleLoadSuccess) {
           log('load success ${state.schedules.length}');
-          if (state.schedules.isEmpty) {
+          if (state.schedules.isEmpty || state.schedules.first.isEmpty) {
             return const Center(
-              child: Text('No schedule found'),
+              child: Text('You have no schedule'),
             );
           }
 

@@ -82,7 +82,6 @@ class _BookedScheduleCardState extends State<BookedScheduleCard> {
               height: 20,
             ),
             _dateInfor(startTime),
-            // _timeInfo(startTime, endTime),
             Column(
               children: widget.bookedSchedules
                   .map(
@@ -184,38 +183,6 @@ class _BookedScheduleCardState extends State<BookedScheduleCard> {
   }
 }
 
-Future<bool> showEditRequestDialog(BuildContext context) async {
-  final textController = TextEditingController();
-  final result = await showDialog<bool>(
-    context: context,
-    builder: (context) => AlertDialog(
-      title: const Text('Request for Tutor'),
-      content: TextField(
-        controller: textController,
-        maxLines: 5,
-        decoration: const InputDecoration(
-          hintText: 'Enter your request here',
-          border: OutlineInputBorder(),
-          contentPadding: EdgeInsets.symmetric(vertical: 8, horizontal: 8),
-        ),
-      ),
-      actions: [
-        TextButton(
-          onPressed: () => Navigator.pop(context, false),
-          child: const Text('Cancel'),
-        ),
-        TextButton(
-          onPressed: () {
-            Navigator.pop(context, true);
-          },
-          child: const Text('Send'),
-        ),
-      ],
-    ),
-  );
-  return result ?? false;
-}
-
 class _DetailLessonTime extends StatefulWidget {
   final BookedSchedule bookedSchedule;
 
@@ -282,8 +249,6 @@ class _DetailLessonTimeState extends State<_DetailLessonTime> {
                                     children: [
                                       Text(tutorName,
                                           style: CustomTextStyle.headlineLarge),
-                                      // Text('Lesson Time: '),
-                                      // Text('Monday, 31 Oct 2023'),
                                       Text(
                                           DateFormat('EEE, dd MMM yy')
                                               .format(startTime),
@@ -358,7 +323,6 @@ class _DetailLessonTimeState extends State<_DetailLessonTime> {
           children: [
             Row(
               children: [
-                // _showEditRequestButton(context),
                 IconButton(
                   onPressed: () {
                     setState(() {
@@ -386,13 +350,9 @@ class _DetailLessonTimeState extends State<_DetailLessonTime> {
             if (isRequestExpanded)
               Padding(
                 padding: const EdgeInsets.only(left: 16, right: 6),
-                child: Column(
-                  children: [
-                    Text(
-                      widget.bookedSchedule.studentRequest ??
-                          'Currently there are no requests for this class. Please write down any requests for the teacher.',
-                    ),
-                  ],
+                child: Text(
+                  widget.bookedSchedule.studentRequest ??
+                      'Currently there are no requests for this class. Please write down any requests for the teacher.',
                 ),
               ),
           ],
@@ -402,7 +362,54 @@ class _DetailLessonTimeState extends State<_DetailLessonTime> {
   _showEditRequestButton(BuildContext context) {
     return IconButton(
         onPressed: () async {
-          final dialogResult = await showEditRequestDialog(context);
+          // final dialogResult = await showEditRequestDialog(context,  widget.bookedSchedule.studentRequest ?? '');final textController = TextEditingController();
+          TextEditingController textController = TextEditingController();
+          textController.text = widget.bookedSchedule.studentRequest ?? '';
+          final result = await showDialog<bool>(
+            context: context,
+            builder: (context) => AlertDialog(
+              title: const Text('Request for Tutor'),
+              content: TextField(
+                controller: textController,
+                maxLines: 5,
+                decoration: const InputDecoration(
+                  hintText: 'Enter your request here',
+                  border: OutlineInputBorder(),
+                  contentPadding:
+                      EdgeInsets.symmetric(vertical: 8, horizontal: 8),
+                ),
+              ),
+              actions: [
+                TextButton(
+                  onPressed: () => Navigator.pop(context, false),
+                  child: const Text('Cancel'),
+                ),
+                TextButton(
+                  onPressed: () {
+                    if (textController.text.trim().isNotEmpty) {
+                      Navigator.pop(context, true);
+                    } else {
+                      // show a message to the user
+                      ScaffoldMessenger.of(context)
+                        ..hideCurrentSnackBar()
+                        ..showSnackBar(
+                          const SnackBar(
+                            content: Text(
+                                'Please enter your request before sending'),
+                          ),
+                        );
+                    }
+                  },
+                  child: const Text('Send'),
+                ),
+              ],
+            ),
+          );
+
+          if (result ?? false) {
+            BlocProvider.of<ScheduleBloc>(context).add(UpdateRequest(
+                widget.bookedSchedule.id ?? '', textController.text));
+          }
         },
         icon: Icon(
           Icons.edit_note_outlined,

@@ -81,4 +81,21 @@ class ScheduleApiClient {
       rethrow;
     }
   }
+
+  Future<void> updateRequest(String scheduleId, String request) async {
+    log('calling update request api');
+    try {
+      await DioClient.instance.post(
+        '${Endpoints.updateRequest}/$scheduleId',
+        data: {'studentRequest': request},
+      );
+    } on DioException catch (e) {
+      log('Error handling from update request api: $e');
+      throw DioExceptionHandler.fromDioError(e);
+    } catch (e) {
+      log('Error handling from update request api:');
+      log('$e');
+      rethrow;
+    }
+  }
 }
