@@ -1,23 +1,18 @@
-import 'dart:developer';
-
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:let_tutor/blocs/courses/courses_list/courses_list_bloc.dart';
-import 'package:let_tutor/blocs/courses/courses_list/courses_list_event.dart';
 import 'package:let_tutor/blocs/courses/courses_list/courses_list_state.dart';
-import 'package:let_tutor/data/repositories/course_repository.dart';
-import 'package:let_tutor/presentation/screen/courses/widgets/all_courses_tab.dart';
 import 'package:let_tutor/presentation/screen/courses/widgets/course_card.dart';
 import 'package:let_tutor/routes.dart';
 
-class CoursesScreen extends StatefulWidget {
-  const CoursesScreen({super.key});
+class AllCoursesTab extends StatefulWidget {
+  const AllCoursesTab({super.key});
 
   @override
-  State<CoursesScreen> createState() => _CoursesScreenState();
+  State<AllCoursesTab> createState() => _AllCoursesTabState();
 }
 
-class _CoursesScreenState extends State<CoursesScreen> {
+class _AllCoursesTabState extends State<AllCoursesTab> {
   bool visibilityFilter = false;
   List<String> levels = [
     'All level',
@@ -55,118 +50,45 @@ class _CoursesScreenState extends State<CoursesScreen> {
   late String _selectedLevel = levels[0];
   late String _selectedCategory = categories[0];
   late String _selectedSortLevel = sortLevels[0];
-
   @override
   Widget build(BuildContext context) {
-    return BlocProvider(
-        create: (context) => CoursesListBloc(
-              courseRepository: CourseRepository(),
-            )..add(const GetCoursesList()),
-        child: DefaultTabController(
-          length: 2,
-          child: Scaffold(
-            appBar: AppBar(
-              title: const Text('Discover Courses'),
-              bottom: TabBar(
-                indicatorColor: Theme.of(context).primaryColor,
-                tabs: [
-                  _allCoursesTabHeadline(),
-                  _ebooksTabHeadline(),
-                ],
+    return BlocBuilder(
+        bloc: BlocProvider.of<CoursesListBloc>(context),
+        builder: (context, state) {
+          if (state is CoursesListLoading) {
+            return const Center(
+              widthFactor: 1,
+              child: CircularProgressIndicator(),
+            );
+          } else if (state is CoursesListLoadSuccess) {
+            return Padding(
+              padding: const EdgeInsets.symmetric(vertical: 8, horizontal: 16),
+              child: ListView.builder(
+                shrinkWrap: true,
+                itemCount: state.courses.length,
+                itemBuilder: (context, index) {
+                  return InkWell(
+                    onTap: () {
+                      Navigator.pushNamed(
+                        context,
+                        Routes.courseDetail,
+                        arguments: state.courses[index],
+                      );
+                    },
+                    child: CourseCard(
+                      course: state.courses[index],
+                    ),
+                  );
+                },
               ),
-            ),
-            body: TabBarView(
-              children: [
-                const AllCoursesTab(),
-                _ebooksTab(),
-              ],
-            ),
-          ),
-        ));
-  }
-
-  _allCoursesTabHeadline() {
-    return Tab(
-      icon: Row(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: [
-          Icon(
-            Icons.menu_book_outlined,
-            color: Theme.of(context).primaryColor,
-          ),
-          const SizedBox(width: 8),
-          Text(
-            'All Courses',
-            style: TextStyle(color: Theme.of(context).primaryColor),
-          )
-        ],
-      ),
-    );
-  }
-
-  _ebooksTabHeadline() {
-    return Tab(
-      icon: Row(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: [
-          Icon(
-            Icons.phone_android_outlined,
-            color: Theme.of(context).primaryColor,
-          ),
-          const SizedBox(width: 8),
-          Text(
-            'E-Books',
-            style: TextStyle(
-              color: Theme.of(context).primaryColor,
-            ),
-          )
-        ],
-      ),
-    );
-  }
-
-  _ebooksTab() {
-    return Padding(
-      padding: const EdgeInsets.all(16),
-      child: Column(
-        children: [
-          _filterBar(),
-          const SizedBox(height: 8),
-          Visibility(
-            visible: visibilityFilter,
-            child: Column(
-              children: [
-                _levelFilter(),
-                const SizedBox(
-                  height: 8,
-                ),
-                _categoriesFilter(),
-                const SizedBox(
-                  height: 8,
-                ),
-                _sortLevel(),
-                const SizedBox(
-                  height: 8,
-                ),
-              ],
-            ),
-          ),
-          Expanded(
-            child: ListView.builder(
-              shrinkWrap: true,
-              scrollDirection: Axis.vertical,
-              itemCount: 10,
-              itemBuilder: (context, index) {
-                return GestureDetector(
-                  onTap: () {},
-                  // child: const CourseCard(),
-                );
-              },
-            ),
-          ),
-        ],
-      ),
-    );
+            );
+          } else if (state is CoursesListLoadFailure) {
+            return Center(
+              child: Text(state.message),
+            );
+          }
+          return Container();
+        });
   }
 
   _filterBar() {

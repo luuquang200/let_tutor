@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/flutter_svg.dart';
-import 'package:let_tutor/blocs/forgot_password/forgot_password_bloc.dart';
-import 'package:let_tutor/blocs/forgot_password/forgot_password_event.dart';
-import 'package:let_tutor/blocs/forgot_password/forgot_password_state.dart';
+import 'package:let_tutor/blocs/auth/forgot_password/forgot_password_bloc.dart';
+import 'package:let_tutor/blocs/auth/forgot_password/forgot_password_event.dart';
+import 'package:let_tutor/blocs/auth/forgot_password/forgot_password_state.dart';
 import 'package:let_tutor/data/repositories/authentication_repository.dart';
 import 'package:let_tutor/presentation/styles/custom_button.dart';
 import 'package:let_tutor/presentation/styles/custom_text_style.dart';

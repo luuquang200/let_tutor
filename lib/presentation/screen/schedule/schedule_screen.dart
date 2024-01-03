@@ -18,7 +18,6 @@ class ScheduleScreen extends StatefulWidget {
 class _ScheduleScreenState extends State<ScheduleScreen> {
   @override
   Widget build(BuildContext context) {
-    log('schedule screen');
     return MultiBlocProvider(
       providers: [
         BlocProvider<ScheduleBloc>(

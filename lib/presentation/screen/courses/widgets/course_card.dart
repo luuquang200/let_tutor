@@ -1,8 +1,26 @@
+import 'dart:developer';
+
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
+import 'package:let_tutor/data/models/course/course.dart';
+import 'package:let_tutor/presentation/screen/courses/widgets/course_cover_image.dart';
 import 'package:let_tutor/presentation/styles/custom_text_style.dart';
 
 class CourseCard extends StatelessWidget {
-  const CourseCard({super.key});
+  final Course course;
+  const CourseCard({super.key, required this.course});
+
+  static const Map<String, String> levels = {
+    '0': 'Any Level',
+    '1': 'Beginner',
+    '2': 'Upper-Beginner',
+    '3': 'Pre-Intermediate',
+    '4': 'Intermediate',
+    '5': 'Upper-Intermediate',
+    '6': 'Pre-Advanced',
+    '7': 'Advanced',
+    '8': 'Very Advanced'
+  };
 
   @override
   Widget build(BuildContext context) {
@@ -11,19 +29,19 @@ class CourseCard extends StatelessWidget {
         surfaceTintColor: Colors.white,
         child: Column(
           children: [
-            Image.asset('assets/course_img_url.png'),
-            const Padding(
-              padding: EdgeInsets.symmetric(vertical: 12, horizontal: 16),
+            CourseCoverImage(imageUrl: course.imageUrl ?? ''),
+            Padding(
+              padding: const EdgeInsets.symmetric(vertical: 12, horizontal: 16),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Text('Life in the Internet Age',
+                  Text(course.name ?? 'Course name',
                       style: CustomTextStyle.headlineLarge),
-                  SizedBox(
+                  const SizedBox(
                     height: 8,
                   ),
                   Text(
-                    "Let's discuss how technology is changing the way we live",
+                    course.description ?? 'Course description',
                     style: TextStyle(
                         fontWeight: FontWeight.w400, color: Colors.grey),
                   ),
@@ -34,11 +52,12 @@ class CourseCard extends StatelessWidget {
                     children: [
                       Expanded(
                           child: Text(
-                        "Intermediate",
+                        levels[course.level] ?? '',
                         style: TextStyle(fontSize: 18),
                       )),
+                      // length of the course
                       Text(
-                        '9 lessons',
+                        '${course.topics?.length.toString() ?? '0'} lessons',
                         style: TextStyle(fontSize: 18),
                       )
                     ],

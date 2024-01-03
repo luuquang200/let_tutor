@@ -1,6 +1,6 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:let_tutor/blocs/forgot_password/forgot_password_event.dart';
-import 'package:let_tutor/blocs/forgot_password/forgot_password_state.dart';
+import 'package:let_tutor/blocs/auth/forgot_password/forgot_password_event.dart';
+import 'package:let_tutor/blocs/auth/forgot_password/forgot_password_state.dart';
 import 'package:let_tutor/data/repositories/authentication_repository.dart';
 
 class ForgotPasswordBloc

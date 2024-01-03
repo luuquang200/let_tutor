@@ -71,9 +71,13 @@ class ScheduleBloc extends Bloc<ScheduleEvent, ScheduleState> {
 
       if (currentState is ScheduleLoadSuccess) {
         final schedules = currentState.schedules;
+        // remove schedule
         for (var group in schedules) {
           group.removeWhere((schedule) => schedule.id == event.scheduleId);
         }
+
+        // remove empty group
+        schedules.removeWhere((group) => group.isEmpty);
 
         emit(ScheduleLoadSuccess(schedules, isCancelSuccess: true));
       }
