@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/flutter_svg.dart';
-import 'package:let_tutor/blocs/sign_up/sign_up_bloc.dart';
-import 'package:let_tutor/blocs/sign_up/sign_up_event.dart';
-import 'package:let_tutor/blocs/sign_up/sign_up_state.dart';
+import 'package:let_tutor/blocs/auth/sign_up/sign_up_bloc.dart';
+import 'package:let_tutor/blocs/auth/sign_up/sign_up_event.dart';
+import 'package:let_tutor/blocs/auth/sign_up/sign_up_state.dart';
 import 'package:let_tutor/presentation/styles/custom_button.dart';
 import 'package:let_tutor/data/repositories/authentication_repository.dart';
 import 'package:let_tutor/routes.dart';

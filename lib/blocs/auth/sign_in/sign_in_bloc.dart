@@ -1,8 +1,8 @@
 import 'dart:developer';
 
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:let_tutor/blocs/sign_in/sign_in_event.dart';
-import 'package:let_tutor/blocs/sign_in/sign_in_state.dart';
+import 'package:let_tutor/blocs/auth/sign_in/sign_in_event.dart';
+import 'package:let_tutor/blocs/auth/sign_in/sign_in_state.dart';
 import 'package:let_tutor/data/models/user/authentication_response.dart';
 import 'package:let_tutor/data/models/user/user.dart';
 import 'package:let_tutor/data/repositories/authentication_repository.dart';

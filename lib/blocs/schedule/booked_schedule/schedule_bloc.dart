@@ -2,9 +2,9 @@ import 'dart:async';
 import 'dart:developer';
 
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:let_tutor/blocs/schedule/schedule_event.dart';
-import 'package:let_tutor/blocs/schedule/schedule_state.dart';
-import 'package:let_tutor/data/models/schedule/booking.dart';
+import 'package:let_tutor/blocs/schedule/booked_schedule/schedule_event.dart';
+import 'package:let_tutor/blocs/schedule/booked_schedule/schedule_state.dart';
+import 'package:let_tutor/data/models/schedule/booked_schedule.dart';
 import 'package:let_tutor/data/repositories/schedule_repository.dart';
 
 class ScheduleBloc extends Bloc<ScheduleEvent, ScheduleState> {

@@ -1,6 +1,6 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:let_tutor/blocs/sign_up/sign_up_event.dart';
-import 'package:let_tutor/blocs/sign_up/sign_up_state.dart';
+import 'package:let_tutor/blocs/auth/sign_up/sign_up_event.dart';
+import 'package:let_tutor/blocs/auth/sign_up/sign_up_state.dart';
 import 'package:let_tutor/data/repositories/authentication_repository.dart';
 
 class SignUpBloc extends Bloc<SignUpEvent, SignUpState> {

@@ -6,8 +6,7 @@ import 'package:intl/date_symbol_data_local.dart';
 import 'package:let_tutor/configs/app_config.dart';
 import 'package:let_tutor/presentation/screen/authentication/sign_in_screen.dart';
 import 'package:let_tutor/routes.dart';
-import 'package:let_tutor/app_providers.dart';
-//
+import 'package:let_tutor/blocs/auth/auth_providers.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -23,7 +22,7 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MultiRepositoryProvider(
-      providers: buildRepositories(),
+      providers: buildAuthRepositories(),
       child: MaterialApp(
         title: 'LetTutor',
         debugShowCheckedModeBanner: false,
@@ -36,7 +35,7 @@ class MyApp extends StatelessWidget {
         ),
         onGenerateRoute: Routes.generateRoute,
         home: MultiBlocProvider(
-          providers: buildBlocs(context),
+          providers: buildAuthBlocs(context),
           child: const SignInScreen(),
         ),
       ),

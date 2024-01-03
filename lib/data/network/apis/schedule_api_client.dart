@@ -2,7 +2,7 @@ import 'dart:developer';
 
 import 'package:dio/dio.dart';
 import 'package:let_tutor/constants/endpoints.dart';
-import 'package:let_tutor/data/models/schedule/booking.dart';
+import 'package:let_tutor/data/models/schedule/booked_schedule.dart';
 import 'package:let_tutor/data/models/schedule/next_schedule_reponse.dart';
 import 'package:let_tutor/data/models/schedule/schedule_response.dart';
 import 'package:let_tutor/data/network/dio_client.dart';
@@ -94,6 +94,32 @@ class ScheduleApiClient {
       throw DioExceptionHandler.fromDioError(e);
     } catch (e) {
       log('Error handling from update request api:');
+      log('$e');
+      rethrow;
+    }
+  }
+
+  // getHistoryScheduleList(int page, int perPage) {}
+  Future<ScheduleResponse> getHistoryScheduleList(int page, int perPage) async {
+    log('calling get history schedule list api');
+    try {
+      var response = await DioClient.instance.get(
+        Endpoints.getScheduleList,
+        queryParameters: {
+          "page": page,
+          "perPage": perPage,
+          "inFuture": 0,
+          "orderBy": "meeting",
+          "sortedBy": "desc"
+        },
+      );
+      ScheduleResponse scheduleResponse =
+          ScheduleResponse.fromJson(response['data']);
+      return scheduleResponse;
+    } on DioException catch (e) {
+      throw DioExceptionHandler.fromDioError(e);
+    } catch (e) {
+      log('Error handling from get history schedule list api:');
       log('$e');
       rethrow;
     }

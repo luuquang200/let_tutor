@@ -1,6 +1,7 @@
 import 'dart:developer';
 
-import 'package:let_tutor/data/models/schedule/booking.dart';
+import 'package:let_tutor/data/models/schedule/booked_schedule.dart';
+import 'package:let_tutor/data/models/schedule/schedule_response.dart';
 import 'package:let_tutor/data/network/apis/schedule_api_client.dart';
 
 class ScheduleRepository {
@@ -44,6 +45,16 @@ class ScheduleRepository {
       await _scheduleApiClient.updateRequest(scheduleId, request);
     } catch (e) {
       log('Error from update request repository: $e');
+      rethrow;
+    }
+  }
+
+  Future<ScheduleResponse> getHistoryScheduleList(
+      {required int page, int perPage = 20}) async {
+    try {
+      return await _scheduleApiClient.getHistoryScheduleList(page, perPage);
+    } catch (e) {
+      log('Error from get history schedule list repository: $e');
       rethrow;
     }
   }

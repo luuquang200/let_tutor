@@ -4,7 +4,7 @@ import 'dart:developer';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:let_tutor/blocs/tutor/tutor_list/tutor_list_event.dart';
 import 'package:let_tutor/blocs/tutor/tutor_list/tutor_list_state.dart';
-import 'package:let_tutor/data/models/schedule/booking.dart';
+import 'package:let_tutor/data/models/schedule/booked_schedule.dart';
 import 'package:let_tutor/data/models/tutors/learn_topic.dart';
 import 'package:let_tutor/data/models/tutors/test_preparation.dart';
 import 'package:let_tutor/data/models/user/user.dart';

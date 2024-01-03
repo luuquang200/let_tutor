@@ -2,7 +2,7 @@ import 'dart:convert';
 import 'dart:developer';
 
 import 'package:flutter/services.dart';
-import 'package:let_tutor/data/models/schedule/booking.dart';
+import 'package:let_tutor/data/models/schedule/booked_schedule.dart';
 import 'package:let_tutor/data/models/tutors/category.dart';
 import 'package:let_tutor/data/models/tutors/feedback.dart';
 import 'package:let_tutor/data/models/tutors/learn_topic.dart';

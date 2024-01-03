@@ -1,5 +1,5 @@
 import 'package:equatable/equatable.dart';
-import 'package:let_tutor/data/models/schedule/booking.dart';
+import 'package:let_tutor/data/models/schedule/booked_schedule.dart';
 
 abstract class ScheduleState extends Equatable {
   const ScheduleState();

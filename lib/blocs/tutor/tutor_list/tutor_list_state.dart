@@ -1,5 +1,5 @@
 import 'package:equatable/equatable.dart';
-import 'package:let_tutor/data/models/schedule/booking.dart';
+import 'package:let_tutor/data/models/schedule/booked_schedule.dart';
 import 'package:let_tutor/data/models/tutors/learn_topic.dart';
 import 'package:let_tutor/data/models/tutors/test_preparation.dart';
 import 'package:let_tutor/data/models/tutors/tutor.dart';

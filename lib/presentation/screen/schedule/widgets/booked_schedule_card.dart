@@ -4,11 +4,11 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:intl/intl.dart';
-import 'package:let_tutor/blocs/schedule/schedule_bloc.dart';
-import 'package:let_tutor/blocs/schedule/schedule_event.dart';
+import 'package:let_tutor/blocs/schedule/booked_schedule/schedule_bloc.dart';
+import 'package:let_tutor/blocs/schedule/booked_schedule/schedule_event.dart';
 import 'package:let_tutor/configs/app_config.dart';
 import 'package:let_tutor/data/models/country.dart';
-import 'package:let_tutor/data/models/schedule/booking.dart';
+import 'package:let_tutor/data/models/schedule/booked_schedule.dart';
 import 'package:let_tutor/presentation/screen/tutor/tutor_list/tutor_list_page.dart';
 import 'package:let_tutor/presentation/styles/custom_button.dart';
 import 'package:let_tutor/presentation/styles/custom_text_style.dart';
@@ -174,10 +174,10 @@ class _BookedScheduleCardState extends State<BookedScheduleCard> {
         child: Row(
           children: [
             const SizedBox(width: 14),
-            const Icon(Icons.calendar_today_outlined, size: 22),
+            const Icon(Icons.calendar_today_outlined, size: 22, weight: 2),
             const SizedBox(width: 12),
-            Text(DateFormat('EEE, dd MMM yy', locale).format(startTime),
-                style: CustomTextStyle.bodyRegular),
+            Text(DateFormat('EEE, dd MMM yyyy', locale).format(startTime),
+                style: CustomTextStyle.bodyLarge),
           ],
         ));
   }
@@ -318,8 +318,9 @@ class _DetailLessonTimeState extends State<_DetailLessonTime> {
 
   _requestForLesson(BuildContext context) {
     return Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 0),
+        padding: const EdgeInsets.only(left: 6, right: 6),
         child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Row(
               children: [
@@ -349,7 +350,7 @@ class _DetailLessonTimeState extends State<_DetailLessonTime> {
             ),
             if (isRequestExpanded)
               Padding(
-                padding: const EdgeInsets.only(left: 16, right: 6),
+                padding: const EdgeInsets.only(left: 41, right: 6),
                 child: Text(
                   widget.bookedSchedule.studentRequest ??
                       'Currently there are no requests for this class. Please write down any requests for the teacher.',
