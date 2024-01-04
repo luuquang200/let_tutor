@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:let_tutor/data/models/course/course.dart';
 import 'package:let_tutor/presentation/screen/authentication/sign_up_screen.dart';
 import 'package:let_tutor/presentation/screen/courses/course_detail.dart';
 import 'package:let_tutor/presentation/screen/courses/courses_screen.dart';
@@ -58,7 +59,9 @@ class Routes {
       case coursesScreen:
         return MaterialPageRoute(builder: (_) => const CoursesScreen());
       case courseDetail:
-        return MaterialPageRoute(builder: (_) => const CourseDetail());
+        return MaterialPageRoute(
+            builder: (_) =>
+                CourseDetail(courseId: settings.arguments as String));
       case topicDetail:
         return MaterialPageRoute(builder: (_) => const TopicDetail());
       case scheduleScreen:

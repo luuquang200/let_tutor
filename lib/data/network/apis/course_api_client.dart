@@ -2,6 +2,8 @@ import 'dart:developer';
 
 import 'package:dio/dio.dart';
 import 'package:let_tutor/constants/endpoints.dart';
+import 'package:let_tutor/data/models/course/course.dart';
+import 'package:let_tutor/data/models/course/course_category_response.dart';
 import 'package:let_tutor/data/models/course/course_reponse.dart';
 import 'package:let_tutor/data/network/dio_client.dart';
 import 'package:let_tutor/data/network/exceptions/dio_exception_handler.dart';
@@ -21,6 +23,40 @@ class CourseApiClient {
       throw DioExceptionHandler.fromDioError(e);
     } catch (e) {
       log('Error handling from get courses list api:');
+      log('$e');
+      rethrow;
+    }
+  }
+
+  // getCourseCategories() {}
+  Future<CourseCategoryResponse> getCourseCategories() async {
+    log('calling get course categories api');
+    try {
+      var response =
+          await DioClient.instance.get(Endpoints.getCourseCategories);
+      CourseCategoryResponse contentCategoryResponse =
+          CourseCategoryResponse.fromJson(response);
+      return contentCategoryResponse;
+    } on DioException catch (e) {
+      throw DioExceptionHandler.fromDioError(e);
+    } catch (e) {
+      log('Error handling from get course categories api:');
+      log('$e');
+      rethrow;
+    }
+  }
+
+  Future<Course> getDetailCourse(String id) async {
+    log('calling get detail course api');
+    try {
+      var response =
+          await DioClient.instance.get('${Endpoints.getDetailCourse}/$id');
+      Course course = Course.fromJson(response['data']);
+      return course;
+    } on DioException catch (e) {
+      throw DioExceptionHandler.fromDioError(e);
+    } catch (e) {
+      log('Error handling from get detail course api:');
       log('$e');
       rethrow;
     }

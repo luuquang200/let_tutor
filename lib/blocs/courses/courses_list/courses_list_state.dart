@@ -1,35 +1,73 @@
 import 'package:equatable/equatable.dart';
 import 'package:let_tutor/data/models/course/course.dart';
+import 'package:let_tutor/data/models/course/course_category.dart';
 
-abstract class CoursesListState extends Equatable {
-  const CoursesListState();
+abstract class CourseState extends Equatable {
+  const CourseState();
 
   @override
   List<Object> get props => [];
 }
 
-class CoursesListInitial extends CoursesListState {}
+// Courses list
+class CoursesListInitial extends CourseState {}
 
-class CoursesListLoading extends CoursesListState {}
+class CoursesListLoading extends CourseState {}
 
-class CoursesListLoadSuccess extends CoursesListState {
+class CoursesListLoadSuccess extends CourseState {
   final List<Course> courses;
+  final List<CourseCategory> categories;
 
-  const CoursesListLoadSuccess(this.courses);
+  const CoursesListLoadSuccess(this.courses, this.categories);
 
   @override
-  List<Object> get props => [courses];
+  List<Object> get props => [courses, categories];
 
-  CoursesListLoadSuccess copyWith({List<Course>? courses}) {
-    return CoursesListLoadSuccess(courses ?? this.courses);
+  CoursesListLoadSuccess copyWith(
+      {List<Course>? courses, List<CourseCategory>? categories}) {
+    return CoursesListLoadSuccess(
+        courses ?? this.courses, categories ?? this.categories);
   }
 }
 
-class CoursesListLoadFailure extends CoursesListState {
+class CoursesListLoadFailure extends CourseState {
   final String message;
 
   const CoursesListLoadFailure(this.message);
 
   @override
   List<Object> get props => [message];
+}
+
+// Course detail
+class CourseDetailInitial extends CourseState {
+  const CourseDetailInitial();
+
+  @override
+  List<Object> get props => [];
+}
+
+class CourseDetailLoadSuccess extends CourseState {
+  final Course course;
+
+  const CourseDetailLoadSuccess(this.course);
+
+  @override
+  List<Object> get props => [course];
+}
+
+class CourseDetailLoadFailure extends CourseState {
+  final String message;
+
+  const CourseDetailLoadFailure(this.message);
+
+  @override
+  List<Object> get props => [message];
+}
+
+class CourseDetailLoading extends CourseState {
+  const CourseDetailLoading();
+
+  @override
+  List<Object> get props => [];
 }

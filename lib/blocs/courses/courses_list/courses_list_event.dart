@@ -13,3 +13,12 @@ class GetCoursesList extends CoursesListEvent {
   @override
   List<Object> get props => [];
 }
+
+class GetDetailCourse extends CoursesListEvent {
+  final String id;
+
+  const GetDetailCourse(this.id);
+
+  @override
+  List<Object> get props => [id];
+}

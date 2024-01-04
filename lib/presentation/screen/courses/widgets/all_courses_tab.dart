@@ -1,7 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:let_tutor/blocs/courses/courses_list/courses_list_bloc.dart';
+import 'package:let_tutor/blocs/courses/courses_list/courses_list_event.dart';
 import 'package:let_tutor/blocs/courses/courses_list/courses_list_state.dart';
+import 'package:let_tutor/data/models/course/course_category.dart';
+import 'package:let_tutor/data/repositories/course_repository.dart';
+import 'package:let_tutor/presentation/screen/courses/course_detail.dart';
+import 'package:let_tutor/presentation/screen/courses/widgets/categories_filter.dart';
 import 'package:let_tutor/presentation/screen/courses/widgets/course_card.dart';
 import 'package:let_tutor/routes.dart';
 
@@ -25,30 +30,13 @@ class _AllCoursesTabState extends State<AllCoursesTab> {
     'Advanced',
     'Very Advanced'
   ];
-  List<String> categories = [
-    'All categories',
-    'For Studying Abroad',
-    'English For Traveling',
-    'Conversational English',
-    'English For Beginners',
-    'Business English',
-    'English For Kids',
-    'STARTERS',
-    'PET',
-    'KET',
-    'MOVERS',
-    'FLYERS',
-    'TOEFL',
-    'TOEIC',
-    'IELTS'
-  ];
+  List<CourseCategory> categories = [];
   List<String> sortLevels = [
     'Sort by level',
     'Level decreasing',
     'Level increasing'
   ];
   late String _selectedLevel = levels[0];
-  late String _selectedCategory = categories[0];
   late String _selectedSortLevel = sortLevels[0];
   @override
   Widget build(BuildContext context) {
@@ -61,25 +49,63 @@ class _AllCoursesTabState extends State<AllCoursesTab> {
               child: CircularProgressIndicator(),
             );
           } else if (state is CoursesListLoadSuccess) {
+            categories = state.categories;
+
             return Padding(
               padding: const EdgeInsets.symmetric(vertical: 8, horizontal: 16),
-              child: ListView.builder(
-                shrinkWrap: true,
-                itemCount: state.courses.length,
-                itemBuilder: (context, index) {
-                  return InkWell(
-                    onTap: () {
-                      Navigator.pushNamed(
-                        context,
-                        Routes.courseDetail,
-                        arguments: state.courses[index],
-                      );
-                    },
-                    child: CourseCard(
-                      course: state.courses[index],
+              child: Column(
+                children: [
+                  _filterBar(),
+                  const SizedBox(height: 8),
+                  Visibility(
+                    visible: visibilityFilter,
+                    child: Column(
+                      children: [
+                        _levelFilter(),
+                        const SizedBox(
+                          height: 8,
+                        ),
+                        const CategoriesFilter(),
+                        const SizedBox(
+                          height: 8,
+                        ),
+                        _sortLevel(),
+                        const SizedBox(
+                          height: 8,
+                        ),
+                      ],
                     ),
-                  );
-                },
+                  ),
+                  Expanded(
+                    child: ListView.builder(
+                      shrinkWrap: true,
+                      scrollDirection: Axis.vertical,
+                      itemCount: state.courses.length,
+                      itemBuilder: (context, index) {
+                        return InkWell(
+                          onTap: () {
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder: (context) => BlocProvider(
+                                  create: (context) => CoursesListBloc(
+                                      courseRepository: CourseRepository())
+                                    ..add(GetDetailCourse(
+                                        state.courses[index].id ?? '')),
+                                  child: CourseDetail(
+                                      courseId: state.courses[index].id ?? ''),
+                                ),
+                              ),
+                            );
+                          },
+                          child: CourseCard(
+                            course: state.courses[index],
+                          ),
+                        );
+                      },
+                    ),
+                  ),
+                ],
               ),
             );
           } else if (state is CoursesListLoadFailure) {
@@ -147,26 +173,26 @@ class _AllCoursesTabState extends State<AllCoursesTab> {
     );
   }
 
-  _categoriesFilter() {
-    return DropdownButton<String>(
-      isExpanded: true,
-      value: _selectedCategory,
-      items: List.generate(
-        categories.length,
-        (index) => DropdownMenuItem(
-          value: categories[index],
-          child: Text(
-            categories[index],
-          ),
-        ),
-      ),
-      onChanged: (value) {
-        setState(() {
-          _selectedCategory = value!;
-        });
-      },
-    );
-  }
+  // _categoriesFilter() {
+  //   return DropdownButton<String>(
+  //     isExpanded: true,
+  //     value: _selectedCategory,
+  //     items: List.generate(
+  //       categories.length,
+  //       (index) => DropdownMenuItem(
+  //         value: categories[index],
+  //         child: Text(
+  //           categories[index],
+  //         ),
+  //       ),
+  //     ),
+  //     onChanged: (value) {
+  //       setState(() {
+  //         _selectedCategory = value!;
+  //       });
+  //     },
+  //   );
+  // }
 
   _sortLevel() {
     return DropdownButton<String>(

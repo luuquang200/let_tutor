@@ -30,4 +30,6 @@ class Endpoints {
 
   // course
   static const getCoursesList = '/course';
+  static const getCourseCategories = '/content-category';
+  static const getDetailCourse = '/course';
 }

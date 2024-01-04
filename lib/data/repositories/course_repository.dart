@@ -1,4 +1,6 @@
 import 'package:let_tutor/data/models/course/course.dart';
+import 'package:let_tutor/data/models/course/course_category.dart';
+import 'package:let_tutor/data/models/course/course_category_response.dart';
 import 'package:let_tutor/data/models/course/course_reponse.dart';
 import 'package:let_tutor/data/network/apis/course_api_client.dart';
 
@@ -12,5 +14,16 @@ class CourseRepository {
     CourseResponse courseResponse =
         await _courseApiClient.getCoursesList(page, size);
     return courseResponse.rows;
+  }
+
+  Future<List<CourseCategory>> getCourseCategories() async {
+    CourseCategoryResponse courseCategoryResponse =
+        await _courseApiClient.getCourseCategories();
+    return courseCategoryResponse.rows;
+  }
+
+  Future<Course> getDetailCourse(String id) async {
+    Course course = await _courseApiClient.getDetailCourse(id);
+    return course;
   }
 }

@@ -64,23 +64,16 @@ class _CoursesScreenState extends State<CoursesScreen> {
             )..add(const GetCoursesList()),
         child: DefaultTabController(
           length: 2,
-          child: Scaffold(
-            appBar: AppBar(
-              title: const Text('Discover Courses'),
-              bottom: TabBar(
-                indicatorColor: Theme.of(context).primaryColor,
-                tabs: [
-                  _allCoursesTabHeadline(),
-                  _ebooksTabHeadline(),
-                ],
-              ),
-            ),
-            body: TabBarView(
-              children: [
-                const AllCoursesTab(),
-                _ebooksTab(),
-              ],
-            ),
+          child: Column(
+            children: [
+              TabBar(tabs: [
+                _allCoursesTabHeadline(),
+                _ebooksTabHeadline(),
+              ]),
+              Expanded(
+                child: TabBarView(children: [AllCoursesTab(), _ebooksTab()]),
+              )
+            ],
           ),
         ));
   }
@@ -160,6 +153,7 @@ class _CoursesScreenState extends State<CoursesScreen> {
                 return GestureDetector(
                   onTap: () {},
                   // child: const CourseCard(),
+                  child: Text('Ebook $index'),
                 );
               },
             ),

@@ -1,68 +1,79 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:let_tutor/blocs/courses/courses_list/courses_list_bloc.dart';
+import 'package:let_tutor/blocs/courses/courses_list/courses_list_state.dart';
+import 'package:let_tutor/data/models/course/course.dart';
+import 'package:let_tutor/data/models/user/user.dart';
+import 'package:let_tutor/presentation/screen/courses/widgets/course_cover_image.dart';
 import 'package:let_tutor/presentation/styles/custom_button.dart';
 import 'package:let_tutor/presentation/styles/custom_text_style.dart';
 import 'package:let_tutor/routes.dart';
 
 class CourseDetail extends StatefulWidget {
-  const CourseDetail({super.key});
+  const CourseDetail({super.key, required this.courseId});
+  final String courseId;
 
   @override
   State<CourseDetail> createState() => _CourseDetailState();
 }
 
 class _CourseDetailState extends State<CourseDetail> {
-  List<String> listOfTopics = [
-    'The Internet',
-    'Artificial Intelligence (AI)',
-    'Social Media',
-    'Internet Privacy',
-    'Live Streaming',
-    'Coding',
-    'Technology Transforming Healthcare',
-    'Smart Home Technology',
-    'Remote Work - A Dream Job?',
-  ];
+  List<String> listOfTopics = [];
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-          title: Text('Course Detail', style: CustomTextStyle.topHeadline),
-          iconTheme: IconThemeData(color: Theme.of(context).primaryColor)),
-      body: SingleChildScrollView(
-        child: Column(children: [
-          // Course cover photo
-          Image.asset('assets/course_img_url.png'),
-
-          Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 16),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                const SizedBox(height: 12),
-                _introductionInfo(),
-                const SizedBox(height: 12),
-                _dicoveryButton(),
-                const SizedBox(height: 12),
-                _sectionTitle(context, 'Overview'),
-                _courseOverview(),
-                const SizedBox(height: 12),
-                _sectionTitle(context, 'Experience Level'),
-                _expereinceLevel(),
-                const SizedBox(height: 12),
-                _sectionTitle(context, 'Course Length'),
-                _courseLength(),
-                const SizedBox(height: 12),
-                _sectionTitle(context, 'List Of Topics'),
-                _topicsList(),
-                _sectionTitle(context, 'Suggested Tutors'),
-                _suggestTutors(),
-                const SizedBox(height: 12),
-              ],
+    return BlocBuilder<CoursesListBloc, CourseState>(
+      builder: (context, state) {
+        if (state is CourseDetailLoadSuccess) {
+          Course course = state.course;
+          return Scaffold(
+            appBar: AppBar(
+              title: Text('Course Detail', style: CustomTextStyle.topHeadline),
+              iconTheme: IconThemeData(color: Theme.of(context).primaryColor),
             ),
-          ),
-        ]),
-      ),
+            body: SingleChildScrollView(
+              child: Column(children: [
+                // Course cover photo
+                CourseCoverImage(imageUrl: course.imageUrl ?? ''),
+                Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 16),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      const SizedBox(height: 12),
+                      _introductionInfo(course),
+                      const SizedBox(height: 12),
+                      _dicoveryButton(),
+                      const SizedBox(height: 12),
+                      _sectionTitle(context, 'Overview'),
+                      _courseOverview(course),
+                      const SizedBox(height: 12),
+                      _sectionTitle(context, 'Experience Level'),
+                      _expereinceLevel(course),
+                      const SizedBox(height: 12),
+                      _sectionTitle(context, 'Course Length'),
+                      _courseLength(course),
+                      const SizedBox(height: 12),
+                      _sectionTitle(context, 'List Of Topics'),
+                      _topicsList(course),
+                      _suggestTutors(course),
+                      const SizedBox(height: 12),
+                    ],
+                  ),
+                ),
+              ]),
+            ),
+          );
+        } else if (state is CourseDetailLoadFailure) {
+          return Scaffold(
+            body: Center(child: Text('Failed to load course detail')),
+          );
+        } else {
+          return Scaffold(
+            body: Center(child: CircularProgressIndicator()),
+          );
+        }
+      },
     );
   }
 
@@ -96,12 +107,12 @@ class _CourseDetailState extends State<CourseDetail> {
     );
   }
 
-  _courseOverview() {
-    return const Column(
+  _courseOverview(Course course) {
+    return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        SizedBox(height: 12),
-        Row(
+        const SizedBox(height: 12),
+        const Row(
           children: [
             Icon(Icons.help_outline, color: Colors.red),
             SizedBox(width: 8),
@@ -111,15 +122,13 @@ class _CourseDetailState extends State<CourseDetail> {
             ),
           ],
         ),
-        SizedBox(height: 12),
+        const SizedBox(height: 12),
         Padding(
           padding: EdgeInsets.only(left: 32, right: 16),
-          child: Text(
-            "Our world is rapidly changing thanks to new technology, and the vocabulary needed to discuss modern life is evolving almost daily. In this course you will learn the most up-to-date terminology from expertly crafted lessons as well from your native-speaking tutor.",
-          ),
+          child: Text(course.reason ?? ''),
         ),
-        SizedBox(height: 12),
-        Row(
+        const SizedBox(height: 12),
+        const Row(
           children: [
             Icon(Icons.help_outline, color: Colors.red),
             SizedBox(width: 8),
@@ -129,49 +138,59 @@ class _CourseDetailState extends State<CourseDetail> {
             ),
           ],
         ),
-        SizedBox(height: 12),
+        const SizedBox(height: 12),
         Padding(
-          padding: EdgeInsets.only(left: 32, right: 16),
-          child: Text(
-            "You will learn vocabulary related to timely topics like remote work, artificial intelligence, online privacy, and more. In addition to discussion questions, you will practice intermediate level speaking tasks such as using data to describe trends.",
-          ),
+          padding: const EdgeInsets.only(left: 32, right: 16),
+          child: Text(course.purpose ?? ''),
         ),
       ],
     );
   }
 
-  _expereinceLevel() {
-    return const Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
+  _expereinceLevel(Course course) {
+    Map<String, String> levels = {
+      '0': 'Any Level',
+      '1': 'Beginner',
+      '2': 'Upper-Beginner',
+      '3': 'Pre-Intermediate',
+      '4': 'Intermediate',
+      '5': 'Upper-Intermediate',
+      '6': 'Pre-Advanced',
+      '7': 'Advanced',
+      '8': 'Very Advanced'
+    };
+    return Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
+      const SizedBox(height: 12),
+      Row(
         children: [
-          SizedBox(height: 12),
-          Row(
-            children: [
-              Icon(Icons.group_add_outlined, color: Color(0xFF0058C6)),
-              SizedBox(width: 8),
-              Text('Intermediate', style: CustomTextStyle.headlineMedium),
-            ],
-          )
-        ]);
+          const Icon(Icons.group_add_outlined, color: Color(0xFF0058C6)),
+          const SizedBox(width: 8),
+          Text(levels[course.level] ?? '',
+              style: CustomTextStyle.headlineMedium),
+        ],
+      )
+    ]);
   }
 
-  _courseLength() {
-    return const Column(
+  _courseLength(Course course) {
+    return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        SizedBox(height: 12),
+        const SizedBox(height: 12),
         Row(
           children: [
-            Icon(Icons.book_outlined, color: Color(0xFF0058C6)),
-            SizedBox(width: 8),
-            Text('9 Topics', style: CustomTextStyle.headlineMedium),
+            const Icon(Icons.book_outlined, color: Color(0xFF0058C6)),
+            const SizedBox(width: 8),
+            Text(course.topics?.length.toString() ?? '0',
+                style: CustomTextStyle.headlineMedium),
           ],
         )
       ],
     );
   }
 
-  _topicsList() {
+  _topicsList(Course course) {
+    listOfTopics = course.topics?.map((e) => e.name ?? '').toList() ?? [];
     return ListView.builder(
       shrinkWrap: true,
       scrollDirection: Axis.vertical,
@@ -195,32 +214,53 @@ class _CourseDetailState extends State<CourseDetail> {
     );
   }
 
-  _suggestTutors() {
-    return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 26),
-      child: Row(
-        children: [
-          const Text('Adelia Rice', style: CustomTextStyle.headlineMedium),
-          const SizedBox(width: 16),
-          TextButton(
-              onPressed: () {
-                Routes.navigateTo(context, Routes.tutorDetail);
-              },
-              child: const Text('More Info')),
-        ],
-      ),
+  _suggestTutors(Course course) {
+    if (course.users == null || course.users!.isEmpty) {
+      return const SizedBox.shrink();
+    }
+
+    List<User> users = course.users ?? [];
+    return Column(
+      children: [
+        _sectionTitle(context, 'Suggested Tutors'),
+        Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 26),
+          child: ListView.builder(
+            shrinkWrap: true,
+            scrollDirection: Axis.vertical,
+            physics: const NeverScrollableScrollPhysics(),
+            itemCount: users.length,
+            itemBuilder: (context, index) {
+              return Row(
+                children: [
+                  Text(users[index].name ?? '',
+                      style: CustomTextStyle.headlineMedium),
+                  const SizedBox(width: 16),
+                  TextButton(
+                    onPressed: () {
+                      Navigator.pushNamed(context, Routes.tutorDetail,
+                          arguments: users[index].id ?? '');
+                    },
+                    child: const Text('More Info'),
+                  ),
+                ],
+              );
+            },
+          ),
+        ),
+      ],
     );
   }
 
-  _introductionInfo() {
-    return const Column(
+  _introductionInfo(Course course) {
+    return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        Text('Life in the Internet Age', style: CustomTextStyle.titleLarge),
-        SizedBox(height: 12),
+        Text(course.name ?? '', style: CustomTextStyle.titleLarge),
+        const SizedBox(height: 12),
         Text(
-          "Let's discuss how technology is changing the way we live",
-          style: TextStyle(fontSize: 16),
+          course.description ?? '',
+          style: const TextStyle(fontSize: 16),
         ),
       ],
     );

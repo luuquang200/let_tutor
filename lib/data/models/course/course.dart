@@ -1,5 +1,6 @@
 import 'package:let_tutor/data/models/course/course_category.dart';
 import 'package:let_tutor/data/models/course/topic.dart';
+import 'package:let_tutor/data/models/user/user.dart';
 
 class Course {
   String? id;
@@ -20,6 +21,7 @@ class Course {
   String? updatedAt;
   List<Topic>? topics;
   List<CourseCategory>? categories;
+  List<User>? users;
 
   Course({
     this.id,
@@ -40,6 +42,7 @@ class Course {
     this.updatedAt,
     this.topics,
     this.categories,
+    this.users,
   });
 
   factory Course.fromJson(Map<String, dynamic> json) {
@@ -65,6 +68,9 @@ class Course {
           .toList(),
       categories: (json['categories'] as List<dynamic>?)
           ?.map((e) => CourseCategory.fromJson(e as Map<String, dynamic>))
+          .toList(),
+      users: (json['users'] as List<dynamic>?)
+          ?.map((e) => User.fromJson(e as Map<String, dynamic>))
           .toList(),
     );
   }
