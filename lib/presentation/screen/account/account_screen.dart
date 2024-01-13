@@ -1,4 +1,12 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:image_picker/image_picker.dart';
+import 'package:let_tutor/blocs/account/account_bloc.dart';
+import 'package:let_tutor/blocs/account/account_event.dart';
+import 'package:let_tutor/blocs/account/account_state.dart';
+import 'package:let_tutor/data/models/user/user.dart';
+import 'package:let_tutor/data/repositories/user_repository.dart';
+import 'package:let_tutor/presentation/widgets/tutor_avatar.dart';
 
 class AccountScreen extends StatefulWidget {
   const AccountScreen({super.key});
@@ -31,35 +39,57 @@ class _AccountScreenState extends State<AccountScreen> {
   ];
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      body: SingleChildScrollView(
-        padding: const EdgeInsets.symmetric(vertical: 8, horizontal: 16),
-        child: Column(
-          children: [
-            _avatar(),
-            const SizedBox(height: 16),
-            _name(),
-            const SizedBox(height: 32),
-            _itemList(),
-          ],
-        ),
+    return BlocProvider(
+      create: (context) => AccountBloc(
+        userRepository: UserRepository(),
+      )..add(const GetAccountPage()),
+      child: BlocBuilder<AccountBloc, AccountState>(
+        builder: (context, state) {
+          if (state is AccountLoading) {
+            return const Center(
+              child: CircularProgressIndicator(),
+            );
+          } else if (state is AccountLoadSuccess) {
+            User user = state.user;
+            return Scaffold(
+              body: SingleChildScrollView(
+                padding:
+                    const EdgeInsets.symmetric(vertical: 8, horizontal: 16),
+                child: Column(
+                  children: [
+                    _avatar(user, context),
+                    const SizedBox(height: 16),
+                    _name(user),
+                    const SizedBox(height: 32),
+                    _itemList(),
+                  ],
+                ),
+              ),
+            );
+          } else {
+            return const Center(
+              child: Text('Failed to load account information'),
+            );
+          }
+        },
       ),
     );
   }
 
-  _avatar() {
+  _avatar(User user, BuildContext context) {
     return Center(
       child: Container(
-        padding: const EdgeInsets.all(5.0),
+        padding: const EdgeInsets.all(1.0),
         decoration: const BoxDecoration(
           color: Color.fromARGB(255, 201, 198, 198), // Color of padding
           shape: BoxShape.circle,
         ),
         child: Stack(
           children: <Widget>[
-            const CircleAvatar(
+            TutorAvatar(
+              imageUrl: user.avatar ?? '',
+              tutorName: user.name ?? '',
               radius: 98,
-              backgroundImage: AssetImage('assets/account_avatar.jpeg'),
             ),
             Positioned(
               right: 8,
@@ -75,8 +105,19 @@ class _AccountScreenState extends State<AccountScreen> {
                 child: IconButton(
                   icon: const Icon(Icons.edit),
                   color: Colors.white,
-                  onPressed: () {
-                    // Handle editing action here
+                  onPressed: () async {
+                    // choose image to change avatar
+                    final picker = ImagePicker();
+                    final pickedFile =
+                        await picker.pickImage(source: ImageSource.gallery);
+
+                    if (pickedFile != null) {
+                      BlocProvider.of<AccountBloc>(context).add(
+                        ChangeAvatar(
+                          avatarUrl: pickedFile.path,
+                        ),
+                      );
+                    }
                   },
                 ),
               ),
@@ -101,9 +142,9 @@ class _AccountScreenState extends State<AccountScreen> {
     );
   }
 
-  _name() {
-    return const Text('Adelia Rice',
-        style: TextStyle(fontSize: 28, fontWeight: FontWeight.bold));
+  _name(User user) {
+    return Text(user.name ?? '',
+        style: const TextStyle(fontSize: 28, fontWeight: FontWeight.bold));
   }
 
   _itemCard(BuildContext context, int index) {

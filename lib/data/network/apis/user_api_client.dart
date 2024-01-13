@@ -1,4 +1,6 @@
+import 'dart:convert';
 import 'dart:developer';
+import 'dart:io';
 
 import 'package:dio/dio.dart';
 import 'package:let_tutor/constants/endpoints.dart';
@@ -37,6 +39,42 @@ class UserApiClient {
     } catch (e) {
       log('Error handling from get total call api:');
       log('$e');
+      rethrow;
+    }
+  }
+
+  Future<User> getUserInformation() async {
+    log('calling get user information api');
+    try {
+      final response = await DioClient.instance.get(
+        Endpoints.userInformation,
+      );
+      return User.fromJson(response['user']);
+    } on DioException catch (e) {
+      throw DioExceptionHandler.fromDioError(e);
+    } catch (e) {
+      log('Error handling from get user information api:');
+      log('$e');
+      rethrow;
+    }
+  }
+
+  Future<User> changeAvatar({required String avatarPath}) async {
+    log('calling change avatar api');
+    try {
+      var file =
+          await MultipartFile.fromFile(avatarPath, filename: 'avatar.png');
+      var formData = FormData.fromMap({'avatar': file});
+
+      final response = await DioClient.instance.post(
+        Endpoints.changeAvatar,
+        data: formData,
+      );
+      return User.fromJson(response);
+    } on DioException catch (e) {
+      throw DioExceptionHandler.fromDioError(e);
+    } catch (e) {
+      log('Error handling from change avatar api:');
       rethrow;
     }
   }

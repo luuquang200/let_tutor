@@ -14,13 +14,13 @@ class TutorAvatar extends StatelessWidget {
     Key? key,
     required this.imageUrl,
     required this.tutorName,
-    this.radius = 46,
+    this.radius = 44,
   }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return CircleAvatar(
-      radius: radius,
+      radius: radius + 2,
       backgroundColor: Colors.grey,
       child: FutureBuilder<String?>(
         future: checkUrl(imageUrl),
@@ -29,7 +29,7 @@ class TutorAvatar extends StatelessWidget {
             return const CircularProgressIndicator();
           } else if (snapshot.hasError || snapshot.data == null) {
             return CircleAvatar(
-              radius: 44,
+              radius: radius,
               child: Text(
                 getInitials(tutorName),
                 style: CustomTextStyle.initialNameOfTutor,
@@ -39,12 +39,12 @@ class TutorAvatar extends StatelessWidget {
             return CachedNetworkImage(
               imageUrl: snapshot.data!,
               imageBuilder: (context, imageProvider) => CircleAvatar(
-                radius: 44,
+                radius: radius,
                 backgroundImage: imageProvider,
               ),
               placeholder: (context, url) => const CircularProgressIndicator(),
               errorWidget: (context, url, error) => CircleAvatar(
-                radius: 44,
+                radius: radius,
                 child: Text(
                   getInitials(tutorName),
                   style: CustomTextStyle.initialNameOfTutor,
