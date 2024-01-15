@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:let_tutor/data/models/course/course.dart';
+import 'package:let_tutor/presentation/screen/account/profile_setting_screen.dart';
 import 'package:let_tutor/presentation/screen/authentication/sign_up_screen.dart';
 import 'package:let_tutor/presentation/screen/courses/course_detail.dart';
 import 'package:let_tutor/presentation/screen/courses/courses_screen.dart';
@@ -31,6 +32,7 @@ class Routes {
   static const String videoCallScreen = '/video_call_screen';
   static const String writeReview = '/write_review';
   static const String forgotPasswordScreen = '/forgot_password_screen';
+  static const String profileSettingScreen = '/profile_setting_screen';
 
   static Route<dynamic> generateRoute(RouteSettings settings) {
     switch (settings.name) {
@@ -70,6 +72,8 @@ class Routes {
         return MaterialPageRoute(builder: (_) => const VideoCallScreen());
       case writeReview:
         return MaterialPageRoute(builder: (_) => const WriteReview());
+      case profileSettingScreen:
+        return MaterialPageRoute(builder: (_) => const ProfileSettingScreen());
       default:
         return MaterialPageRoute(builder: (_) => const UnknownScreen());
     }

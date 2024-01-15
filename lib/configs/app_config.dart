@@ -8,6 +8,8 @@ class AppConfig {
 
   static List<Country> _countries = [];
   static List<Country> get countries => _countries;
+  static Map<String, String> get countriesDict =>
+      {for (var country in _countries) country.code: country.name};
 
   static Future<void> readCountriesFromJson() async {
     final String jsonString =

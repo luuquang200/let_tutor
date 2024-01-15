@@ -78,4 +78,36 @@ class UserApiClient {
       rethrow;
     }
   }
+
+  //saveProfileSetting({required String name, required String country, required String birthday, required String level, required String studySchedule, required List<String> selectedLearnTopics, required List<String> selectedTestPreparations}) {}
+  Future<User> saveProfileSetting(
+      {required String name,
+      required String country,
+      required String birthday,
+      required String level,
+      required String studySchedule,
+      required List<String> selectedLearnTopics,
+      required List<String> selectedTestPreparations}) async {
+    log('calling save profile setting api');
+    try {
+      final response = await DioClient.instance.put(
+        Endpoints.userInformation,
+        data: {
+          'name': name,
+          'country': country,
+          'birthday': birthday,
+          'level': level,
+          'studySchedule': studySchedule,
+          'learnTopics': selectedLearnTopics,
+          'testPreparations': selectedTestPreparations
+        },
+      );
+      return User.fromJson(response['user']);
+    } on DioException catch (e) {
+      throw DioExceptionHandler.fromDioError(e);
+    } catch (e) {
+      log('Error handling from save profile setting api:');
+      rethrow;
+    }
+  }
 }

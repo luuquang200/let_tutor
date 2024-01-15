@@ -1,8 +1,8 @@
 import 'dart:developer';
 
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:let_tutor/blocs/account/account_event.dart';
-import 'package:let_tutor/blocs/account/account_state.dart';
+import 'package:let_tutor/blocs/account/account_home/account_event.dart';
+import 'package:let_tutor/blocs/account/account_home/account_state.dart';
 import 'package:let_tutor/data/models/user/user.dart';
 import 'package:let_tutor/data/repositories/user_repository.dart';
 

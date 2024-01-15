@@ -71,7 +71,8 @@ class _CoursesScreenState extends State<CoursesScreen> {
                 _ebooksTabHeadline(),
               ]),
               Expanded(
-                child: TabBarView(children: [AllCoursesTab(), _ebooksTab()]),
+                child:
+                    TabBarView(children: [const AllCoursesTab(), _ebooksTab()]),
               )
             ],
           ),

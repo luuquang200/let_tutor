@@ -17,4 +17,23 @@ class UserRepository {
   Future<User> changeAvatar({required String avatarUrl}) async {
     return await userApiClient.changeAvatar(avatarPath: avatarUrl);
   }
+
+  // saveProfileSetting({required String name, required String country, required String birthday, required String level, required String studySchedule, required List<String> selectedLearnTopics, required List<String> selectedTestPreparations}) {}
+  Future<User> saveProfileSetting(
+      {required String name,
+      required String country,
+      required String birthday,
+      required String level,
+      required String studySchedule,
+      required List<String> selectedLearnTopics,
+      required List<String> selectedTestPreparations}) async {
+    return await userApiClient.saveProfileSetting(
+        name: name,
+        country: country,
+        birthday: birthday,
+        level: level,
+        studySchedule: studySchedule,
+        selectedLearnTopics: selectedLearnTopics,
+        selectedTestPreparations: selectedTestPreparations);
+  }
 }
