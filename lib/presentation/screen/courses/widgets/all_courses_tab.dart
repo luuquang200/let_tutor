@@ -8,6 +8,7 @@ import 'package:let_tutor/data/repositories/course_repository.dart';
 import 'package:let_tutor/presentation/screen/courses/course_detail.dart';
 import 'package:let_tutor/presentation/screen/courses/widgets/categories_filter.dart';
 import 'package:let_tutor/presentation/screen/courses/widgets/course_card.dart';
+import 'package:let_tutor/presentation/screen/courses/widgets/loading_indicator.dart';
 import 'package:let_tutor/routes.dart';
 
 class AllCoursesTab extends StatefulWidget {
@@ -44,10 +45,7 @@ class _AllCoursesTabState extends State<AllCoursesTab> {
         bloc: BlocProvider.of<CoursesListBloc>(context),
         builder: (context, state) {
           if (state is CoursesListLoading) {
-            return const Center(
-              widthFactor: 1,
-              child: CircularProgressIndicator(),
-            );
+            return const LoadingIndicator();
           } else if (state is CoursesListLoadSuccess) {
             categories = state.categories;
 

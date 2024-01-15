@@ -7,6 +7,7 @@ class CustomSnackBar extends SnackBar {
     required IconData icon,
     required Color backgroundColor,
   }) : super(
+          showCloseIcon: true,
           content: Row(
             children: [
               Icon(icon, color: Colors.white),

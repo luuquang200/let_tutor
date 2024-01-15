@@ -3,6 +3,7 @@ import 'dart:developer';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
+import 'package:let_tutor/presentation/screen/courses/widgets/loading_indicator.dart';
 
 class CourseCoverImage extends StatelessWidget {
   final String imageUrl;
@@ -22,12 +23,7 @@ class CourseCoverImage extends StatelessWidget {
         future: checkUrl(imageUrl),
         builder: (BuildContext context, AsyncSnapshot<String?> snapshot) {
           if (snapshot.connectionState == ConnectionState.waiting) {
-            return const Center(
-                child: SizedBox(
-              width: 20,
-              height: 20,
-              child: CircularProgressIndicator(),
-            ));
+            return const LoadingIndicator();
           } else if (snapshot.hasError || snapshot.data == null) {
             return const Center(child: Text('No image'));
           } else {

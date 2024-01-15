@@ -1,16 +1,13 @@
 import 'dart:developer';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:image_picker/image_picker.dart';
 import 'package:let_tutor/blocs/account/account_home/account_bloc.dart';
 import 'package:let_tutor/blocs/account/account_home/account_event.dart';
 import 'package:let_tutor/blocs/account/account_home/account_state.dart';
 import 'package:let_tutor/data/models/user/user.dart';
 import 'package:let_tutor/data/repositories/user_repository.dart';
-import 'package:let_tutor/presentation/screen/account/widgets/item_card.dart';
 import 'package:let_tutor/presentation/screen/account/widgets/item_list.dart';
 import 'package:let_tutor/presentation/widgets/tutor_avatar.dart';
-import 'package:let_tutor/routes.dart';
 
 class AccountScreen extends StatefulWidget {
   const AccountScreen({super.key});
