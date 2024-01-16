@@ -32,3 +32,10 @@ class AccountLoadFailure extends AccountState {
   @override
   List<Object> get props => [message];
 }
+
+class AccountLogoutSuccess extends AccountState {
+  const AccountLogoutSuccess();
+
+  @override
+  List<Object> get props => [];
+}

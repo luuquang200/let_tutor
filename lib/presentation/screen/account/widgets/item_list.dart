@@ -1,6 +1,9 @@
 import 'dart:developer';
 
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:let_tutor/blocs/account/account_home/account_bloc.dart';
+import 'package:let_tutor/blocs/account/account_home/account_event.dart';
 import 'package:let_tutor/presentation/screen/account/widgets/item_card.dart';
 import 'package:let_tutor/routes.dart';
 
@@ -31,68 +34,57 @@ class ItemList extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.symmetric(vertical: 8),
-      child: Column(
-        children: [
-          ItemCard(
-            text: sections[0],
-            iconData: icons[0],
-            onPressed: () {
-              Navigator.pushNamed(context, Routes.profileSettingScreen);
-            },
-          ),
-          ItemCard(
-            text: sections[1],
-            iconData: icons[1],
-            onPressed: () {
-              log('pressed 1');
-            },
-          ),
-          ItemCard(
-            text: sections[2],
-            iconData: icons[2],
-            onPressed: () {
-              log('pressed 2');
-            },
-          ),
-          ItemCard(
-            text: sections[3],
-            iconData: icons[3],
-            onPressed: () {
-              log('pressed 3');
-            },
-          ),
-          ItemCard(
-            text: sections[4],
-            iconData: icons[4],
-            onPressed: () {
-              log('pressed 4');
-            },
-          ),
-          ItemCard(
-            text: sections[5],
-            iconData: icons[5],
-            onPressed: () {
-              log('pressed 5');
-            },
-          ),
-          ItemCard(
-            text: sections[6],
-            iconData: icons[6],
-            onPressed: () {
-              log('pressed 6');
-            },
-          ),
-          ItemCard(
-            text: sections[7],
-            iconData: icons[7],
-            onPressed: () {
-              log('pressed 7');
-            },
-          ),
-        ],
-      ),
+    return BlocBuilder(
+      bloc: BlocProvider.of<AccountBloc>(context),
+      builder: (context, state) {
+        return ListView.separated(
+          padding: const EdgeInsets.symmetric(vertical: 8),
+          shrinkWrap: true,
+          physics: const NeverScrollableScrollPhysics(),
+          itemCount: sections.length,
+          itemBuilder: (context, index) {
+            return ItemCard(
+              iconData: icons[index],
+              text: sections[index],
+              onPressed: () {
+                switch (index) {
+                  case 0:
+                    Routes.navigateTo(context, Routes.profileSettingScreen);
+                    break;
+                  case 1:
+                    log('pressed 1');
+                    break;
+                  case 2:
+                    log('pressed 2');
+                    break;
+                  case 3:
+                    log('pressed 3');
+                    break;
+                  case 4:
+                    log('pressed 4');
+                    break;
+                  case 5:
+                    log('pressed 5');
+                    break;
+                  case 6:
+                    log('pressed 6');
+                    break;
+                  case 7:
+                    BlocProvider.of<AccountBloc>(context).add(const Logout());
+                    break;
+                  default:
+                    break;
+                }
+              },
+            );
+          },
+          separatorBuilder: (context, index) {
+            return const SizedBox(
+              height: 1,
+            );
+          },
+        );
+      },
     );
   }
 }

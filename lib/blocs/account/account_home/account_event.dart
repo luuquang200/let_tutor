@@ -22,3 +22,10 @@ class ChangeAvatar extends AccountEvent {
   @override
   List<Object> get props => [avatarUrl];
 }
+
+class Logout extends AccountEvent {
+  const Logout();
+
+  @override
+  List<Object> get props => [];
+}

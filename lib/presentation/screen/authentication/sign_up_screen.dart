@@ -4,6 +4,7 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:let_tutor/blocs/auth/sign_up/sign_up_bloc.dart';
 import 'package:let_tutor/blocs/auth/sign_up/sign_up_event.dart';
 import 'package:let_tutor/blocs/auth/sign_up/sign_up_state.dart';
+import 'package:let_tutor/presentation/screen/authentication/widgets/app_logo.dart';
 import 'package:let_tutor/presentation/styles/custom_button.dart';
 import 'package:let_tutor/data/repositories/authentication_repository.dart';
 import 'package:let_tutor/routes.dart';
@@ -38,7 +39,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
             body: SingleChildScrollView(
               child: Column(
                 children: [
-                  _appLogo(),
+                  const AppLogo(),
                   Padding(
                     padding: const EdgeInsets.all(20),
                     child: Column(
@@ -263,15 +264,6 @@ class _SignUpScreenState extends State<SignUpScreen> {
           fontSize: 20,
           color: Color.fromRGBO(164, 176, 190, 1),
         ),
-      ),
-    );
-  }
-
-  Padding _appLogo() {
-    return Padding(
-      padding: const EdgeInsets.only(top: 100, bottom: 30),
-      child: SvgPicture.asset(
-        'assets/lettutor_logo.svg',
       ),
     );
   }

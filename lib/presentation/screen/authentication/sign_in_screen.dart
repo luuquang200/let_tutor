@@ -4,6 +4,9 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:let_tutor/blocs/auth/sign_in/sign_in_bloc.dart';
 import 'package:let_tutor/blocs/auth/sign_in/sign_in_event.dart';
 import 'package:let_tutor/blocs/auth/sign_in/sign_in_state.dart';
+import 'package:let_tutor/presentation/screen/authentication/widgets/app_logo.dart';
+import 'package:let_tutor/presentation/screen/authentication/widgets/custom_label.dart';
+import 'package:let_tutor/presentation/screen/authentication/widgets/custom_text_field.dart';
 import 'package:let_tutor/presentation/styles/custom_button.dart';
 import 'package:let_tutor/data/repositories/authentication_repository.dart';
 import 'package:let_tutor/routes.dart';
@@ -20,6 +23,7 @@ class _SignInScreenState extends State<SignInScreen> {
   final _passwordController = TextEditingController();
   String? emailErrorText;
   String? passwordErrorText;
+  bool _obscureText = true;
 
   @override
   Widget build(BuildContext context) {
@@ -29,173 +33,52 @@ class _SignInScreenState extends State<SignInScreen> {
       ),
       child: BlocConsumer<SignInBloc, SignInState>(
         listener: (context, state) {
-          if (state is EmailInvalid) {
-            emailErrorText = state.error;
-          } else if (state is EmailValid) {
-            emailErrorText = null;
-          } else if (state is PasswordInvalid) {
-            passwordErrorText = state.error;
-          } else if (state is PasswordValid) {
-            passwordErrorText = null;
-          } else if (state is SignInLoading) {
-            ScaffoldMessenger.of(context).hideCurrentSnackBar();
-            ScaffoldMessenger.of(context).showSnackBar(
-              const SnackBar(
-                content: Text('Signing in...'),
-              ),
-            );
-          } else if (state is SignInSuccess) {
-            ScaffoldMessenger.of(context).hideCurrentSnackBar();
-            Routes.navigateToReplacement(context, Routes.home);
-          } else if (state is SignInFailure) {
-            ScaffoldMessenger.of(context).hideCurrentSnackBar();
-            ScaffoldMessenger.of(context).showSnackBar(
-              SnackBar(
-                content: Text(state.error),
-              ),
-            );
-          }
+          handleState(context, state);
         },
         builder: (context, state) {
           return Scaffold(
             body: SingleChildScrollView(
               child: Column(
                 children: [
-                  Padding(
-                    padding: const EdgeInsets.only(top: 100, bottom: 30),
-                    child: SvgPicture.asset(
-                      'assets/lettutor_logo.svg',
-                    ),
-                  ),
+                  const AppLogo(),
                   Padding(
                     padding: const EdgeInsets.all(20),
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        Container(
-                          margin: const EdgeInsets.only(bottom: 10),
-                          child: const Text(
-                            'Email',
-                            style: TextStyle(
-                              fontSize: 20,
-                              color: Color.fromRGBO(164, 176, 190, 1),
-                            ),
-                          ),
-                        ),
-                        TextField(
+                        const CustomLabel(text: 'Email'),
+                        CustomTextFieldAuth(
+                          hintText: 'mail@example.com',
                           controller: _emailController,
-                          onChanged: (value) => context
-                              .read<SignInBloc>()
-                              .add(EmailChanged(email: value)),
-                          decoration: InputDecoration(
-                            prefixIcon: const Icon(Icons.mail,
-                                size: 26, color: Color(0xFF0058C6)),
-                            hintText: 'mail@example.com',
-                            hintStyle: const TextStyle(
-                              color: Color(0xFFB0B0B0),
-                            ),
-                            border: const OutlineInputBorder(
-                              borderSide: BorderSide(color: Color(0xFFB0B0B0)),
-                              borderRadius:
-                                  BorderRadius.all(Radius.circular(8)),
-                            ),
-                            errorText: emailErrorText,
-                          ),
-                        ),
-                        Container(
-                          margin: const EdgeInsets.only(top: 20, bottom: 10),
-                          child: const Text(
-                            'Password',
-                            style: TextStyle(
-                              fontSize: 20,
-                              color: Color.fromRGBO(164, 176, 190, 1),
-                            ),
-                          ),
-                        ),
-                        TextField(
-                          onChanged: (value) => context
-                              .read<SignInBloc>()
-                              .add(PasswordChanged(password: value)),
-                          controller: _passwordController,
-                          decoration: InputDecoration(
-                            errorText: passwordErrorText,
-                            prefixIcon: const Icon(Icons.lock,
-                                size: 26, color: Color(0xFF0058C6)),
-                            hintText: '*****',
-                            border: const OutlineInputBorder(
-                                borderSide: BorderSide(color: Colors.grey),
-                                borderRadius:
-                                    BorderRadius.all(Radius.circular(8))),
-                          ),
-                        ),
-                        TextButton(
-                          onPressed: () {
-                            Routes.navigateToReplacement(
-                                context, Routes.forgotPasswordScreen);
+                          onChanged: (value) {
+                            context
+                                .read<SignInBloc>()
+                                .add(EmailChanged(email: value));
                           },
-                          style: TextButton.styleFrom(
-                            padding: const EdgeInsets.only(top: 20, bottom: 15),
-                          ),
-                          child: const Text(
-                            'Forgot Password?',
-                            style: TextStyle(
-                                fontSize: 18, fontWeight: FontWeight.normal),
-                          ),
+                          errorText: emailErrorText,
+                          icon: Icons.mail,
                         ),
+                        const SizedBox(height: 10),
+                        const CustomLabel(text: 'Password'),
+                        CustomTextFieldAuth(
+                          hintText: 'password',
+                          controller: _passwordController,
+                          obscureText: _obscureText,
+                          onPressedHidePass: _togglePasswordVisibility,
+                          onChanged: (value) {
+                            context
+                                .read<SignInBloc>()
+                                .add(PasswordChanged(password: value));
+                          },
+                          showIcon: true,
+                          errorText: passwordErrorText,
+                          icon: Icons.lock,
+                        ),
+                        _navigateToForgotPass(context),
                         _loginButton(context),
-                        Container(
-                          width: double.infinity,
-                          margin: const EdgeInsets.only(top: 30, bottom: 10),
-                          child: const Text(
-                            'Or continue with',
-                            textAlign: TextAlign.center,
-                            style: TextStyle(
-                              fontSize: 18,
-                            ),
-                          ),
-                        ),
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: [
-                            IconButton(
-                              onPressed: () {},
-                              icon: SvgPicture.asset(
-                                'assets/facebook-logo.svg',
-                                width: 50,
-                                height: 50,
-                              ),
-                            ),
-                            IconButton(
-                              onPressed: () {},
-                              icon: SvgPicture.asset(
-                                'assets/google-logo.svg',
-                                width: 50,
-                                height: 50,
-                              ),
-                            ),
-                          ],
-                        ),
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: [
-                            const Text('Not a member yet?',
-                                style: TextStyle(
-                                  fontSize: 16,
-                                  fontWeight: FontWeight.normal,
-                                )),
-                            TextButton(
-                              onPressed: () {
-                                Routes.navigateToReplacement(
-                                    context, Routes.signUpScreen);
-                              },
-                              child: const Text('Sign Up',
-                                  style: TextStyle(
-                                    fontSize: 16,
-                                    fontWeight: FontWeight.normal,
-                                  )),
-                            ),
-                          ],
-                        ),
+                        _labelLoginWithSocial(),
+                        _socialLoginButtons(),
+                        _navigateToSignUp(context),
                       ],
                     ),
                   )
@@ -205,6 +88,82 @@ class _SignInScreenState extends State<SignInScreen> {
           );
         },
       ),
+    );
+  }
+
+  TextButton _navigateToForgotPass(BuildContext context) {
+    return TextButton(
+      onPressed: () {
+        Routes.navigateToReplacement(context, Routes.forgotPasswordScreen);
+      },
+      style: TextButton.styleFrom(
+        padding: const EdgeInsets.only(top: 20, bottom: 15),
+      ),
+      child: const Text(
+        'Forgot Password?',
+        style: TextStyle(fontSize: 18, fontWeight: FontWeight.normal),
+      ),
+    );
+  }
+
+  Container _labelLoginWithSocial() {
+    return Container(
+      width: double.infinity,
+      margin: const EdgeInsets.only(top: 30, bottom: 10),
+      child: const Text(
+        'Or continue with',
+        textAlign: TextAlign.center,
+        style: TextStyle(
+          fontSize: 18,
+        ),
+      ),
+    );
+  }
+
+  Row _navigateToSignUp(BuildContext context) {
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.center,
+      children: [
+        const Text('Not a member yet?',
+            style: TextStyle(
+              fontSize: 16,
+              fontWeight: FontWeight.normal,
+            )),
+        TextButton(
+          onPressed: () {
+            Routes.navigateToReplacement(context, Routes.signUpScreen);
+          },
+          child: const Text('Sign Up',
+              style: TextStyle(
+                fontSize: 16,
+                fontWeight: FontWeight.normal,
+              )),
+        ),
+      ],
+    );
+  }
+
+  Row _socialLoginButtons() {
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.center,
+      children: [
+        IconButton(
+          onPressed: () {},
+          icon: SvgPicture.asset(
+            'assets/facebook-logo.svg',
+            width: 50,
+            height: 50,
+          ),
+        ),
+        IconButton(
+          onPressed: () {},
+          icon: SvgPicture.asset(
+            'assets/google-logo.svg',
+            width: 50,
+            height: 50,
+          ),
+        ),
+      ],
     );
   }
 
@@ -222,5 +181,40 @@ class _SignInScreenState extends State<SignInScreen> {
             );
       },
     );
+  }
+
+  void _togglePasswordVisibility() {
+    setState(() {
+      _obscureText = !_obscureText;
+    });
+  }
+
+  void handleState(BuildContext context, SignInState state) {
+    if (state is EmailInvalid) {
+      emailErrorText = state.error;
+    } else if (state is EmailValid) {
+      emailErrorText = null;
+    } else if (state is PasswordInvalid) {
+      passwordErrorText = state.error;
+    } else if (state is PasswordValid) {
+      passwordErrorText = null;
+    } else if (state is SignInLoading) {
+      ScaffoldMessenger.of(context).hideCurrentSnackBar();
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(
+          content: Text('Signing in...'),
+        ),
+      );
+    } else if (state is SignInSuccess) {
+      ScaffoldMessenger.of(context).hideCurrentSnackBar();
+      Routes.navigateToReplacement(context, Routes.home);
+    } else if (state is SignInFailure) {
+      ScaffoldMessenger.of(context).hideCurrentSnackBar();
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Text(state.error),
+        ),
+      );
+    }
   }
 }

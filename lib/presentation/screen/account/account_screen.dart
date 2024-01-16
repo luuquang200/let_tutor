@@ -8,6 +8,7 @@ import 'package:let_tutor/data/models/user/user.dart';
 import 'package:let_tutor/data/repositories/user_repository.dart';
 import 'package:let_tutor/presentation/screen/account/widgets/item_list.dart';
 import 'package:let_tutor/presentation/widgets/tutor_avatar.dart';
+import 'package:let_tutor/routes.dart';
 
 class AccountScreen extends StatefulWidget {
   const AccountScreen({super.key});
@@ -23,7 +24,12 @@ class _AccountScreenState extends State<AccountScreen> {
       create: (context) => AccountBloc(
         userRepository: UserRepository(),
       )..add(const GetAccountPage()),
-      child: BlocBuilder<AccountBloc, AccountState>(
+      child: BlocConsumer<AccountBloc, AccountState>(
+        listener: (context, state) {
+          if (state is AccountLogoutSuccess) {
+            Routes.navigateToAndRemoveUntil(context, Routes.signInScreen);
+          }
+        },
         builder: (context, state) {
           if (state is AccountLoading) {
             return const Center(
