@@ -69,8 +69,12 @@ class TutorListPageState extends State<TutorListPage> {
                           if (state.tutors.isEmpty) {
                             return _noTutorsFoundMessage();
                           }
-                          return _listTutorInformationCard(state.tutors,
-                              state.learnTopics, state.testPreparations);
+                          return _listTutorInformationCard(
+                              state.tutors,
+                              state.learnTopics,
+                              state.testPreparations,
+                              state.totalPage,
+                              state.page);
                         } else if (state is TutorListFailure) {
                           return Text('Error: ${state.error}');
                         } else {
@@ -306,7 +310,9 @@ class TutorListPageState extends State<TutorListPage> {
   _listTutorInformationCard(
       List<Tutor> tutors,
       List<LearnTopic> listLearnTopics,
-      List<TestPreparation> listTestPreparations) {
+      List<TestPreparation> listTestPreparations,
+      int totalPage,
+      int page) {
     // Sort tutors by favorite status, favorite tutor status and rating
     tutors.sort((a, b) {
       if (b.isFavorite != a.isFavorite) {
@@ -335,7 +341,16 @@ class TutorListPageState extends State<TutorListPage> {
               ],
             );
           } else {
-            return _paginator(); // Display _paginator at the end
+            return NumberPaginator(
+              numberPages: totalPage,
+              initialPage: page - 1,
+              onPageChange: (index) {
+                log('index, $index');
+                context
+                    .read<TutorListBloc>()
+                    .add(TutorListRequested(page: index + 1));
+              },
+            ); // Display _paginator at the end
           }
         },
       ),

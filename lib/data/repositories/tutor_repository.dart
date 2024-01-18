@@ -1,8 +1,5 @@
-import 'dart:convert';
-import 'dart:developer';
 
-import 'package:flutter/services.dart';
-import 'package:let_tutor/data/models/schedule/booked_schedule.dart';
+import 'dart:developer';
 import 'package:let_tutor/data/models/tutors/category.dart';
 import 'package:let_tutor/data/models/tutors/feedback.dart';
 import 'package:let_tutor/data/models/tutors/learn_topic.dart';
@@ -20,7 +17,7 @@ class TutorRepository {
   final userApiClient = UserApiClient();
   final scheduleApiClient = ScheduleApiClient();
 
-  Future<List<Tutor>> getTutors() async {
+  Future<List<Tutor>> getTutors(  ) async {
     TutorSearchResult result =
         await tutorApiClient.searchTutor({}, 1, 12, null);
     List<Tutor> tutors = result.rows;
@@ -41,12 +38,11 @@ class TutorRepository {
   }
 
   // search tutor
-  Future<List<Tutor>> searchTutor(
+  Future<TutorSearchResult> searchTutor(
       Map<String, dynamic> filters, int page, int perPage, String? name) async {
     TutorSearchResult result =
         await tutorApiClient.searchTutor(filters, page, perPage, name);
-    List<Tutor> tutors = result.rows;
-    return tutors;
+    return result;
   }
 
   // get tutor by id

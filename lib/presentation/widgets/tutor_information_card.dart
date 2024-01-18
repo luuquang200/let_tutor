@@ -35,7 +35,7 @@ class TutorInformationCard extends StatelessWidget {
             Routes.tutorDetail,
             arguments: tutor.id,
           );
-          bloc.add(TutorListRequested());
+          bloc.add(TutorListRequested(page: 1));
         },
         child: Card(
           elevation: 5,
