@@ -62,12 +62,14 @@ class TutorAvatar extends StatelessWidget {
     String initials = "";
     int numWords = 2;
 
-    if (numWords < names.length) {
+    if (numWords > names.length) {
       numWords = names.length;
     }
 
     for (var i = 0; i < numWords; i++) {
-      initials += names[i][0];
+      if (names[i].isNotEmpty) {
+        initials += names[i][0];
+      }
     }
     return initials;
   }

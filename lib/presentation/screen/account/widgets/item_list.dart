@@ -43,13 +43,16 @@ class ItemList extends StatelessWidget {
           physics: const NeverScrollableScrollPhysics(),
           itemCount: sections.length,
           itemBuilder: (context, index) {
+            final accountBloc = BlocProvider.of<AccountBloc>(context);
             return ItemCard(
               iconData: icons[index],
               text: sections[index],
-              onPressed: () {
+              onPressed: () async {
                 switch (index) {
                   case 0:
-                    Routes.navigateTo(context, Routes.profileSettingScreen);
+                    await Routes.navigateTo(
+                        context, Routes.profileSettingScreen);
+                    accountBloc.add(const GetAccountPage());
                     break;
                   case 1:
                     log('pressed 1');

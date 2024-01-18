@@ -2,12 +2,9 @@ import 'dart:developer';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutter_svg/svg.dart';
 import 'package:let_tutor/blocs/tutor/tutor_detail/tutor_detail_bloc.dart';
 import 'package:let_tutor/blocs/tutor/tutor_detail/tutor_detail_event.dart';
 import 'package:let_tutor/blocs/tutor/tutor_detail/tutor_detail_state.dart';
-import 'package:let_tutor/blocs/tutor/tutor_list/tutor_list_bloc.dart';
-import 'package:let_tutor/blocs/tutor/tutor_list/tutor_list_event.dart';
 import 'package:let_tutor/configs/app_config.dart';
 import 'package:let_tutor/data/models/country.dart';
 import 'package:let_tutor/data/models/tutors/category.dart';

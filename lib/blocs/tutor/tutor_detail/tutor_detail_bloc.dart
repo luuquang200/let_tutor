@@ -49,7 +49,8 @@ class TutorDetailBloc extends Bloc<TutorDetailEvent, TutorDetailState> {
               currentState.learnTopics,
               currentState.testPreparations,
               currentState.categories,
-              updateFavoriteSuccess: true));
+              updateFavoriteSuccess: true,
+              reportSuccess: false));
           log('message: ${updatedTutor.isFavorite}');
           log('Favorite success');
         }
@@ -67,7 +68,8 @@ class TutorDetailBloc extends Bloc<TutorDetailEvent, TutorDetailState> {
       log('Report success');
       if (state is TutorDetailSuccess) {
         final currentState = state as TutorDetailSuccess;
-        emit(currentState.copyWith(reportSuccess: true));
+        emit(currentState.copyWith(
+            reportSuccess: true, updateFavoriteSuccess: false));
       }
     } catch (error) {
       emit(TutorDetailFailure(error.toString()));

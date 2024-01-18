@@ -4,7 +4,10 @@ import 'package:let_tutor/blocs/tutor/tutor_list/tutor_list_bloc.dart';
 import 'package:let_tutor/blocs/tutor/tutor_list/tutor_list_event.dart';
 import 'package:let_tutor/configs/app_config.dart';
 import 'package:let_tutor/data/models/country.dart';
+import 'package:let_tutor/data/models/tutors/learn_topic.dart';
+import 'package:let_tutor/data/models/tutors/test_preparation.dart';
 import 'package:let_tutor/data/models/tutors/tutor.dart';
+import 'package:let_tutor/presentation/styles/custom_chip.dart';
 import 'package:let_tutor/presentation/styles/custom_text_style.dart';
 import 'package:let_tutor/presentation/widgets/flag.dart';
 import 'package:let_tutor/presentation/widgets/star_rating.dart';
@@ -13,7 +16,14 @@ import 'package:let_tutor/routes.dart';
 
 class TutorInformationCard extends StatelessWidget {
   final Tutor tutor;
-  const TutorInformationCard({Key? key, required this.tutor}) : super(key: key);
+  final List<LearnTopic> listLearnTopics;
+  final List<TestPreparation> listTestPreparations;
+  const TutorInformationCard(
+      {Key? key,
+      required this.tutor,
+      required this.listLearnTopics,
+      required this.listTestPreparations})
+      : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -155,22 +165,38 @@ class TutorInformationCard extends StatelessWidget {
       return Container();
     }
 
-    List<String> specialtiesList = specialties.split(',');
+    List<String> specialtiesListCode = specialties.split(',');
+    List<String> specialtiesList = getTutorSpecialties(specialtiesListCode);
 
     return Wrap(
       spacing: 5,
       runSpacing: 2,
       children: specialtiesList.map((specialty) {
-        return Chip(
-          backgroundColor: const Color(0xFFDDEAFF),
-          side: BorderSide.none,
-          label: Text(
-            specialty,
-            style: const TextStyle(fontSize: 14, color: Color(0xFF0058C6)),
-          ),
-        );
+        return CustomChip(label: specialty.trim());
       }).toList(),
     );
+  }
+
+  List<String> getTutorSpecialties(List<String> specialties) {
+    List<String> specialtiesNames = [];
+
+    for (String specialty in specialties) {
+      for (LearnTopic topic in listLearnTopics) {
+        if (topic.key == specialty) {
+          specialtiesNames.add(topic.name ?? '');
+          break;
+        }
+      }
+
+      for (TestPreparation test in listTestPreparations) {
+        if (test.key == specialty) {
+          specialtiesNames.add(test.name ?? '');
+          break;
+        }
+      }
+    }
+
+    return specialtiesNames;
   }
 }
 

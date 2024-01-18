@@ -42,10 +42,10 @@ class CourseCard extends StatelessWidget {
                   ),
                   Text(
                     course.description ?? 'Course description',
-                    style: TextStyle(
+                    style: const TextStyle(
                         fontWeight: FontWeight.w400, color: Colors.grey),
                   ),
-                  SizedBox(
+                  const SizedBox(
                     height: 16,
                   ),
                   Row(

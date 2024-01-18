@@ -9,14 +9,13 @@ import 'package:let_tutor/blocs/tutor/tutor_list/tutor_list_state.dart';
 import 'package:intl/intl.dart';
 import 'package:let_tutor/data/models/tutors/learn_topic.dart';
 import 'package:let_tutor/data/models/tutors/test_preparation.dart';
-import 'package:let_tutor/data/sharedpref/shared_preference_helper.dart';
+import 'package:let_tutor/presentation/screen/tutor/tutor_list/widgets/upcoming_lesson.dart';
 
 import 'package:let_tutor/presentation/styles/custom_text_style.dart';
 import 'package:let_tutor/presentation/widgets/tutor_information_card.dart';
 import 'package:number_paginator/number_paginator.dart';
 
 import 'package:let_tutor/data/models/tutors/tutor.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 
 class TutorListPage extends StatefulWidget {
   const TutorListPage({Key? key}) : super(key: key);
@@ -40,7 +39,7 @@ class TutorListPageState extends State<TutorListPage> {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              const _BuildUpcomingLesson(),
+              const UpcomingLesson(),
               const SizedBox(
                 height: 8,
               ),
@@ -70,7 +69,8 @@ class TutorListPageState extends State<TutorListPage> {
                           if (state.tutors.isEmpty) {
                             return _noTutorsFoundMessage();
                           }
-                          return _listTutorInformationCard(state.tutors);
+                          return _listTutorInformationCard(state.tutors,
+                              state.learnTopics, state.testPreparations);
                         } else if (state is TutorListFailure) {
                           return Text('Error: ${state.error}');
                         } else {
@@ -303,7 +303,10 @@ class TutorListPageState extends State<TutorListPage> {
     );
   }
 
-  _listTutorInformationCard(List<Tutor> tutors) {
+  _listTutorInformationCard(
+      List<Tutor> tutors,
+      List<LearnTopic> listLearnTopics,
+      List<TestPreparation> listTestPreparations) {
     // Sort tutors by favorite status, favorite tutor status and rating
     tutors.sort((a, b) {
       if (b.isFavorite != a.isFavorite) {
@@ -324,7 +327,10 @@ class TutorListPageState extends State<TutorListPage> {
           if (index < tutors.length) {
             return Column(
               children: [
-                TutorInformationCard(tutor: tutors[index]),
+                TutorInformationCard(
+                    tutor: tutors[index],
+                    listLearnTopics: listLearnTopics,
+                    listTestPreparations: listTestPreparations),
                 const SizedBox(height: 16),
               ],
             );
@@ -469,125 +475,6 @@ class TutorListPageState extends State<TutorListPage> {
   }
 }
 
-class _BuildUpcomingLesson extends StatefulWidget {
-  const _BuildUpcomingLesson();
-  @override
-  State<_BuildUpcomingLesson> createState() => __BuildUpcomingLessonState();
-}
-
-class __BuildUpcomingLessonState extends State<_BuildUpcomingLesson> {
-  String? locale;
-
-  @override
-  void initState() {
-    loadLocale();
-    super.initState();
-  }
-
-  Future<void> loadLocale() async {
-    locale = await getLocale();
-    log('locale: $locale');
-    setState(() {});
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-      color: Theme.of(context).primaryColor,
-      height: 250,
-      width: double.infinity,
-      child: Column(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: [
-          BlocBuilder<TutorListBloc, TutorListState>(
-            builder: (context, state) {
-              if (state is TutorListSuccess) {
-                if (state.upcomingSchedule.id != null) {
-                  final upcomingSchedule = state.upcomingSchedule;
-                  final startTime = DateTime.fromMillisecondsSinceEpoch(
-                      upcomingSchedule
-                              .scheduleDetailInfo?.startPeriodTimestamp ??
-                          0);
-                  final endTime = DateTime.fromMillisecondsSinceEpoch(
-                      upcomingSchedule.scheduleDetailInfo?.endPeriodTimestamp ??
-                          0);
-
-                  return Column(
-                    children: [
-                      const Text(
-                        'Upcoming lesson',
-                        textAlign: TextAlign.center,
-                        style: CustomTextStyle.headlineLargeWhite,
-                      ),
-                      const SizedBox(height: 8),
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          Text(
-                            '${DateFormat('EEE, dd MMM yy', locale).format(startTime)} ${DateFormat('HH:mm', locale).format(startTime)} - ${DateFormat('HH:mm', locale).format(endTime)}',
-                            textAlign: TextAlign.center,
-                            style: const TextStyle(
-                                fontSize: 20, color: Colors.white),
-                          ),
-                          const SizedBox(width: 8),
-                          StreamBuilder<int>(
-                            stream: Stream.periodic(
-                                const Duration(seconds: 1), (i) => i),
-                            builder: (context, snapshot) {
-                              final countdownDuration =
-                                  startTime.difference(DateTime.now());
-                              final countdownString =
-                                  '${countdownDuration.inHours}:${(countdownDuration.inMinutes % 60).toString().padLeft(2, '0')}:${(countdownDuration.inSeconds % 60).toString().padLeft(2, '0')}';
-                              return Text(
-                                '(starts in $countdownString)',
-                                style: CustomTextStyle.timer,
-                              );
-                            },
-                          ),
-                        ],
-                      ),
-                      const SizedBox(height: 8),
-                      ElevatedButton.icon(
-                        onPressed: () {},
-                        label: const Text("Enter lesson room"),
-                        icon: const Icon(Icons.play_circle_fill_outlined),
-                      ),
-                    ],
-                  );
-                } else {
-                  return const Text(
-                    'You have no upcoming lesson.',
-                    textAlign: TextAlign.center,
-                    style: CustomTextStyle.headlineLargeWhite,
-                  );
-                }
-              } else {
-                return const SizedBox.shrink();
-              }
-            },
-          ),
-          const SizedBox(height: 20),
-          BlocBuilder<TutorListBloc, TutorListState>(
-            builder: (context, state) {
-              if (state is TutorListSuccess) {
-                final hours = state.totalCall ~/ 60;
-                final minutes = state.totalCall % 60;
-                return Text(
-                  'Total lesson time is $hours hours $minutes minutes',
-                  textAlign: TextAlign.center,
-                  style: const TextStyle(fontSize: 20, color: Colors.white),
-                );
-              }
-              // Return an empty Container when state is not TutorListSuccess
-              return Container();
-            },
-          )
-        ],
-      ),
-    );
-  }
-}
-
 Map<String, String> getTopicsMap(
     List<LearnTopic> learnTopics, List<TestPreparation> testPreparations) {
   Map<String, String> topicsMap = {};
@@ -605,10 +492,4 @@ Map<String, String> getTopicsMap(
   }
 
   return topicsMap;
-}
-
-Future<String?> getLocale() async {
-  SharedPreferenceHelper sharedPreferences =
-      SharedPreferenceHelper(await SharedPreferences.getInstance());
-  return sharedPreferences.locale;
 }

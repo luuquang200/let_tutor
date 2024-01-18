@@ -29,9 +29,11 @@ class CourseCoverImage extends StatelessWidget {
           } else {
             return CachedNetworkImage(
               imageUrl: snapshot.data!,
-              progressIndicatorBuilder: (context, url, progress) =>
-                  CircularProgressIndicator(
-                value: progress.progress,
+              progressIndicatorBuilder: (context, url, progress) => Center(
+                widthFactor: 1,
+                child: CircularProgressIndicator(
+                  value: progress.progress,
+                ),
               ),
             );
           }

@@ -1,15 +1,11 @@
-import 'dart:developer';
-
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutter_svg/svg.dart';
 import 'package:intl/intl.dart';
 import 'package:let_tutor/blocs/schedule/booked_schedule/schedule_bloc.dart';
 import 'package:let_tutor/blocs/schedule/booked_schedule/schedule_event.dart';
 import 'package:let_tutor/configs/app_config.dart';
 import 'package:let_tutor/data/models/country.dart';
 import 'package:let_tutor/data/models/schedule/booked_schedule.dart';
-import 'package:let_tutor/presentation/screen/tutor/tutor_list/tutor_list_page.dart';
 import 'package:let_tutor/presentation/styles/custom_button.dart';
 import 'package:let_tutor/presentation/styles/custom_text_style.dart';
 import 'package:let_tutor/presentation/widgets/flag.dart';
@@ -30,14 +26,7 @@ class _BookedScheduleCardState extends State<BookedScheduleCard> {
   String? locale;
   @override
   void initState() {
-    loadLocale();
     super.initState();
-  }
-
-  Future<void> loadLocale() async {
-    locale = await getLocale();
-    log('locale: $locale');
-    setState(() {});
   }
 
   @override

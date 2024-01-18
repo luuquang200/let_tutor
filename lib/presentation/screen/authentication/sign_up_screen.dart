@@ -5,6 +5,7 @@ import 'package:let_tutor/blocs/auth/sign_up/sign_up_bloc.dart';
 import 'package:let_tutor/blocs/auth/sign_up/sign_up_event.dart';
 import 'package:let_tutor/blocs/auth/sign_up/sign_up_state.dart';
 import 'package:let_tutor/presentation/screen/authentication/widgets/app_logo.dart';
+import 'package:let_tutor/presentation/screen/authentication/widgets/custom_text_field.dart';
 import 'package:let_tutor/presentation/styles/custom_button.dart';
 import 'package:let_tutor/data/repositories/authentication_repository.dart';
 import 'package:let_tutor/routes.dart';
@@ -50,7 +51,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                         _passWordLabel(),
                         _inputPassword(context),
                         _retypedPassWordLabel(),
-                        _inputRetypedPassWord(),
+                        _inputRetypedPassWord(context),
                         _forgotPasswordLabel(),
                         _signUpButton(context),
                         _orContinueLabel(),
@@ -206,19 +207,16 @@ class _SignUpScreenState extends State<SignUpScreen> {
     );
   }
 
-  TextField _inputPassword(BuildContext context) {
-    return TextField(
-      onChanged: (value) =>
-          context.read<SignUpBloc>().add(PasswordChanged(password: value)),
+  CustomTextFieldAuth _inputPassword(BuildContext context) {
+    return CustomTextFieldAuth(
+      hintText: 'password',
       controller: _passwordController,
-      decoration: InputDecoration(
-        errorText: passwordErrorText,
-        prefixIcon: const Icon(Icons.lock, size: 26, color: Color(0xFF0058C6)),
-        hintText: '*****',
-        border: const OutlineInputBorder(
-            borderSide: BorderSide(color: Colors.grey),
-            borderRadius: BorderRadius.all(Radius.circular(8))),
-      ),
+      obscureText: true,
+      onChanged: (value) {
+        context.read<SignUpBloc>().add(PasswordChanged(password: value));
+      },
+      errorText: passwordErrorText,
+      icon: Icons.lock,
     );
   }
 
@@ -281,20 +279,20 @@ class _SignUpScreenState extends State<SignUpScreen> {
     );
   }
 
-  _inputRetypedPassWord() {
+  _inputRetypedPassWord(BuildContext context) {
     return Padding(
       padding: const EdgeInsets.only(bottom: 15),
-      child: TextField(
+      child: CustomTextFieldAuth(
+        hintText: 'password',
         controller: _retypePasswordController,
-        decoration: InputDecoration(
-          errorText: retypePasswordErrorText,
-          prefixIcon:
-              const Icon(Icons.lock, size: 26, color: Color(0xFF0058C6)),
-          hintText: '*****',
-          border: const OutlineInputBorder(
-              borderSide: BorderSide(color: Colors.grey),
-              borderRadius: BorderRadius.all(Radius.circular(8))),
-        ),
+        obscureText: true,
+        onChanged: (value) {
+          context
+              .read<SignUpBloc>()
+              .add(RetypePasswordChanged(retypePassword: value));
+        },
+        errorText: retypePasswordErrorText,
+        icon: Icons.lock,
       ),
     );
   }
