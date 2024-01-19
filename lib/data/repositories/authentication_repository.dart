@@ -49,4 +49,16 @@ class AuthenticationRepository {
       rethrow;
     }
   }
+
+  //signInWithGoogle(String accessToken) {}
+  Future<AuthenticationResponse> signInWithGoogle(String accessToken) async {
+    try {
+      return await _authenticationApiClient.signInWithGoogle(accessToken);
+    } on DioException catch (e) {
+      throw DioExceptionHandler.fromDioError(e);
+    } catch (e) {
+      log('error handling from repo: $e');
+      rethrow;
+    }
+  }
 }

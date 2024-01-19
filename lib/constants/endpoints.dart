@@ -3,6 +3,7 @@ class Endpoints {
   static const login = '/auth/login';
   static const register = '/auth/register';
   static const resetPassword = '/user/forgotPassword';
+  static const loginWithGoogle = '/auth/google';
 
   // Tutor
   static const listTutor = '/tutor/more';

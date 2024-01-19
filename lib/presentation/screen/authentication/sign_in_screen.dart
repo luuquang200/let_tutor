@@ -7,6 +7,7 @@ import 'package:let_tutor/blocs/auth/sign_in/sign_in_state.dart';
 import 'package:let_tutor/presentation/screen/authentication/widgets/app_logo.dart';
 import 'package:let_tutor/presentation/screen/authentication/widgets/custom_label.dart';
 import 'package:let_tutor/presentation/screen/authentication/widgets/custom_text_field.dart';
+import 'package:let_tutor/presentation/screen/authentication/widgets/social_login.dart';
 import 'package:let_tutor/presentation/styles/custom_button.dart';
 import 'package:let_tutor/data/repositories/authentication_repository.dart';
 import 'package:let_tutor/routes.dart';
@@ -77,7 +78,7 @@ class _SignInScreenState extends State<SignInScreen> {
                         _navigateToForgotPass(context),
                         _loginButton(context),
                         _labelLoginWithSocial(),
-                        _socialLoginButtons(),
+                        const SocialLogin(),
                         _navigateToSignUp(context),
                       ],
                     ),
@@ -143,29 +144,29 @@ class _SignInScreenState extends State<SignInScreen> {
     );
   }
 
-  Row _socialLoginButtons() {
-    return Row(
-      mainAxisAlignment: MainAxisAlignment.center,
-      children: [
-        IconButton(
-          onPressed: () {},
-          icon: SvgPicture.asset(
-            'assets/facebook-logo.svg',
-            width: 50,
-            height: 50,
-          ),
-        ),
-        IconButton(
-          onPressed: () {},
-          icon: SvgPicture.asset(
-            'assets/google-logo.svg',
-            width: 50,
-            height: 50,
-          ),
-        ),
-      ],
-    );
-  }
+  // Row _socialLoginButtons() {
+  //   return Row(
+  //     mainAxisAlignment: MainAxisAlignment.center,
+  //     children: [
+  //       IconButton(
+  //         onPressed: () {},
+  //         icon: SvgPicture.asset(
+  //           'assets/facebook-logo.svg',
+  //           width: 50,
+  //           height: 50,
+  //         ),
+  //       ),
+  //       IconButton(
+  //         onPressed: () {},
+  //         icon: SvgPicture.asset(
+  //           'assets/google-logo.svg',
+  //           width: 50,
+  //           height: 50,
+  //         ),
+  //       ),
+  //     ],
+  //   );
+  // }
 
   MyElevatedButton _loginButton(BuildContext context) {
     return MyElevatedButton(

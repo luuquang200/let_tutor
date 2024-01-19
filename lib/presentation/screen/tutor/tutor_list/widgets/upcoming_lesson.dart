@@ -40,6 +40,17 @@ class _UpcomingLessonState extends State<UpcomingLesson> {
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
           BlocBuilder<TutorListBloc, TutorListState>(
+            buildWhen: (previousState, currentState) {
+              if (currentState is TutorListSuccess) {
+                if (previousState is TutorListSuccess) {
+                  return previousState.upcomingSchedule.id !=
+                      currentState.upcomingSchedule.id;
+                }
+                // This is the first time emitting TutorListSuccess
+                return true;
+              }
+              return false;
+            },
             builder: (context, state) {
               if (state is TutorListSuccess) {
                 if (state.upcomingSchedule.id != null) {
@@ -108,6 +119,16 @@ class _UpcomingLessonState extends State<UpcomingLesson> {
           ),
           const SizedBox(height: 20),
           BlocBuilder<TutorListBloc, TutorListState>(
+            buildWhen: (previousState, currentState) {
+              if (currentState is TutorListSuccess) {
+                if (previousState is TutorListSuccess) {
+                  return previousState.totalCall != currentState.totalCall;
+                }
+                // This is the first time emitting TutorListSuccess
+                return true;
+              }
+              return false;
+            },
             builder: (context, state) {
               if (state is TutorListSuccess) {
                 final hours = state.totalCall ~/ 60;

@@ -18,3 +18,7 @@ class PasswordChanged extends SignInEvent {
 
   PasswordChanged({required this.password});
 }
+
+class SignInWithGoogle extends SignInEvent {}
+
+class SignInWithFacebook extends SignInEvent {}
