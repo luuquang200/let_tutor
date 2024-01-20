@@ -10,12 +10,17 @@ import 'courses_list_state.dart';
 
 class CoursesListBloc extends Bloc<CoursesListEvent, CourseState> {
   final CourseRepository courseRepository;
+  final page = 1;
+  final size = 100;
   final perPage = 20;
 
   CoursesListBloc({required this.courseRepository})
       : super(CoursesListInitial()) {
     on<GetCoursesList>(_onGetCoursesList);
     on<GetDetailCourse>(_onGetDetailCourse);
+    // on<GetCoursesListByCategory>(_onGetCoursesListByCategory);
+    on<GetCoursesListByLevel>(_onGetCoursesListByLevel);
+    // on<GetCoursesListBySortLevel>(_onGetCoursesListBySortLevel);
   }
 
   Future<void> _onGetCoursesList(
@@ -30,7 +35,7 @@ class CoursesListBloc extends Bloc<CoursesListEvent, CourseState> {
       for (var element in categories) {
         log(element.title ?? '');
       }
-      emit(CoursesListLoadSuccess(courses, categories));
+      emit(CoursesListLoadSuccess(courses, categories, const {}));
     } catch (e) {
       emit(CoursesListLoadFailure(e.toString()));
     }
@@ -45,6 +50,31 @@ class CoursesListBloc extends Bloc<CoursesListEvent, CourseState> {
       emit(CourseDetailLoadSuccess(course));
     } catch (e) {
       emit(CourseDetailLoadFailure(e.toString()));
+    }
+  }
+
+  // level
+  FutureOr<void> _onGetCoursesListByLevel(
+      GetCoursesListByLevel event, Emitter<CourseState> emit) async {
+    var currentState = state;
+    Map<String, dynamic> filters = {};
+    if (currentState is CoursesListLoadSuccess) {
+      filters = Map<String, dynamic>.from(currentState.filters);
+      filters['level[]'] = event.level;
+    }
+    log('filters: $filters');
+
+    emit(CoursesListLoading());
+
+    try {
+      //page, size, perPage, filters
+      List<Course> courses = await courseRepository.searchCourses(
+          page: page, size: size, perPage: perPage, map: filters);
+      List<CourseCategory> categories =
+          await courseRepository.getCourseCategories();
+      emit(CoursesListLoadSuccess(courses, categories, filters));
+    } catch (e) {
+      emit(CoursesListLoadFailure(e.toString()));
     }
   }
 }

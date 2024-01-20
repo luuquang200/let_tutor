@@ -22,3 +22,30 @@ class GetDetailCourse extends CoursesListEvent {
   @override
   List<Object> get props => [id];
 }
+
+class GetCoursesListByCategory extends CoursesListEvent {
+  final String category;
+
+  const GetCoursesListByCategory(this.category);
+
+  @override
+  List<Object> get props => [category];
+}
+
+class GetCoursesListByLevel extends CoursesListEvent {
+  final String level;
+
+  const GetCoursesListByLevel(this.level);
+
+  @override
+  List<Object> get props => [level];
+}
+
+class GetCoursesListBySortLevel extends CoursesListEvent {
+  final String sortLevel;
+
+  const GetCoursesListBySortLevel(this.sortLevel);
+
+  @override
+  List<Object> get props => [sortLevel];
+}

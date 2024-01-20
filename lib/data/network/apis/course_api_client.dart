@@ -61,4 +61,29 @@ class CourseApiClient {
       rethrow;
     }
   }
+
+  // searchCourses(int page, int size, int perPage, Map<String, dynamic> map) {}
+  Future<CourseResponse> searchCourses(
+      int page, int size, int perPage, Map<String, dynamic> map) async {
+    log('calling search courses api');
+    try {
+      var response = await DioClient.instance.get(
+        Endpoints.getCoursesList,
+        queryParameters: {
+          "page": page,
+          "size": size,
+          "perPage": perPage,
+          ...map,
+        },
+      );
+      CourseResponse courseResponse = CourseResponse.fromJson(response['data']);
+      return courseResponse;
+    } on DioException catch (e) {
+      throw DioExceptionHandler.fromDioError(e);
+    } catch (e) {
+      log('Error handling from search courses api:');
+      log('$e');
+      rethrow;
+    }
+  }
 }

@@ -8,6 +8,7 @@ import 'package:let_tutor/data/repositories/course_repository.dart';
 import 'package:let_tutor/presentation/screen/courses/course_detail.dart';
 import 'package:let_tutor/presentation/screen/courses/widgets/categories_filter.dart';
 import 'package:let_tutor/presentation/screen/courses/widgets/course_card.dart';
+import 'package:let_tutor/presentation/screen/courses/widgets/level_filter.dart';
 import 'package:let_tutor/presentation/screen/courses/widgets/loading_indicator.dart';
 import 'package:let_tutor/routes.dart';
 
@@ -59,7 +60,7 @@ class _AllCoursesTabState extends State<AllCoursesTab> {
                     visible: visibilityFilter,
                     child: Column(
                       children: [
-                        _levelFilter(),
+                        const LevelFilter(),
                         const SizedBox(
                           height: 8,
                         ),
@@ -75,33 +76,45 @@ class _AllCoursesTabState extends State<AllCoursesTab> {
                     ),
                   ),
                   Expanded(
-                    child: ListView.builder(
-                      shrinkWrap: true,
-                      scrollDirection: Axis.vertical,
-                      itemCount: state.courses.length,
-                      itemBuilder: (context, index) {
-                        return InkWell(
-                          onTap: () {
-                            Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                builder: (context) => BlocProvider(
-                                  create: (context) => CoursesListBloc(
-                                      courseRepository: CourseRepository())
-                                    ..add(GetDetailCourse(
-                                        state.courses[index].id ?? '')),
-                                  child: CourseDetail(
-                                      courseId: state.courses[index].id ?? ''),
+                    child: state.courses.length > 0
+                        ? ListView.builder(
+                            shrinkWrap: true,
+                            scrollDirection: Axis.vertical,
+                            itemCount: state.courses.length,
+                            itemBuilder: (context, index) {
+                              return InkWell(
+                                onTap: () {
+                                  Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                      builder: (context) => BlocProvider(
+                                        create: (context) => CoursesListBloc(
+                                            courseRepository:
+                                                CourseRepository())
+                                          ..add(GetDetailCourse(
+                                              state.courses[index].id ?? '')),
+                                        child: CourseDetail(
+                                            courseId:
+                                                state.courses[index].id ?? ''),
+                                      ),
+                                    ),
+                                  );
+                                },
+                                child: CourseCard(
+                                  course: state.courses[index],
                                 ),
-                              ),
-                            );
-                          },
-                          child: CourseCard(
-                            course: state.courses[index],
+                              );
+                            },
+                          )
+                        : const Center(
+                            child: Column(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: [
+                                Icon(Icons.search_off_outlined, size: 64),
+                                Text('No courses found'),
+                              ],
+                            ),
                           ),
-                        );
-                      },
-                    ),
                   ),
                 ],
               ),
@@ -170,27 +183,6 @@ class _AllCoursesTabState extends State<AllCoursesTab> {
       },
     );
   }
-
-  // _categoriesFilter() {
-  //   return DropdownButton<String>(
-  //     isExpanded: true,
-  //     value: _selectedCategory,
-  //     items: List.generate(
-  //       categories.length,
-  //       (index) => DropdownMenuItem(
-  //         value: categories[index],
-  //         child: Text(
-  //           categories[index],
-  //         ),
-  //       ),
-  //     ),
-  //     onChanged: (value) {
-  //       setState(() {
-  //         _selectedCategory = value!;
-  //       });
-  //     },
-  //   );
-  // }
 
   _sortLevel() {
     return DropdownButton<String>(
