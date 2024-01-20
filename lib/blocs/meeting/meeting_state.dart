@@ -34,12 +34,3 @@ class MeetingError extends MeetingState {
   @override
   List<Object> get props => [message];
 }
-
-class MeetingWaiting extends MeetingState {
-  final DateTime dateTime;
-
-  const MeetingWaiting(this.dateTime);
-
-  @override
-  List<Object> get props => [dateTime];
-}

@@ -4,15 +4,15 @@ import 'package:let_tutor/data/models/schedule/booked_schedule.dart';
 import 'package:let_tutor/presentation/styles/custom_button.dart';
 import 'package:let_tutor/routes.dart';
 
-class VideoCallScreen extends StatefulWidget {
+class WaitingCallScreen extends StatefulWidget {
   final BookedSchedule bookedSchedule;
-  const VideoCallScreen({super.key, required this.bookedSchedule});
+  const WaitingCallScreen({super.key, required this.bookedSchedule});
 
   @override
-  State<VideoCallScreen> createState() => _VideoCallScreenState();
+  State<WaitingCallScreen> createState() => _WaitingCallScreenState();
 }
 
-class _VideoCallScreenState extends State<VideoCallScreen> {
+class _WaitingCallScreenState extends State<WaitingCallScreen> {
   late DateTime startTime;
 
   @override

@@ -7,6 +7,9 @@ import 'package:let_tutor/blocs/tutor/booking/booking_bloc.dart';
 import 'package:let_tutor/blocs/tutor/booking/booking_event.dart';
 import 'package:let_tutor/blocs/tutor/booking/booking_state.dart';
 import 'package:let_tutor/data/models/schedule/schedule_slot.dart';
+import 'package:let_tutor/presentation/screen/tutor/booking/booking_page_failed.dart';
+import 'package:let_tutor/presentation/screen/tutor/booking/widgets/calendar_picker.dart';
+import 'package:let_tutor/presentation/screen/tutor/booking/widgets/time_picker.dart';
 import 'package:let_tutor/presentation/styles/custom_button.dart';
 import 'package:let_tutor/presentation/styles/custom_text_style.dart';
 
@@ -53,13 +56,19 @@ class BookingPageState extends State<BookingPage> {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   header(context, 'Booking date'),
-                  _CalendarPicker(
+                  CalendarPicker(
                       availableDate: state.availableSlots.keys.toList()),
                   header(context, 'Booking time'),
                   Padding(
                       padding: const EdgeInsets.only(left: 10),
                       child: state.availableSlots[_selectedDate] != null
-                          ? timePicker(state.availableSlots[_selectedDate]!)
+                          ? TimePicker(
+                              availableSlots:
+                                  state.availableSlots[_selectedDate]!,
+                              onChanged: (ScheduleSlot slot) {
+                                _selectedSlot = slot;
+                              },
+                            )
                           : const Text('No available time on this date')),
                   const SizedBox(height: 16),
                   balanceInformation(state.balance),
@@ -315,60 +324,6 @@ class BookingPageState extends State<BookingPage> {
             ),
           ],
         );
-      },
-    );
-  }
-}
-
-class BookingPageFailed extends StatelessWidget {
-  final String error;
-
-  const BookingPageFailed({super.key, required this.error});
-
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: Text('Booking', style: CustomTextStyle.topHeadline),
-        iconTheme: IconThemeData(color: Theme.of(context).primaryColor),
-      ),
-      body: Center(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            const Icon(Icons.blur_linear_outlined, size: 100),
-            Text(error, style: CustomTextStyle.headlineLarge),
-          ],
-        ),
-      ),
-    );
-  }
-}
-
-class _CalendarPicker extends StatelessWidget {
-  const _CalendarPicker({Key? key, required this.availableDate})
-      : super(key: key);
-
-  final List<DateTime> availableDate;
-  @override
-  Widget build(BuildContext context) {
-    // sort availableDate
-    availableDate.sort((a, b) => a.compareTo(b));
-
-    if (availableDate.isEmpty) {
-      return const Text("No available dates");
-    }
-
-    DateTime lastDate = DateTime.now().add(const Duration(days: 365));
-    return CalendarDatePicker(
-      initialDate: availableDate.first,
-      firstDate: availableDate.first,
-      lastDate: lastDate,
-      selectableDayPredicate: (DateTime date) {
-        return availableDate.contains(date);
-      },
-      onDateChanged: (DateTime value) {
-        BlocProvider.of<BookingBloc>(context).add(SelectDate(value));
       },
     );
   }

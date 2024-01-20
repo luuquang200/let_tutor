@@ -31,9 +31,6 @@ class _MeetingPageState extends State<MeetingPage> {
           }
         },
         builder: (context, state) {
-          // if (state is MeetingCreating) {
-          //   return const CircularProgressIndicator();
-          // } else
           if (state is MeetingError) {
             return Text(state.message);
           }
