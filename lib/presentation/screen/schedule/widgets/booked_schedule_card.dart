@@ -80,7 +80,7 @@ class _BookedScheduleCardState extends State<BookedScheduleCard> {
             const SizedBox(
               height: 6,
             ),
-            _goMeetingButton(context),
+            _goMeetingButton(context, widget.bookedSchedules.first),
           ],
         ),
       ),
@@ -134,13 +134,14 @@ class _BookedScheduleCardState extends State<BookedScheduleCard> {
     );
   }
 
-  _goMeetingButton(BuildContext context) {
+  _goMeetingButton(BuildContext context, BookedSchedule bookedSchedule) {
     return Padding(
       padding: const EdgeInsets.all(8.0),
       child: MyElevatedButton(
         text: 'Go to meeting',
         onPressed: () {
-          Routes.navigateTo(context, Routes.videoCallScreen);
+          Navigator.pushNamed(context, Routes.videoCallScreen,
+              arguments: bookedSchedule);
         },
         height: 45,
         width: double.infinity,

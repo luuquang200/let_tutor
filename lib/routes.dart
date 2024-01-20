@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:let_tutor/data/models/course/course.dart';
+import 'package:let_tutor/data/models/schedule/booked_schedule.dart';
 import 'package:let_tutor/presentation/screen/account/profile_setting_screen.dart';
 import 'package:let_tutor/presentation/screen/authentication/sign_up_screen.dart';
 import 'package:let_tutor/presentation/screen/courses/course_detail.dart';
@@ -7,6 +8,7 @@ import 'package:let_tutor/presentation/screen/courses/courses_screen.dart';
 import 'package:let_tutor/presentation/screen/home.dart';
 import 'package:let_tutor/presentation/screen/authentication/sign_in_screen.dart';
 import 'package:let_tutor/presentation/screen/courses/topic_detail.dart';
+import 'package:let_tutor/presentation/screen/meeting/meeting_page.dart';
 import 'package:let_tutor/presentation/screen/schedule/schedule_screen.dart';
 import 'package:let_tutor/presentation/screen/tutor/booking/booking_screen.dart';
 import 'package:let_tutor/presentation/screen/tutor/review/tutor_review_screen.dart';
@@ -33,6 +35,7 @@ class Routes {
   static const String writeReview = '/write_review';
   static const String forgotPasswordScreen = '/forgot_password_screen';
   static const String profileSettingScreen = '/profile_setting_screen';
+  static const String meetingPage = '/meeting_page';
 
   static Route<dynamic> generateRoute(RouteSettings settings) {
     switch (settings.name) {
@@ -69,11 +72,17 @@ class Routes {
       case scheduleScreen:
         return MaterialPageRoute(builder: (_) => const ScheduleScreen());
       case videoCallScreen:
-        return MaterialPageRoute(builder: (_) => const VideoCallScreen());
+        return MaterialPageRoute(
+            builder: (_) => VideoCallScreen(
+                bookedSchedule: settings.arguments as BookedSchedule));
       case writeReview:
         return MaterialPageRoute(builder: (_) => const WriteReview());
       case profileSettingScreen:
         return MaterialPageRoute(builder: (_) => const ProfileSettingScreen());
+      case meetingPage:
+        return MaterialPageRoute(
+            builder: (_) => MeetingPage(link: settings.arguments as String));
+
       default:
         return MaterialPageRoute(builder: (_) => const UnknownScreen());
     }

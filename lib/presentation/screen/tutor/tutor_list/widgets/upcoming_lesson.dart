@@ -7,6 +7,7 @@ import 'package:let_tutor/blocs/tutor/tutor_list/tutor_list_bloc.dart';
 import 'package:let_tutor/blocs/tutor/tutor_list/tutor_list_state.dart';
 import 'package:let_tutor/data/sharedpref/shared_preference_helper.dart';
 import 'package:let_tutor/presentation/styles/custom_text_style.dart';
+import 'package:let_tutor/routes.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class UpcomingLesson extends StatefulWidget {
@@ -99,7 +100,10 @@ class _UpcomingLessonState extends State<UpcomingLesson> {
                       ),
                       const SizedBox(height: 8),
                       ElevatedButton.icon(
-                        onPressed: () {},
+                        onPressed: () {
+                          Navigator.pushNamed(context, Routes.meetingPage,
+                              arguments: upcomingSchedule.studentMeetingLink);
+                        },
                         label: const Text("Enter lesson room"),
                         icon: const Icon(Icons.play_circle_fill_outlined),
                       ),

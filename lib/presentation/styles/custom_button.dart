@@ -48,6 +48,8 @@ class MyElevatedButton extends StatelessWidget {
   final double width;
   final double textSize;
   final VoidCallback onPressed;
+  final Color color;
+  final Color textColor;
 
   const MyElevatedButton({
     Key? key,
@@ -57,14 +59,16 @@ class MyElevatedButton extends StatelessWidget {
     this.width = double.infinity,
     this.textSize = 20.0,
     required this.onPressed,
+    this.color = const Color(0xFF0058C6),
+    this.textColor = Colors.white,
   }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return ElevatedButton(
       style: ElevatedButton.styleFrom(
-        backgroundColor: const Color(0xFF0058C6),
-        minimumSize: Size(width, height), // Sử dụng width
+        backgroundColor: color, // updated
+        minimumSize: Size(width, height),
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(radius),
         ),
@@ -73,7 +77,7 @@ class MyElevatedButton extends StatelessWidget {
       child: Text(
         text,
         style: TextStyle(
-          color: Colors.white,
+          color: textColor, // updated
           fontSize: textSize,
         ),
       ),

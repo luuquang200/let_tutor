@@ -51,6 +51,8 @@ dependencies:
   image_picker: ^1.0.7
   google_sign_in: ^6.2.1
   firebase_auth: ^4.16.0
+  jitsi_meet_flutter_sdk: ^0.1.9
+  jwt_decoder: ^2.0.1
 
 dev_dependencies:
   flutter_test:
