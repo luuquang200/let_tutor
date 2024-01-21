@@ -43,7 +43,7 @@ class _CourseDetailState extends State<CourseDetail> {
                       const SizedBox(height: 12),
                       _introductionInfo(course),
                       const SizedBox(height: 12),
-                      _dicoveryButton(),
+                      _dicoveryButton(course),
                       const SizedBox(height: 12),
                       _sectionTitle(context, 'Overview'),
                       _courseOverview(course),
@@ -65,11 +65,11 @@ class _CourseDetailState extends State<CourseDetail> {
             ),
           );
         } else if (state is CourseDetailLoadFailure) {
-          return Scaffold(
+          return const Scaffold(
             body: Center(child: Text('Failed to load course detail')),
           );
         } else {
-          return Scaffold(
+          return const Scaffold(
             body: Center(child: CircularProgressIndicator()),
           );
         }
@@ -77,12 +77,15 @@ class _CourseDetailState extends State<CourseDetail> {
     );
   }
 
-  _dicoveryButton() {
+  _dicoveryButton(Course course) {
     return MyElevatedButton(
       text: 'Discover',
       height: 50,
       radius: 8,
-      onPressed: () {},
+      onPressed: () {
+        Navigator.pushNamed(context, Routes.topicDetail,
+            arguments: course.topics?[0]);
+      },
     );
   }
 
@@ -199,7 +202,8 @@ class _CourseDetailState extends State<CourseDetail> {
       itemBuilder: (context, index) {
         return GestureDetector(
           onTap: () {
-            Routes.navigateTo(context, Routes.topicDetail);
+            Navigator.pushNamed(context, Routes.topicDetail,
+                arguments: course.topics?[index]);
           },
           child: Padding(
             padding: const EdgeInsets.symmetric(vertical: 6, horizontal: 8),

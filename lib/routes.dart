@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:let_tutor/data/models/course/course.dart';
+import 'package:let_tutor/data/models/course/topic.dart';
 import 'package:let_tutor/data/models/schedule/booked_schedule.dart';
 import 'package:let_tutor/presentation/screen/account/profile_setting_screen.dart';
 import 'package:let_tutor/presentation/screen/authentication/sign_up_screen.dart';
@@ -68,7 +69,8 @@ class Routes {
             builder: (_) =>
                 CourseDetail(courseId: settings.arguments as String));
       case topicDetail:
-        return MaterialPageRoute(builder: (_) => const TopicDetail());
+        return MaterialPageRoute(
+            builder: (_) => TopicDetail(topic: settings.arguments as Topic));
       case scheduleScreen:
         return MaterialPageRoute(builder: (_) => const ScheduleScreen());
       case videoCallScreen:
