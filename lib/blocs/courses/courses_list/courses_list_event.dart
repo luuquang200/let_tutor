@@ -49,3 +49,12 @@ class GetCoursesListBySortLevel extends CoursesListEvent {
   @override
   List<Object> get props => [sortLevel];
 }
+
+class GetCoursesListBySearch extends CoursesListEvent {
+  final String search;
+
+  const GetCoursesListBySearch(this.search);
+
+  @override
+  List<Object> get props => [search];
+}

@@ -18,9 +18,10 @@ class CoursesListBloc extends Bloc<CoursesListEvent, CourseState> {
       : super(CoursesListInitial()) {
     on<GetCoursesList>(_onGetCoursesList);
     on<GetDetailCourse>(_onGetDetailCourse);
-    // on<GetCoursesListByCategory>(_onGetCoursesListByCategory);
+    on<GetCoursesListByCategory>(_onGetCoursesListByCategory);
     on<GetCoursesListByLevel>(_onGetCoursesListByLevel);
-    // on<GetCoursesListBySortLevel>(_onGetCoursesListBySortLevel);
+    on<GetCoursesListBySortLevel>(_onGetCoursesListBySortLevel);
+    on<GetCoursesListBySearch>(_onGetCoursesListBySearch);
   }
 
   Future<void> _onGetCoursesList(
@@ -61,6 +62,85 @@ class CoursesListBloc extends Bloc<CoursesListEvent, CourseState> {
     if (currentState is CoursesListLoadSuccess) {
       filters = Map<String, dynamic>.from(currentState.filters);
       filters['level[]'] = event.level;
+    }
+    log('filters: $filters');
+
+    emit(CoursesListLoading());
+
+    try {
+      //page, size, perPage, filters
+      List<Course> courses = await courseRepository.searchCourses(
+          page: page, size: size, perPage: perPage, map: filters);
+      List<CourseCategory> categories =
+          await courseRepository.getCourseCategories();
+      emit(CoursesListLoadSuccess(courses, categories, filters));
+    } catch (e) {
+      emit(CoursesListLoadFailure(e.toString()));
+    }
+  }
+
+  // category
+  FutureOr<void> _onGetCoursesListByCategory(
+      GetCoursesListByCategory event, Emitter<CourseState> emit) async {
+    var currentState = state;
+    Map<String, dynamic> filters = {};
+    if (currentState is CoursesListLoadSuccess) {
+      filters = Map<String, dynamic>.from(currentState.filters);
+      filters['category[]'] = event.category;
+    }
+    log('filters: $filters');
+
+    emit(CoursesListLoading());
+
+    try {
+      //page, size, perPage, filters
+      List<Course> courses = await courseRepository.searchCourses(
+          page: page, size: size, perPage: perPage, map: filters);
+      List<CourseCategory> categories =
+          await courseRepository.getCourseCategories();
+      emit(CoursesListLoadSuccess(courses, categories, filters));
+    } catch (e) {
+      emit(CoursesListLoadFailure(e.toString()));
+    }
+  }
+
+  // sort level
+  FutureOr<void> _onGetCoursesListBySortLevel(
+      GetCoursesListBySortLevel event, Emitter<CourseState> emit) async {
+    var currentState = state;
+    Map<String, dynamic> filters = {};
+    if (currentState is CoursesListLoadSuccess) {
+      filters = Map<String, dynamic>.from(currentState.filters);
+      if (event.sortLevel == '') {
+        filters.remove('orderBy[]');
+      } else {
+        filters['orderBy[]'] = event.sortLevel;
+      }
+    }
+    log('filters: $filters');
+
+    emit(CoursesListLoading());
+
+    try {
+      //page, size, perPage, filters
+      List<Course> courses = await courseRepository.searchCourses(
+          page: page, size: size, perPage: perPage, map: filters);
+      List<CourseCategory> categories =
+          await courseRepository.getCourseCategories();
+      emit(CoursesListLoadSuccess(courses, categories, filters));
+    } catch (e) {
+      emit(CoursesListLoadFailure(e.toString()));
+    }
+  }
+
+  // search
+  FutureOr<void> _onGetCoursesListBySearch(
+      GetCoursesListBySearch event, Emitter<CourseState> emit) async {
+    var currentState = state;
+    Map<String, dynamic> filters = {};
+    if (currentState is CoursesListLoadSuccess) {
+      filters = Map<String, dynamic>.from(currentState.filters);
+      filters['q'] = event.search;
     }
     log('filters: $filters');
 
