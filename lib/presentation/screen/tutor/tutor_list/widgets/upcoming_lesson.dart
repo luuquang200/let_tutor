@@ -1,5 +1,6 @@
 import 'dart:developer';
 
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:intl/intl.dart';
@@ -17,20 +18,6 @@ class UpcomingLesson extends StatefulWidget {
 }
 
 class _UpcomingLessonState extends State<UpcomingLesson> {
-  String? locale;
-
-  @override
-  void initState() {
-    loadLocale();
-    super.initState();
-  }
-
-  Future<void> loadLocale() async {
-    locale = await getLocale();
-    log('locale: $locale');
-    setState(() {});
-  }
-
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -66,8 +53,8 @@ class _UpcomingLessonState extends State<UpcomingLesson> {
 
                   return Column(
                     children: [
-                      const Text(
-                        'Upcoming lesson',
+                      Text(
+                        'upcoming_lesson'.tr(),
                         textAlign: TextAlign.center,
                         style: CustomTextStyle.headlineLargeWhite,
                       ),
@@ -76,7 +63,7 @@ class _UpcomingLessonState extends State<UpcomingLesson> {
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [
                           Text(
-                            '${DateFormat('EEE, dd MMM yy', locale).format(startTime)} ${DateFormat('HH:mm', locale).format(startTime)} - ${DateFormat('HH:mm', locale).format(endTime)}',
+                            '${DateFormat('EEE, dd MMM yy', context.locale.languageCode).format(startTime)} ${DateFormat('HH:mm', context.locale.languageCode).format(startTime)} - ${DateFormat('HH:mm', context.locale.languageCode).format(endTime)}',
                             textAlign: TextAlign.center,
                             style: const TextStyle(
                                 fontSize: 20, color: Colors.white),
@@ -91,7 +78,7 @@ class _UpcomingLessonState extends State<UpcomingLesson> {
                               final countdownString =
                                   '${countdownDuration.inHours}:${(countdownDuration.inMinutes % 60).toString().padLeft(2, '0')}:${(countdownDuration.inSeconds % 60).toString().padLeft(2, '0')}';
                               return Text(
-                                '(starts in $countdownString)',
+                                'starts_in'.tr(args: [countdownString]),
                                 style: CustomTextStyle.timer,
                               );
                             },
@@ -104,14 +91,14 @@ class _UpcomingLessonState extends State<UpcomingLesson> {
                           Navigator.pushNamed(context, Routes.meetingPage,
                               arguments: upcomingSchedule.studentMeetingLink);
                         },
-                        label: const Text("Enter lesson room"),
+                        label: Text('enter_lesson_room'.tr()),
                         icon: const Icon(Icons.play_circle_fill_outlined),
                       ),
                     ],
                   );
                 } else {
-                  return const Text(
-                    'You have no upcoming lesson.',
+                  return Text(
+                    'no_upcoming_lesson'.tr(),
                     textAlign: TextAlign.center,
                     style: CustomTextStyle.headlineLargeWhite,
                   );
@@ -138,7 +125,10 @@ class _UpcomingLessonState extends State<UpcomingLesson> {
                 final hours = state.totalCall ~/ 60;
                 final minutes = state.totalCall % 60;
                 return Text(
-                  'Total lesson time is $hours hours $minutes minutes',
+                  'total_lesson_time'.tr(namedArgs: {
+                    'hours': hours.toString(),
+                    'minutes': minutes.toString()
+                  }),
                   textAlign: TextAlign.center,
                   style: const TextStyle(fontSize: 20, color: Colors.white),
                 );

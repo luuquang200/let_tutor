@@ -1,0 +1,22 @@
+{
+    "hello": "Xin chào",
+    "upcoming_lesson": "Bài học sắp tới",
+    "starts_in": "Bắt đầu trong {}",
+    "enter_lesson_room": "Vào phòng học",
+    "no_upcoming_lesson": "Bạn không có bài học sắp tới.",
+    "total_lesson_time": "Tổng thời gian học là {hours} giờ {minutes} phút",
+    "recommended_tutors:" : "Gia sư được đề xuất:",
+    "error_message": "Lỗi: {}",
+    "my_profile": "Hồ sơ của tôi",
+    "my_wallet": "Ví của tôi",
+    "recurring_lesson_schedule": "Lịch học định kỳ",
+    "become_a_tutor": "Trở thành giáo viên",
+    "privacy_policy": "Chính sách bảo mật",
+    "change_password": "Đổi mật khẩu",
+    "settings": "Cài đặt",
+    "log_out": "Đăng xuất",
+    "english": "Tiếng Anh",
+    "vietnamese": "Tiếng Việt",
+    "language": "Ngôn ngữ",
+    "setting": "Cài đặt"
+}

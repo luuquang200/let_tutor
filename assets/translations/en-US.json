@@ -1,0 +1,22 @@
+{
+    "hello": "Hello",
+    "upcoming_lesson": "Upcoming lesson",
+    "starts_in": "Starts in {}",
+    "enter_lesson_room": "Enter lesson room",
+    "no_upcoming_lesson": "You have no upcoming lesson.",
+    "total_lesson_time": "Total lesson time is {hours} hours {minutes} minutes",
+    "recommended_tutors:" : "Recommended Tutors:",
+    "error_message": "Error: {}",
+    "my_profile": "My profile",
+    "my_wallet": "My wallet",
+    "recurring_lesson_schedule": "Recurring Lesson Schedule",
+    "become_a_tutor": "Become a tutor",
+    "privacy_policy": "Privacy Policy",
+    "change_password": "Change password",
+    "settings": "Settings",
+    "log_out": "Log out",
+    "english": "English",
+    "vietnamese": "Vietnamese",
+    "language": "Language",
+    "setting": "Setting"
+}

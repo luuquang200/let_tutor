@@ -1,5 +1,6 @@
 import 'dart:developer';
 
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:let_tutor/blocs/account/account_home/account_bloc.dart';
@@ -17,19 +18,19 @@ class ItemList extends StatelessWidget {
     Icons.school_outlined,
     Icons.privacy_tip_outlined,
     Icons.lock_clock_outlined,
-    Icons.help_center_outlined,
+    Icons.settings_outlined,
     Icons.logout_outlined,
   ];
 
   final List<String> sections = <String>[
-    'My profile',
-    'My wallet',
-    'Recurring Lesson Schedule',
-    'Become a tutor',
-    'Privacy Policy',
-    'Change password',
-    'Guide',
-    'Log out'
+    'my_profile'.tr(),
+    'my_wallet'.tr(),
+    'recurring_lesson_schedule'.tr(),
+    'become_a_tutor'.tr(),
+    'privacy_policy'.tr(),
+    'change_password'.tr(),
+    'settings'.tr(),
+    'log_out'.tr(),
   ];
 
   @override
@@ -70,7 +71,8 @@ class ItemList extends StatelessWidget {
                     log('pressed 5');
                     break;
                   case 6:
-                    log('pressed 6');
+                    await Routes.navigateTo(context, Routes.settingsPage);
+                    accountBloc.add(const GetAccountPage());
                     break;
                   case 7:
                     BlocProvider.of<AccountBloc>(context).add(const Logout());

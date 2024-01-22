@@ -1,5 +1,6 @@
 import 'dart:developer';
 
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:intl/date_symbol_data_local.dart';
@@ -12,7 +13,15 @@ void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await AppConfig.readCountriesFromJson();
   log(AppConfig.countries.length.toString());
-  initializeDateFormatting().then((_) => runApp(const MyApp()));
+  await EasyLocalization.ensureInitialized();
+  initializeDateFormatting().then((_) => runApp(
+        EasyLocalization(
+          supportedLocales: const [Locale('en', 'US'), Locale('vi', 'VN')],
+          path: 'assets/translations',
+          fallbackLocale: const Locale('en', 'US'),
+          child: const MyApp(),
+        ),
+      ));
 }
 
 class MyApp extends StatelessWidget {
@@ -25,6 +34,9 @@ class MyApp extends StatelessWidget {
       providers: buildAuthRepositories(),
       child: MaterialApp(
         title: 'LetTutor',
+        localizationsDelegates: context.localizationDelegates,
+        supportedLocales: context.supportedLocales,
+        locale: context.locale,
         debugShowCheckedModeBanner: false,
         theme: ThemeData(
           colorScheme: const ColorScheme.light(

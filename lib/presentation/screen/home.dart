@@ -1,3 +1,6 @@
+import 'dart:developer';
+
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:let_tutor/presentation/screen/account/account_screen.dart';
@@ -5,6 +8,7 @@ import 'package:let_tutor/presentation/screen/courses/courses_screen.dart';
 import 'package:let_tutor/presentation/screen/schedule/schedule_screen.dart';
 import 'package:let_tutor/presentation/styles/custom_text_style.dart';
 import 'package:let_tutor/presentation/screen/tutor/tutor_list/tutor_list_screen.dart';
+import 'package:let_tutor/routes.dart';
 
 class Home extends StatefulWidget {
   const Home({super.key});
@@ -22,9 +26,10 @@ class _HomeState extends State<Home> {
   ];
   List<String> screenTitle = ['Tutors', 'Schedule', 'Courses', 'Account'];
   int selectedScreenIndex = 0;
+  int currentIndex = 0;
   List<String> listNationalities = <String>['Vietnamese', 'English'];
 
-  late String currentLanguage = listNationalities[0];
+  late String currentLanguage = listNationalities[1];
 
   @override
   Widget build(BuildContext context) {
@@ -37,7 +42,7 @@ class _HomeState extends State<Home> {
           screenTitle[selectedScreenIndex],
           style: CustomTextStyle.topHeadline,
         ),
-        actions: [_selectLanguage(), const SizedBox(width: 16)],
+        actions: [_selectLanguage(context), const SizedBox(width: 16)],
       ),
       body: screens[selectedScreenIndex],
       bottomNavigationBar: BottomNavigationBar(
@@ -63,7 +68,7 @@ class _HomeState extends State<Home> {
     );
   }
 
-  _selectLanguage() {
+  _selectLanguage(BuildContext context) {
     return PopupMenuButton<String>(
       icon: Container(
           padding: const EdgeInsets.all(8.0),
@@ -79,9 +84,11 @@ class _HomeState extends State<Home> {
             ),
           )),
       onSelected: (String value) {
-        // Update language here
         setState(() {
           currentLanguage = value;
+          context.setLocale(value == 'English'
+              ? const Locale('en', 'US')
+              : const Locale('vi', 'VN'));
         });
       },
       itemBuilder: (BuildContext context) {
@@ -104,5 +111,19 @@ class _HomeState extends State<Home> {
         }).toList();
       },
     );
+  }
+}
+
+class LanguageSetting extends StatefulWidget {
+  const LanguageSetting({super.key});
+
+  @override
+  State<LanguageSetting> createState() => _LanguageSettingState();
+}
+
+class _LanguageSettingState extends State<LanguageSetting> {
+  @override
+  Widget build(BuildContext context) {
+    return const Placeholder();
   }
 }

@@ -1,5 +1,6 @@
 import 'dart:developer';
 
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -48,7 +49,7 @@ class TutorListPageState extends State<TutorListPage> {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    _buildHeaderRow(),
+                    _buildHeaderRow(context),
                     const SizedBox(
                       height: 8,
                     ),
@@ -56,7 +57,6 @@ class TutorListPageState extends State<TutorListPage> {
                       visible: isShowFilter,
                       child: _inputFilter(context),
                     ),
-                    // _inputFilter(context),
                     const SizedBox(
                       height: 8,
                     ),
@@ -76,7 +76,9 @@ class TutorListPageState extends State<TutorListPage> {
                               state.totalPage,
                               state.page);
                         } else if (state is TutorListFailure) {
-                          return Text('Error: ${state.error}');
+                          return Text('error_message'.tr(args: [state.error]),
+                              style: CustomTextStyle.bodyRegular
+                                  .copyWith(color: Colors.redAccent));
                         } else {
                           return Container();
                         }
@@ -107,11 +109,11 @@ class TutorListPageState extends State<TutorListPage> {
     );
   }
 
-  Row _buildHeaderRow() {
+  Row _buildHeaderRow(BuildContext context) {
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [
-        const Text('Recommended Tutors:', style: CustomTextStyle.headlineLarge),
+        Text('recommended_tutors:'.tr(), style: CustomTextStyle.headlineLarge),
         IconButton(
             onPressed: () {
               setState(() {
@@ -507,4 +509,19 @@ Map<String, String> getTopicsMap(
   }
 
   return topicsMap;
+}
+
+class Test extends StatefulWidget {
+  const Test({super.key});
+
+  @override
+  State<Test> createState() => _TestState();
+}
+
+class _TestState extends State<Test> {
+  @override
+  Widget build(BuildContext context) {
+    return Text('recommended_tutors:'.tr(),
+        style: CustomTextStyle.headlineLarge);
+  }
 }
