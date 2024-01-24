@@ -17,7 +17,6 @@ class _SettingsPageState extends State<SettingsPage> {
   @override
   Widget build(BuildContext context) {
     _currentLanguage = context.locale.languageCode;
-    final appTheme = Provider.of<AppTheme>(context);
     return Scaffold(
       appBar: AppBar(
         title: Text('setting'.tr(), style: CustomTextStyle.topHeadline),

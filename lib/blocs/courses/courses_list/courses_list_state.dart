@@ -18,8 +18,11 @@ class CoursesListLoadSuccess extends CourseState {
   final List<Course> courses;
   final List<CourseCategory> categories;
   final Map<String, dynamic> filters;
+  final int totalPage;
+  final int page;
 
-  const CoursesListLoadSuccess(this.courses, this.categories, this.filters);
+  const CoursesListLoadSuccess(
+      this.courses, this.categories, this.filters, this.totalPage, this.page);
 
   @override
   List<Object> get props => [courses, categories];
@@ -27,9 +30,15 @@ class CoursesListLoadSuccess extends CourseState {
   CoursesListLoadSuccess copyWith(
       {List<Course>? courses,
       List<CourseCategory>? categories,
-      Map<String, dynamic>? filters}) {
+      Map<String, dynamic>? filters,
+      int? totalPage,
+      int? page}) {
     return CoursesListLoadSuccess(
-        courses ?? this.courses, categories ?? this.categories, filters ?? {});
+        courses ?? this.courses,
+        categories ?? this.categories,
+        filters ?? {},
+        totalPage ?? this.totalPage,
+        page ?? this.page);
   }
 }
 

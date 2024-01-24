@@ -47,7 +47,7 @@ class CustomTextStyle {
     return TextStyle(
         fontSize: 28,
         fontWeight: FontWeight.bold,
-        color: isLightTheme ? Color(0xFF0058C6) : Colors.white);
+        color: isLightTheme ? const Color(0xFF0058C6) : Colors.white);
   }
 
   static TextStyle get titleLarge {

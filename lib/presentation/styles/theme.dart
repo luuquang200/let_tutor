@@ -13,11 +13,11 @@ class AppTheme extends ChangeNotifier {
   static IconThemeData get iconTheme {
     if (isLightTheme) {
       return const IconThemeData(
-        color: Color(0xFF0058C6), // color for light theme
+        color: Color(0xFF0058C6),
       );
     } else {
       return const IconThemeData(
-        color: Colors.white, // color for dark theme
+        color: Colors.white,
       );
     }
   }

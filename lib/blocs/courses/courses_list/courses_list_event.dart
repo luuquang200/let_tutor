@@ -8,10 +8,11 @@ abstract class CoursesListEvent extends Equatable {
 }
 
 class GetCoursesList extends CoursesListEvent {
-  const GetCoursesList();
+  const GetCoursesList(this.page);
+  final int page;
 
   @override
-  List<Object> get props => [];
+  List<Object> get props => [page];
 }
 
 class GetDetailCourse extends CoursesListEvent {

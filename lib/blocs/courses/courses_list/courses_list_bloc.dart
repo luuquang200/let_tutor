@@ -4,6 +4,7 @@ import 'dart:developer';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:let_tutor/data/models/course/course.dart';
 import 'package:let_tutor/data/models/course/course_category.dart';
+import 'package:let_tutor/data/models/course/course_reponse.dart';
 import 'package:let_tutor/data/repositories/course_repository.dart';
 import 'courses_list_event.dart';
 import 'courses_list_state.dart';
@@ -11,8 +12,8 @@ import 'courses_list_state.dart';
 class CoursesListBloc extends Bloc<CoursesListEvent, CourseState> {
   final CourseRepository courseRepository;
   final page = 1;
-  final size = 100;
-  final perPage = 20;
+  final size = 10;
+  final perPage = 10;
 
   CoursesListBloc({required this.courseRepository})
       : super(CoursesListInitial()) {
@@ -26,17 +27,24 @@ class CoursesListBloc extends Bloc<CoursesListEvent, CourseState> {
 
   Future<void> _onGetCoursesList(
       GetCoursesList event, Emitter<CourseState> emit) async {
+    var currentState = state;
+    Map<String, dynamic> filters = {};
+    if (currentState is CoursesListLoadSuccess) {
+      filters = Map<String, dynamic>.from(currentState.filters);
+    }
+
     emit(CoursesListLoading());
     try {
-      List<Course> courses = await courseRepository.getCoursesList();
+      CourseResponse courseResponse = await courseRepository.searchCourses(
+          page: page, size: size, perPage: perPage, map: filters);
+      List<Course> courses = courseResponse.rows;
+      int totalPage = (courseResponse.count / perPage).ceil();
+
       List<CourseCategory> categories =
           await courseRepository.getCourseCategories();
 
-      // log all name of categories
-      for (var element in categories) {
-        log(element.title ?? '');
-      }
-      emit(CoursesListLoadSuccess(courses, categories, const {}));
+      emit(CoursesListLoadSuccess(
+          courses, categories, const {}, totalPage, event.page));
     } catch (e) {
       emit(CoursesListLoadFailure(e.toString()));
     }
@@ -69,11 +77,21 @@ class CoursesListBloc extends Bloc<CoursesListEvent, CourseState> {
 
     try {
       //page, size, perPage, filters
-      List<Course> courses = await courseRepository.searchCourses(
+      CourseResponse courseResponse = await courseRepository.searchCourses(
           page: page, size: size, perPage: perPage, map: filters);
+
+      List<Course> courses = courseResponse.rows;
+      int totalPage = (courses.length / perPage).ceil();
+
       List<CourseCategory> categories =
           await courseRepository.getCourseCategories();
-      emit(CoursesListLoadSuccess(courses, categories, filters));
+      emit(CoursesListLoadSuccess(
+        courses,
+        categories,
+        filters,
+        totalPage,
+        page,
+      ));
     } catch (e) {
       emit(CoursesListLoadFailure(e.toString()));
     }
@@ -94,11 +112,16 @@ class CoursesListBloc extends Bloc<CoursesListEvent, CourseState> {
 
     try {
       //page, size, perPage, filters
-      List<Course> courses = await courseRepository.searchCourses(
+      CourseResponse courseResponse = await courseRepository.searchCourses(
           page: page, size: size, perPage: perPage, map: filters);
+
+      List<Course> courses = courseResponse.rows;
+      int totalPage = (courses.length / perPage).ceil();
+
       List<CourseCategory> categories =
           await courseRepository.getCourseCategories();
-      emit(CoursesListLoadSuccess(courses, categories, filters));
+      emit(CoursesListLoadSuccess(
+          courses, categories, filters, totalPage, page));
     } catch (e) {
       emit(CoursesListLoadFailure(e.toString()));
     }
@@ -123,11 +146,15 @@ class CoursesListBloc extends Bloc<CoursesListEvent, CourseState> {
 
     try {
       //page, size, perPage, filters
-      List<Course> courses = await courseRepository.searchCourses(
+      CourseResponse courseResponse = await courseRepository.searchCourses(
           page: page, size: size, perPage: perPage, map: filters);
+
+      List<Course> courses = courseResponse.rows;
+      int totalPage = (courses.length / perPage).ceil();
       List<CourseCategory> categories =
           await courseRepository.getCourseCategories();
-      emit(CoursesListLoadSuccess(courses, categories, filters));
+      emit(CoursesListLoadSuccess(
+          courses, categories, filters, totalPage, page));
     } catch (e) {
       emit(CoursesListLoadFailure(e.toString()));
     }
@@ -147,12 +174,16 @@ class CoursesListBloc extends Bloc<CoursesListEvent, CourseState> {
     emit(CoursesListLoading());
 
     try {
-      //page, size, perPage, filters
-      List<Course> courses = await courseRepository.searchCourses(
+      CourseResponse courseResponse = await courseRepository.searchCourses(
           page: page, size: size, perPage: perPage, map: filters);
+
+      List<Course> courses = courseResponse.rows;
+      int totalPage = (courses.length / perPage).ceil();
+
       List<CourseCategory> categories =
           await courseRepository.getCourseCategories();
-      emit(CoursesListLoadSuccess(courses, categories, filters));
+      emit(CoursesListLoadSuccess(
+          courses, categories, filters, totalPage, page));
     } catch (e) {
       emit(CoursesListLoadFailure(e.toString()));
     }

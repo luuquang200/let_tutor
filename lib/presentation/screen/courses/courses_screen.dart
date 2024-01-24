@@ -5,9 +5,12 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:let_tutor/blocs/courses/courses_list/courses_list_bloc.dart';
 import 'package:let_tutor/blocs/courses/courses_list/courses_list_event.dart';
 import 'package:let_tutor/blocs/courses/courses_list/courses_list_state.dart';
+import 'package:let_tutor/blocs/courses/ebooks_list/ebooks_list_bloc.dart';
+import 'package:let_tutor/blocs/courses/ebooks_list/ebooks_list_event.dart';
 import 'package:let_tutor/data/repositories/course_repository.dart';
 import 'package:let_tutor/presentation/screen/courses/widgets/all_courses_tab.dart';
 import 'package:let_tutor/presentation/screen/courses/widgets/course_card.dart';
+import 'package:let_tutor/presentation/screen/courses/widgets/ebooks_tab.dart';
 import 'package:let_tutor/presentation/styles/theme.dart';
 import 'package:let_tutor/routes.dart';
 
@@ -59,10 +62,19 @@ class _CoursesScreenState extends State<CoursesScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return BlocProvider(
-        create: (context) => CoursesListBloc(
+    return MultiBlocProvider(
+        providers: [
+          BlocProvider<CoursesListBloc>(
+            create: (context) => CoursesListBloc(
               courseRepository: CourseRepository(),
-            )..add(const GetCoursesList()),
+            )..add(const GetCoursesList(1)),
+          ),
+          BlocProvider<EbooksListBloc>(
+            create: (context) => EbooksListBloc(
+              courseRepository: CourseRepository(),
+            )..add(const GetEbooksList()),
+          ),
+        ],
         child: DefaultTabController(
           length: 2,
           child: Column(
@@ -71,9 +83,8 @@ class _CoursesScreenState extends State<CoursesScreen> {
                 _allCoursesTabHeadline(),
                 _ebooksTabHeadline(),
               ]),
-              Expanded(
-                child:
-                    TabBarView(children: [const AllCoursesTab(), _ebooksTab()]),
+              const Expanded(
+                child: TabBarView(children: [AllCoursesTab(), EbooksTab()]),
               )
             ],
           ),

@@ -14,6 +14,7 @@ import 'package:let_tutor/presentation/screen/courses/widgets/level_filter.dart'
 import 'package:let_tutor/presentation/screen/courses/widgets/loading_indicator.dart';
 import 'package:let_tutor/presentation/screen/courses/widgets/filter_bar.dart';
 import 'package:let_tutor/presentation/screen/courses/widgets/sort_selection.dart';
+import 'package:number_paginator/number_paginator.dart';
 
 class AllCoursesTab extends StatefulWidget {
   const AllCoursesTab({super.key});
@@ -71,33 +72,70 @@ class _AllCoursesTabState extends State<AllCoursesTab> {
                     child: Text('Error loading courses'),
                   );
                 } else if (state is CoursesListLoadSuccess) {
+                  int page = state.page;
+                  int totalPage = state.totalPage;
                   return state.courses.isNotEmpty
                       ? ListView.builder(
                           shrinkWrap: true,
                           scrollDirection: Axis.vertical,
-                          itemCount: state.courses.length,
+                          itemCount: state.courses.length + 1,
                           itemBuilder: (context, index) {
-                            return InkWell(
-                              onTap: () {
-                                Navigator.push(
-                                  context,
-                                  MaterialPageRoute(
-                                    builder: (context) => BlocProvider(
-                                      create: (context) => CoursesListBloc(
-                                          courseRepository: CourseRepository())
-                                        ..add(GetDetailCourse(
-                                            state.courses[index].id ?? '')),
-                                      child: CourseDetail(
-                                          courseId:
-                                              state.courses[index].id ?? ''),
+                            // return InkWell(
+                            // onTap: () {
+                            //   Navigator.push(
+                            //     context,
+                            //     MaterialPageRoute(
+                            //       builder: (context) => BlocProvider(
+                            //         create: (context) => CoursesListBloc(
+                            //             courseRepository: CourseRepository())
+                            //           ..add(GetDetailCourse(
+                            //               state.courses[index].id ?? '')),
+                            //         child: CourseDetail(
+                            //             courseId:
+                            //                 state.courses[index].id ?? ''),
+                            //       ),
+                            //     ),
+                            //   );
+                            // },
+                            // child: CourseCard(
+                            //   course: state.courses[index],
+                            // ),
+                            // );
+                            if (index < state.courses.length) {
+                              return InkWell(
+                                onTap: () {
+                                  Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                      builder: (context) => BlocProvider(
+                                        create: (context) => CoursesListBloc(
+                                            courseRepository:
+                                                CourseRepository())
+                                          ..add(GetDetailCourse(
+                                              state.courses[index].id ?? '')),
+                                        child: CourseDetail(
+                                            courseId:
+                                                state.courses[index].id ?? ''),
+                                      ),
                                     ),
-                                  ),
-                                );
-                              },
-                              child: CourseCard(
-                                course: state.courses[index],
-                              ),
-                            );
+                                  );
+                                },
+                                child: CourseCard(
+                                  course: state.courses[index],
+                                ),
+                              );
+                            } else {
+                              return NumberPaginator(
+                                numberPages: totalPage,
+                                initialPage: page - 1,
+                                onPageChange: (index) {
+                                  log('index, $index');
+                                  context
+                                      .read<CoursesListBloc>()
+                                      .add(GetCoursesList(index + 1));
+                                },
+                              );
+                            }
                           },
                         )
                       : const Center(

@@ -34,4 +34,5 @@ class Endpoints {
   static const getCoursesList = '/course';
   static const getCourseCategories = '/content-category';
   static const getDetailCourse = '/course';
+  static const getEbooksList = '/e-book';
 }
