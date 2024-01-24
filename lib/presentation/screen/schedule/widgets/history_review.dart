@@ -25,7 +25,7 @@ class _HistoryReviewState extends State<HistoryReview> {
                   size: 20,
                 ),
                 const SizedBox(width: 8),
-                const Expanded(
+                Expanded(
                     child: Row(
                   children: [
                     Text('Review from tutor:',

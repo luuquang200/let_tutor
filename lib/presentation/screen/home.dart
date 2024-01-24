@@ -1,5 +1,3 @@
-import 'dart:developer';
-
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
@@ -8,7 +6,6 @@ import 'package:let_tutor/presentation/screen/courses/courses_screen.dart';
 import 'package:let_tutor/presentation/screen/schedule/schedule_screen.dart';
 import 'package:let_tutor/presentation/styles/custom_text_style.dart';
 import 'package:let_tutor/presentation/screen/tutor/tutor_list/tutor_list_screen.dart';
-import 'package:let_tutor/routes.dart';
 
 class Home extends StatefulWidget {
   const Home({super.key});
@@ -36,8 +33,7 @@ class _HomeState extends State<Home> {
     return Scaffold(
       appBar: AppBar(
         elevation: 0,
-        backgroundColor: Colors.white,
-        iconTheme: const IconThemeData(color: Color(0xFF0058C6)),
+        // iconTheme: Provider.of<AppTheme>(context).getIconTheme(),
         title: Text(
           screenTitle[selectedScreenIndex],
           style: CustomTextStyle.topHeadline,

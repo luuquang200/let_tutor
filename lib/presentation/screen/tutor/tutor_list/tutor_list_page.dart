@@ -13,6 +13,7 @@ import 'package:let_tutor/data/models/tutors/test_preparation.dart';
 import 'package:let_tutor/presentation/screen/tutor/tutor_list/widgets/upcoming_lesson.dart';
 
 import 'package:let_tutor/presentation/styles/custom_text_style.dart';
+import 'package:let_tutor/presentation/styles/theme.dart';
 import 'package:let_tutor/presentation/widgets/tutor_information_card.dart';
 import 'package:number_paginator/number_paginator.dart';
 
@@ -363,7 +364,7 @@ class TutorListPageState extends State<TutorListPage> {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        const Padding(
+        Padding(
             padding: EdgeInsets.symmetric(vertical: 10),
             child: Text(
               'Find a tutor',
@@ -382,7 +383,7 @@ class TutorListPageState extends State<TutorListPage> {
             ),
           ],
         ),
-        const Padding(
+        Padding(
           padding: EdgeInsets.symmetric(vertical: 12),
           child: Text('Select available tutoring time:',
               style: CustomTextStyle.headlineMedium),
@@ -402,7 +403,7 @@ class TutorListPageState extends State<TutorListPage> {
           ],
         ),
         const SizedBox(height: 16),
-        const Text('Select speciality:', style: CustomTextStyle.headlineMedium),
+        Text('Select speciality:', style: CustomTextStyle.headlineMedium),
         const SizedBox(height: 8),
         Padding(
           padding: const EdgeInsets.symmetric(vertical: 8),
@@ -452,9 +453,10 @@ class TutorListPageState extends State<TutorListPage> {
                   context.read<TutorListBloc>().add(ResetFilters());
                 },
                 style: OutlinedButton.styleFrom(
-                  side: const BorderSide(color: Color(0xFF0058C6), width: 1),
+                  side: BorderSide(color: AppTheme.primaryColor, width: 1),
                 ),
-                child: const Text('Reset Filters'),
+                child: Text('Reset Filters',
+                    style: TextStyle(color: AppTheme.primaryColor)),
               ),
             ],
           );
@@ -509,19 +511,4 @@ Map<String, String> getTopicsMap(
   }
 
   return topicsMap;
-}
-
-class Test extends StatefulWidget {
-  const Test({super.key});
-
-  @override
-  State<Test> createState() => _TestState();
-}
-
-class _TestState extends State<Test> {
-  @override
-  Widget build(BuildContext context) {
-    return Text('recommended_tutors:'.tr(),
-        style: CustomTextStyle.headlineLarge);
-  }
 }

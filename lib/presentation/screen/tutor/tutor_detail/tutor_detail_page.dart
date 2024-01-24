@@ -14,6 +14,7 @@ import 'package:let_tutor/data/models/tutors/tutor.dart';
 import 'package:let_tutor/presentation/styles/custom_button.dart';
 import 'package:let_tutor/presentation/styles/custom_chip.dart';
 import 'package:let_tutor/presentation/styles/custom_text_style.dart';
+import 'package:let_tutor/presentation/styles/theme.dart';
 import 'package:let_tutor/presentation/widgets/flag.dart';
 import 'package:let_tutor/presentation/widgets/icon_text_button.dart';
 import 'package:let_tutor/presentation/widgets/star_rating.dart';
@@ -80,7 +81,7 @@ class _TutorDetailPageState extends State<TutorDetailPage> {
           return Scaffold(
             appBar: AppBar(
               title: Text('Tutor Detail', style: CustomTextStyle.topHeadline),
-              iconTheme: IconThemeData(color: Theme.of(context).primaryColor),
+              iconTheme: IconThemeData(color: AppTheme.primaryColor),
             ),
             body: SingleChildScrollView(
               padding: const EdgeInsets.symmetric(vertical: 8, horizontal: 20),
@@ -102,15 +103,13 @@ class _TutorDetailPageState extends State<TutorDetailPage> {
 
                   // Education
                   const SizedBox(height: 16),
-                  const Text('Education',
-                      style: CustomTextStyle.headlineMedium),
+                  Text('Education', style: CustomTextStyle.headlineMedium),
                   const SizedBox(height: 8),
                   _education(tutor.education ?? ''),
 
                   // Languages
                   const SizedBox(height: 16),
-                  const Text('Languages',
-                      style: CustomTextStyle.headlineMedium),
+                  Text('Languages', style: CustomTextStyle.headlineMedium),
                   const SizedBox(height: 8),
                   _language(tutor.languages),
 
@@ -118,8 +117,7 @@ class _TutorDetailPageState extends State<TutorDetailPage> {
                   const SizedBox(
                     height: 16,
                   ),
-                  const Text('Specialities',
-                      style: CustomTextStyle.headlineMedium),
+                  Text('Specialities', style: CustomTextStyle.headlineMedium),
                   const SizedBox(height: 8),
                   _specialities(tutor.specialties),
 
@@ -127,7 +125,7 @@ class _TutorDetailPageState extends State<TutorDetailPage> {
                   const SizedBox(
                     height: 10,
                   ),
-                  const Text(
+                  Text(
                     'Interests',
                     style: CustomTextStyle.headlineMedium,
                   ),
@@ -139,7 +137,7 @@ class _TutorDetailPageState extends State<TutorDetailPage> {
                   const SizedBox(
                     height: 16,
                   ),
-                  const Text(
+                  Text(
                     'Teaching Experience',
                     style: CustomTextStyle.headlineMedium,
                   ),
@@ -447,14 +445,14 @@ class _ReportDialogState extends State<ReportDialog> {
             mainAxisSize: MainAxisSize.min,
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              const Text("Help us understand what's happening:",
+              Text("Help us understand what's happening:",
                   style: CustomTextStyle.boldRegular),
               const SizedBox(height: 8),
               Column(
                 mainAxisSize: MainAxisSize.min,
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  const Text("Help us understand what's happening:",
+                  Text("Help us understand what's happening:",
                       style: CustomTextStyle.boldRegular),
                   const SizedBox(height: 8),
                   Column(
@@ -476,7 +474,7 @@ class _ReportDialogState extends State<ReportDialog> {
                 ],
               ),
               const SizedBox(height: 16),
-              const Text('Additional Information:',
+              Text('Additional Information:',
                   style: CustomTextStyle.boldRegular),
               const SizedBox(height: 8),
               TextField(

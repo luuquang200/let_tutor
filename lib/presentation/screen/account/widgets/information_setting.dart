@@ -11,7 +11,9 @@ import 'package:let_tutor/presentation/screen/account/widgets/level_dropdown.dar
 import 'package:let_tutor/presentation/screen/account/widgets/want_to_learn_select.dart';
 import 'package:let_tutor/presentation/styles/custom_button.dart';
 import 'package:let_tutor/presentation/styles/custom_text_style.dart';
+import 'package:let_tutor/presentation/styles/theme.dart';
 import 'package:let_tutor/presentation/widgets/custom_text_field.dart';
+import 'package:provider/provider.dart';
 
 class InformationSetting extends StatelessWidget {
   InformationSetting({super.key});
@@ -28,6 +30,7 @@ class InformationSetting extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final appTheme = Provider.of<AppTheme>(context);
     return BlocBuilder<ProfileSettingBloc, ProfileSettingState>(
         bloc: BlocProvider.of<ProfileSettingBloc>(context),
         builder: (context, state) {
@@ -59,7 +62,7 @@ class InformationSetting extends StatelessWidget {
 
                 // email
                 const SizedBox(height: 16),
-                const Text('Email', style: CustomTextStyle.headlineMedium),
+                Text('Email', style: CustomTextStyle.headlineMedium),
                 const SizedBox(height: 8),
                 CustomTextField(
                   height: 50.0,
@@ -165,8 +168,7 @@ class InformationSetting extends StatelessWidget {
 
                 //Study Schedule
                 const SizedBox(height: 16),
-                const Text('Study Schedule',
-                    style: CustomTextStyle.headlineMedium),
+                Text('Study Schedule', style: CustomTextStyle.headlineMedium),
                 const SizedBox(height: 8),
                 CustomTextField(
                   height: 50.0,

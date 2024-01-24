@@ -24,7 +24,7 @@ class _HistoryRequestState extends State<HistoryRequest> {
                   size: 20,
                 ),
                 const SizedBox(width: 8),
-                const Expanded(
+                Expanded(
                   child: Row(
                     children: [
                       Text('Requests for lesson:',

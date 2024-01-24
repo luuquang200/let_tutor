@@ -8,6 +8,7 @@ import 'package:let_tutor/blocs/courses/courses_list/courses_list_state.dart';
 import 'package:let_tutor/data/repositories/course_repository.dart';
 import 'package:let_tutor/presentation/screen/courses/widgets/all_courses_tab.dart';
 import 'package:let_tutor/presentation/screen/courses/widgets/course_card.dart';
+import 'package:let_tutor/presentation/styles/theme.dart';
 import 'package:let_tutor/routes.dart';
 
 class CoursesScreen extends StatefulWidget {
@@ -84,14 +85,11 @@ class _CoursesScreenState extends State<CoursesScreen> {
       icon: Row(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
-          Icon(
-            Icons.menu_book_outlined,
-            color: Theme.of(context).primaryColor,
-          ),
+          Icon(Icons.menu_book_outlined, color: AppTheme.primaryColor),
           const SizedBox(width: 8),
           Text(
             'All Courses',
-            style: TextStyle(color: Theme.of(context).primaryColor),
+            style: TextStyle(color: AppTheme.primaryColor),
           )
         ],
       ),
@@ -103,16 +101,11 @@ class _CoursesScreenState extends State<CoursesScreen> {
       icon: Row(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
-          Icon(
-            Icons.phone_android_outlined,
-            color: Theme.of(context).primaryColor,
-          ),
+          Icon(Icons.phone_android_outlined, color: AppTheme.primaryColor),
           const SizedBox(width: 8),
           Text(
             'E-Books',
-            style: TextStyle(
-              color: Theme.of(context).primaryColor,
-            ),
+            style: TextStyle(color: AppTheme.primaryColor),
           )
         ],
       ),

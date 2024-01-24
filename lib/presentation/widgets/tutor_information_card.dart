@@ -9,6 +9,7 @@ import 'package:let_tutor/data/models/tutors/test_preparation.dart';
 import 'package:let_tutor/data/models/tutors/tutor.dart';
 import 'package:let_tutor/presentation/styles/custom_chip.dart';
 import 'package:let_tutor/presentation/styles/custom_text_style.dart';
+import 'package:let_tutor/presentation/styles/theme.dart';
 import 'package:let_tutor/presentation/widgets/flag.dart';
 import 'package:let_tutor/presentation/widgets/star_rating.dart';
 import 'package:let_tutor/presentation/widgets/tutor_avatar.dart';
@@ -131,10 +132,13 @@ class TutorInformationCard extends StatelessWidget {
         child: OutlinedButton.icon(
           onPressed: () {},
           // icon: book tutor
-          icon: const Icon(Icons.edit_calendar),
-          label: const Text("Book"),
+          icon: Icon(Icons.edit_calendar, color: AppTheme.primaryColor),
+          label: Text(
+            "Book",
+            style: TextStyle(color: AppTheme.primaryColor),
+          ),
           style: OutlinedButton.styleFrom(
-            side: const BorderSide(color: Color(0xFF0058C6), width: 1),
+            side: AppTheme.borderSide,
             shape: RoundedRectangleBorder(
               borderRadius: BorderRadius.circular(10),
             ),

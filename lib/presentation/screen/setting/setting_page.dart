@@ -1,6 +1,8 @@
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:let_tutor/presentation/styles/custom_text_style.dart';
+import 'package:let_tutor/presentation/styles/theme.dart';
+import 'package:provider/provider.dart';
 
 class SettingsPage extends StatefulWidget {
   const SettingsPage({super.key});
@@ -15,16 +17,21 @@ class _SettingsPageState extends State<SettingsPage> {
   @override
   Widget build(BuildContext context) {
     _currentLanguage = context.locale.languageCode;
+    final appTheme = Provider.of<AppTheme>(context);
     return Scaffold(
       appBar: AppBar(
         title: Text('setting'.tr(), style: CustomTextStyle.topHeadline),
-        iconTheme: IconThemeData(color: Theme.of(context).primaryColor),
+        iconTheme: AppTheme.iconTheme,
       ),
       body: SingleChildScrollView(
         padding: const EdgeInsets.symmetric(vertical: 8, horizontal: 8),
         child: Column(
           children: [
-            Text('language'.tr(), style: CustomTextStyle.headlineMedium),
+            // Language
+            Text(
+              'language'.tr(),
+              style: CustomTextStyle.headlineMedium,
+            ),
             const SizedBox(height: 8),
             RadioListTile<String>(
               title: Text('english'.tr()),
@@ -48,6 +55,17 @@ class _SettingsPageState extends State<SettingsPage> {
                 });
               },
             ),
+
+            // Theme
+            const SizedBox(height: 16),
+            Text('theme'.tr(), style: CustomTextStyle.headlineMedium),
+            SwitchListTile(
+              title: Text('dark_mode'.tr()),
+              value: AppTheme.isLightTheme,
+              onChanged: (bool value) {
+                Provider.of<AppTheme>(context, listen: false).toggleTheme();
+              },
+            )
           ],
         ),
       ),

@@ -146,14 +146,14 @@ class BookingPageState extends State<BookingPage> {
   }
 
   Widget priceInformation() {
-    return const Row(
+    return Row(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [
         Text(
           'Price:',
           style: CustomTextStyle.headlineMedium,
         ),
-        Text(
+        const Text(
           '1 lesson',
           style: TextStyle(fontSize: 18, color: Color(0xFF0058C6)),
         ),
@@ -165,7 +165,7 @@ class BookingPageState extends State<BookingPage> {
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [
-        const Text(
+        Text(
           'Balance:',
           style: CustomTextStyle.headlineMedium,
         ),

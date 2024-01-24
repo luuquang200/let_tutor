@@ -250,7 +250,7 @@ class _DetailLessonTimeState extends State<_DetailLessonTime> {
                                 ],
                               ),
                               const SizedBox(height: 8),
-                              const Text(
+                              Text(
                                   'Are you sure you want to cancel this lesson?',
                                   style: CustomTextStyle.bodyLarge),
                             ],
@@ -328,7 +328,7 @@ class _DetailLessonTimeState extends State<_DetailLessonTime> {
                   ),
                   iconSize: 32,
                 ),
-                const Expanded(
+                Expanded(
                     child: Row(
                   children: [
                     Text('Requests for lesson:',

@@ -102,7 +102,7 @@ class _HistoryCardState extends State<HistoryCard> {
                 // _tutorAvatar(context, 32),
                 TutorAvatar(imageUrl: imageUrl, tutorName: tutorName),
                 const SizedBox(width: 16),
-                const Column(
+                Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Text('Krystal', style: CustomTextStyle.headlineLarge),
@@ -114,7 +114,7 @@ class _HistoryCardState extends State<HistoryCard> {
               ],
             ),
             const SizedBox(height: 8),
-            const Text('What was the reason you reported on the lesson?',
+            Text('What was the reason you reported on the lesson?',
                 style: CustomTextStyle.bodyRegular),
             const SizedBox(height: 8),
             TextField(

@@ -18,5 +18,9 @@
     "english": "English",
     "vietnamese": "Vietnamese",
     "language": "Language",
-    "setting": "Setting"
+    "setting": "Setting",
+    "theme" : "Theme",
+    "light": "Light",
+    "dark": "Dark",
+    "dark_mode": "Dark mode"
 }

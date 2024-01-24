@@ -18,5 +18,9 @@
     "english": "Tiếng Anh",
     "vietnamese": "Tiếng Việt",
     "language": "Ngôn ngữ",
-    "setting": "Cài đặt"
+    "setting": "Cài đặt",
+    "theme" : "Chủ đề",
+    "light": "Sáng",
+    "dark": "Tối",
+    "dark_mode": "Chế độ tối"
 }

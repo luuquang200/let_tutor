@@ -7,6 +7,7 @@ import 'package:let_tutor/data/models/user/user.dart';
 import 'package:let_tutor/presentation/screen/courses/widgets/course_cover_image.dart';
 import 'package:let_tutor/presentation/styles/custom_button.dart';
 import 'package:let_tutor/presentation/styles/custom_text_style.dart';
+import 'package:let_tutor/presentation/styles/theme.dart';
 import 'package:let_tutor/routes.dart';
 
 class CourseDetail extends StatefulWidget {
@@ -29,7 +30,7 @@ class _CourseDetailState extends State<CourseDetail> {
           return Scaffold(
             appBar: AppBar(
               title: Text('Course Detail', style: CustomTextStyle.topHeadline),
-              iconTheme: IconThemeData(color: Theme.of(context).primaryColor),
+              iconTheme: IconThemeData(color: AppTheme.primaryColor),
             ),
             body: SingleChildScrollView(
               child: Column(children: [
@@ -115,7 +116,7 @@ class _CourseDetailState extends State<CourseDetail> {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         const SizedBox(height: 12),
-        const Row(
+        Row(
           children: [
             Icon(Icons.help_outline, color: Colors.red),
             SizedBox(width: 8),
@@ -131,10 +132,10 @@ class _CourseDetailState extends State<CourseDetail> {
           child: Text(course.reason ?? ''),
         ),
         const SizedBox(height: 12),
-        const Row(
+        Row(
           children: [
-            Icon(Icons.help_outline, color: Colors.red),
-            SizedBox(width: 8),
+            const Icon(Icons.help_outline, color: Colors.red),
+            const SizedBox(width: 8),
             Text(
               'What will you be able to do?',
               style: CustomTextStyle.headlineMedium,
