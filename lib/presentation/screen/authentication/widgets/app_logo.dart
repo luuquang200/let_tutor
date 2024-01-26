@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:let_tutor/presentation/assets/assets_manager.dart';
 
 class AppLogo extends StatelessWidget {
   const AppLogo({Key? key}) : super(key: key);
@@ -8,9 +9,7 @@ class AppLogo extends StatelessWidget {
   Widget build(BuildContext context) {
     return Padding(
       padding: const EdgeInsets.only(top: 100, bottom: 30),
-      child: SvgPicture.asset(
-        'assets/lettutor_logo.svg',
-      ),
+      child: SvgPicture.asset(AssetsManager.lettutorLogo),
     );
   }
 }

@@ -223,7 +223,7 @@ class _TutorDetailPageState extends State<TutorDetailPage> {
         IconTextButton(
           icon: Icons.report_outlined,
           text: 'report'.tr(),
-          color: Theme.of(context).primaryColor,
+          color: AppTheme.primaryColor,
           onTap: () {
             showDialog(
               context: context,
@@ -235,7 +235,7 @@ class _TutorDetailPageState extends State<TutorDetailPage> {
         IconTextButton(
           icon: Icons.rate_review_outlined,
           text: 'review'.tr(),
-          color: Theme.of(context).primaryColor,
+          color: AppTheme.primaryColor,
           onTap: () {
             Navigator.pushNamed(context, Routes.tutorReviewScreen,
                 arguments: widget.tutorId);

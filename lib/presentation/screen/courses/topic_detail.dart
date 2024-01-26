@@ -2,10 +2,12 @@ import 'dart:developer';
 import 'dart:io';
 
 import 'package:dio/dio.dart';
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_pdfview/flutter_pdfview.dart';
 import 'package:let_tutor/data/models/course/topic.dart';
 import 'package:let_tutor/presentation/styles/custom_text_style.dart';
+import 'package:let_tutor/presentation/styles/theme.dart';
 import 'package:path_provider/path_provider.dart';
 
 class TopicDetail extends StatefulWidget {
@@ -44,8 +46,9 @@ class _TopicDetailState extends State<TopicDetail> {
   Widget build(BuildContext context) {
     return Scaffold(
         appBar: AppBar(
-            title: Text('Topic Detail', style: CustomTextStyle.topHeadline),
-            iconTheme: IconThemeData(color: Theme.of(context).primaryColor)),
+            title:
+                Text('topic_detail'.tr(), style: CustomTextStyle.topHeadline),
+            iconTheme: IconThemeData(color: AppTheme.primaryColor)),
         body: Padding(
           padding: const EdgeInsets.symmetric(horizontal: 16.0),
           child: Column(
@@ -87,7 +90,7 @@ class _TopicDetailState extends State<TopicDetail> {
                       },
                       icon: const Icon(Icons.arrow_back_ios)),
                   const SizedBox(width: 10),
-                  Text('Page ${currentPage! + 1} / $totalPages',
+                  Text('${'page'.tr()} ${currentPage! + 1} / $totalPages',
                       style: CustomTextStyle.bodyRegular),
                   const SizedBox(width: 10),
                   IconButton(

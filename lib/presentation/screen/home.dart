@@ -1,6 +1,7 @@
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:let_tutor/presentation/assets/assets_manager.dart';
 import 'package:let_tutor/presentation/screen/account/account_screen.dart';
 import 'package:let_tutor/presentation/screen/courses/courses_screen.dart';
 import 'package:let_tutor/presentation/screen/schedule/schedule_screen.dart';
@@ -21,7 +22,8 @@ class _HomeState extends State<Home> {
     const CoursesScreen(),
     const AccountScreen(),
   ];
-  List<String> screenTitle = ['Tutors', 'Schedule', 'Courses', 'Account'];
+  List<String> get screenTitle =>
+      ['tutors'.tr(), 'schedule'.tr(), 'courses'.tr(), 'account'.tr()];
   int selectedScreenIndex = 0;
   int currentIndex = 0;
   List<String> listNationalities = <String>['Vietnamese', 'English'];
@@ -38,7 +40,7 @@ class _HomeState extends State<Home> {
           screenTitle[selectedScreenIndex],
           style: CustomTextStyle.topHeadline,
         ),
-        actions: [_selectLanguage(context), const SizedBox(width: 16)],
+        actions: [_displayLanguageIcon(context), const SizedBox(width: 16)],
       ),
       body: screens[selectedScreenIndex],
       bottomNavigationBar: BottomNavigationBar(
@@ -52,60 +54,38 @@ class _HomeState extends State<Home> {
         },
         elevation: 20,
         currentIndex: selectedScreenIndex,
-        items: const [
-          BottomNavigationBarItem(icon: Icon(Icons.people), label: 'Tutors'),
+        items: [
           BottomNavigationBarItem(
-              icon: Icon(Icons.edit_calendar_outlined), label: 'Schedule'),
-          BottomNavigationBarItem(icon: Icon(Icons.school), label: 'Courses'),
+              icon: const Icon(Icons.people), label: 'tutors'.tr()),
           BottomNavigationBarItem(
-              icon: Icon(Icons.account_circle_outlined), label: 'Account'),
+              icon: const Icon(Icons.edit_calendar_outlined),
+              label: 'schedule'.tr()),
+          BottomNavigationBarItem(
+              icon: const Icon(Icons.school), label: 'courses'.tr()),
+          BottomNavigationBarItem(
+              icon: const Icon(Icons.account_circle_outlined),
+              label: 'account'.tr()),
         ],
       ),
     );
   }
 
-  _selectLanguage(BuildContext context) {
-    return PopupMenuButton<String>(
-      icon: Container(
-          padding: const EdgeInsets.all(8.0),
-          decoration: const BoxDecoration(
-            color: Color.fromARGB(255, 223, 228, 249),
-            shape: BoxShape.circle,
-          ),
-          child: ClipOval(
-            child: SvgPicture.asset(
-              'assets/flags/$currentLanguage.svg',
-              width: 24,
-              height: 24,
-            ),
-          )),
-      onSelected: (String value) {
-        setState(() {
-          currentLanguage = value;
-          context.setLocale(value == 'English'
-              ? const Locale('en', 'US')
-              : const Locale('vi', 'VN'));
-        });
-      },
-      itemBuilder: (BuildContext context) {
-        return listNationalities.map((String value) {
-          return PopupMenuItem<String>(
-            value: value,
-            child: Row(
-              children: <Widget>[
-                const SizedBox(width: 10),
-                SvgPicture.asset(
-                  'assets/flags/$value.svg',
-                  width: 20,
-                  height: 20,
-                ),
-                const SizedBox(width: 10),
-                Text(value),
-              ],
-            ),
-          );
-        }).toList();
-      },
+  Widget _displayLanguageIcon(BuildContext context) {
+    return Container(
+      padding: const EdgeInsets.all(8.0),
+      decoration: const BoxDecoration(
+        color: Color.fromARGB(255, 223, 228, 249),
+        shape: BoxShape.circle,
+      ),
+      child: ClipOval(
+        child: SvgPicture.asset(
+          context.locale.languageCode == 'vi'
+              ? AssetsManager.vietnameseFlag
+              : AssetsManager.englishFlag,
+          width: 24,
+          height: 24,
+        ),
+      ),
     );
   }
 }

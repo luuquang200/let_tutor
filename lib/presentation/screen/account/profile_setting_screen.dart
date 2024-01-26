@@ -13,7 +13,6 @@ import 'package:let_tutor/presentation/styles/custom_text_style.dart';
 import 'package:let_tutor/presentation/styles/theme.dart';
 import 'package:let_tutor/presentation/widgets/custom_snack_bar.dart';
 import 'package:let_tutor/presentation/widgets/tutor_avatar.dart';
-import 'package:provider/provider.dart';
 
 class ProfileSettingScreen extends StatefulWidget {
   const ProfileSettingScreen({super.key});
@@ -27,7 +26,6 @@ class _ProfileSettingScreenState extends State<ProfileSettingScreen> {
 
   @override
   Widget build(BuildContext context) {
-    final appTheme = Provider.of<AppTheme>(context);
     return BlocProvider(
       create: (context) => ProfileSettingBloc(
         userRepository: UserRepository(),
@@ -52,7 +50,7 @@ class _ProfileSettingScreenState extends State<ProfileSettingScreen> {
               ScaffoldMessenger.of(context).hideCurrentSnackBar();
               ScaffoldMessenger.of(context).showSnackBar(
                 CustomSnackBar(
-                  message: 'Updated successfully',
+                  message: 'updated_successfully'.tr(),
                   icon: Icons.check,
                   backgroundColor: Colors.green,
                 ),
@@ -84,8 +82,8 @@ class _ProfileSettingScreenState extends State<ProfileSettingScreen> {
               ),
             );
           } else {
-            return const Center(
-              child: Text('Failed to load account information'),
+            return Center(
+              child: Text('failed_to_load_account_information'.tr()),
             );
           }
         },

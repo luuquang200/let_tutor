@@ -1,3 +1,4 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:intl/intl.dart';
@@ -11,10 +12,9 @@ import 'package:let_tutor/presentation/screen/account/widgets/level_dropdown.dar
 import 'package:let_tutor/presentation/screen/account/widgets/want_to_learn_select.dart';
 import 'package:let_tutor/presentation/styles/custom_button.dart';
 import 'package:let_tutor/presentation/styles/custom_text_style.dart';
-import 'package:let_tutor/presentation/styles/theme.dart';
 import 'package:let_tutor/presentation/widgets/custom_text_field.dart';
-import 'package:provider/provider.dart';
 
+// ignore: must_be_immutable
 class InformationSetting extends StatelessWidget {
   InformationSetting({super.key});
 
@@ -30,7 +30,6 @@ class InformationSetting extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final appTheme = Provider.of<AppTheme>(context);
     return BlocBuilder<ProfileSettingBloc, ProfileSettingState>(
         bloc: BlocProvider.of<ProfileSettingBloc>(context),
         builder: (context, state) {
@@ -52,7 +51,7 @@ class InformationSetting extends StatelessWidget {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 // name
-                requiredField('Name'),
+                requiredField('name'.tr()),
                 const SizedBox(height: 8),
                 CustomTextField(
                   height: 50.0,
@@ -62,7 +61,7 @@ class InformationSetting extends StatelessWidget {
 
                 // email
                 const SizedBox(height: 16),
-                Text('Email', style: CustomTextStyle.headlineMedium),
+                Text('Email'.tr(), style: CustomTextStyle.headlineMedium),
                 const SizedBox(height: 8),
                 CustomTextField(
                   height: 50.0,
@@ -76,7 +75,7 @@ class InformationSetting extends StatelessWidget {
 
                 // country
                 const SizedBox(height: 16),
-                requiredField('Country'),
+                requiredField('country'.tr()),
                 const SizedBox(height: 8),
                 CountryDropdown(
                   initialValue: countryController.text,
@@ -87,7 +86,7 @@ class InformationSetting extends StatelessWidget {
 
                 // phone
                 const SizedBox(height: 16),
-                requiredField('Phone'),
+                requiredField('phone'.tr()),
                 const SizedBox(height: 8),
                 CustomTextField(
                   height: 50.0,
@@ -101,7 +100,7 @@ class InformationSetting extends StatelessWidget {
 
                 // Birthday
                 const SizedBox(height: 16),
-                requiredField('Birthday'),
+                requiredField('birthday'.tr()),
                 const SizedBox(height: 8),
                 TextField(
                   decoration: const InputDecoration(
@@ -130,7 +129,7 @@ class InformationSetting extends StatelessWidget {
 
                 //level
                 const SizedBox(height: 16),
-                requiredField('Level'),
+                requiredField('level'.tr()),
                 const SizedBox(height: 8),
                 LevelDropdown(
                   initialValue: state is ProfileSettingLoadSuccess
@@ -143,7 +142,7 @@ class InformationSetting extends StatelessWidget {
 
                 // Want to learn
                 const SizedBox(height: 16),
-                requiredField('Want to learn'),
+                requiredField('want_to_learn'.tr()),
                 const SizedBox(height: 8),
                 WantToLearnSelect(
                   selectedLearnTopics: selectedLearnTopics,
@@ -168,7 +167,8 @@ class InformationSetting extends StatelessWidget {
 
                 //Study Schedule
                 const SizedBox(height: 16),
-                Text('Study Schedule', style: CustomTextStyle.headlineMedium),
+                Text('study_schedule'.tr(),
+                    style: CustomTextStyle.headlineMedium),
                 const SizedBox(height: 8),
                 CustomTextField(
                   height: 50.0,
@@ -179,7 +179,7 @@ class InformationSetting extends StatelessWidget {
                 // button save
                 const SizedBox(height: 18),
                 MyElevatedButton(
-                  text: 'Save',
+                  text: 'save'.tr(),
                   height: 50,
                   width: double.infinity,
                   radius: 6,
