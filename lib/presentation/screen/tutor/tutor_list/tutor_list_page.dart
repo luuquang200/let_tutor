@@ -9,11 +9,11 @@ import 'package:let_tutor/blocs/tutor/tutor_list/tutor_list_event.dart';
 import 'package:let_tutor/blocs/tutor/tutor_list/tutor_list_state.dart';
 import 'package:let_tutor/data/models/tutors/learn_topic.dart';
 import 'package:let_tutor/data/models/tutors/test_preparation.dart';
+import 'package:let_tutor/presentation/screen/tutor/tutor_list/widgets/tutor_information_card.dart';
 import 'package:let_tutor/presentation/screen/tutor/tutor_list/widgets/upcoming_lesson.dart';
 
 import 'package:let_tutor/presentation/styles/custom_text_style.dart';
 import 'package:let_tutor/presentation/styles/theme.dart';
-import 'package:let_tutor/presentation/widgets/tutor_information_card.dart';
 import 'package:number_paginator/number_paginator.dart';
 
 import 'package:let_tutor/data/models/tutors/tutor.dart';

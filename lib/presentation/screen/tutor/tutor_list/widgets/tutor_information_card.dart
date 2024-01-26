@@ -51,7 +51,7 @@ class TutorInformationCard extends StatelessWidget {
               // Column
               _tutorInformation(tutor),
               // Book button
-              _bookButton()
+              _bookButton(context)
             ],
           ),
         ));
@@ -126,12 +126,18 @@ class TutorInformationCard extends StatelessWidget {
     return country.name;
   }
 
-  Positioned _bookButton() {
+  Positioned _bookButton(BuildContext context) {
     return Positioned(
         bottom: 8,
         right: 8,
         child: OutlinedButton.icon(
-          onPressed: () {},
+          onPressed: () {
+            Navigator.pushNamed(
+              context,
+              Routes.bookingScreen,
+              arguments: tutor.id,
+            );
+          },
           // icon: book tutor
           icon: Icon(Icons.edit_calendar, color: AppTheme.primaryColor),
           label: Text(
