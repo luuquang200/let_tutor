@@ -6,9 +6,9 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:let_tutor/configs/app_config.dart';
 import 'package:let_tutor/presentation/screen/authentication/sign_in_screen.dart';
 import 'package:let_tutor/presentation/styles/theme.dart';
+import 'package:provider/provider.dart';
 import 'package:let_tutor/routes.dart';
 import 'package:let_tutor/blocs/auth/auth_providers.dart';
-import 'package:provider/provider.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();

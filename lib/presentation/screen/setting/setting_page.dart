@@ -63,6 +63,7 @@ class _SettingsPageState extends State<SettingsPage> {
               value: AppTheme.isLightTheme,
               onChanged: (bool value) {
                 Provider.of<AppTheme>(context, listen: false).toggleTheme();
+                setState(() {});
               },
             )
           ],
