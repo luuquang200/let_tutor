@@ -1,6 +1,8 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:let_tutor/presentation/screen/schedule/widgets/booked_schedule_tab.dart';
 import 'package:let_tutor/presentation/screen/schedule/widgets/history_schedule_tab.dart';
+import 'package:let_tutor/presentation/styles/theme.dart';
 
 class SchedulePage extends StatefulWidget {
   const SchedulePage({super.key});
@@ -35,12 +37,12 @@ class _SchedulePageState extends State<SchedulePage> {
         children: [
           Icon(
             Icons.calendar_month_outlined,
-            color: Theme.of(context).primaryColor,
+            color: AppTheme.primaryColor,
           ),
           const SizedBox(width: 8),
           Text(
-            'My schedule',
-            style: TextStyle(color: Theme.of(context).primaryColor),
+            'my_schedule'.tr(),
+            style: TextStyle(color: AppTheme.primaryColor),
           )
         ],
       ),
@@ -52,14 +54,11 @@ class _SchedulePageState extends State<SchedulePage> {
       icon: Row(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
-          Icon(
-            Icons.history_outlined,
-            color: Theme.of(context).primaryColor,
-          ),
+          Icon(Icons.history_outlined, color: AppTheme.primaryColor),
           const SizedBox(width: 8),
           Text(
-            'History',
-            style: TextStyle(color: Theme.of(context).primaryColor),
+            'history'.tr(),
+            style: TextStyle(color: AppTheme.primaryColor),
           )
         ],
       ),

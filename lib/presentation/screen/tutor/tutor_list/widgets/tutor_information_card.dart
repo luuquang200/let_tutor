@@ -1,3 +1,4 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:let_tutor/blocs/tutor/tutor_list/tutor_list_bloc.dart';
@@ -9,6 +10,7 @@ import 'package:let_tutor/data/models/tutors/test_preparation.dart';
 import 'package:let_tutor/data/models/tutors/tutor.dart';
 import 'package:let_tutor/presentation/styles/custom_chip.dart';
 import 'package:let_tutor/presentation/styles/custom_text_style.dart';
+import 'package:let_tutor/presentation/styles/theme.dart';
 import 'package:let_tutor/presentation/widgets/flag.dart';
 import 'package:let_tutor/presentation/widgets/star_rating.dart';
 import 'package:let_tutor/presentation/widgets/tutor_avatar.dart';
@@ -35,7 +37,7 @@ class TutorInformationCard extends StatelessWidget {
             Routes.tutorDetail,
             arguments: tutor.id,
           );
-          bloc.add(TutorListRequested());
+          bloc.add(TutorListRequested(page: 1));
         },
         child: Card(
           elevation: 5,
@@ -49,7 +51,7 @@ class TutorInformationCard extends StatelessWidget {
               // Column
               _tutorInformation(tutor),
               // Book button
-              _bookButton()
+              _bookButton(context)
             ],
           ),
         ));
@@ -97,9 +99,9 @@ class TutorInformationCard extends StatelessWidget {
           const SizedBox(
             height: 16,
           ),
-          const Text(
-            "Specialities",
-            style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+          Text(
+            'specialities'.tr(),
+            style: const TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
           ),
           const SizedBox(
             height: 16,
@@ -124,17 +126,26 @@ class TutorInformationCard extends StatelessWidget {
     return country.name;
   }
 
-  Positioned _bookButton() {
+  Positioned _bookButton(BuildContext context) {
     return Positioned(
         bottom: 8,
         right: 8,
         child: OutlinedButton.icon(
-          onPressed: () {},
+          onPressed: () {
+            Navigator.pushNamed(
+              context,
+              Routes.bookingScreen,
+              arguments: tutor.id,
+            );
+          },
           // icon: book tutor
-          icon: const Icon(Icons.edit_calendar),
-          label: const Text("Book"),
+          icon: Icon(Icons.edit_calendar, color: AppTheme.primaryColor),
+          label: Text(
+            'book'.tr(),
+            style: TextStyle(color: AppTheme.primaryColor),
+          ),
           style: OutlinedButton.styleFrom(
-            side: const BorderSide(color: Color(0xFF0058C6), width: 1),
+            side: AppTheme.borderSide,
             shape: RoundedRectangleBorder(
               borderRadius: BorderRadius.circular(10),
             ),

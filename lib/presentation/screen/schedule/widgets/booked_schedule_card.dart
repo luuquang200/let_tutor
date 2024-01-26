@@ -1,6 +1,6 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:intl/intl.dart';
 import 'package:let_tutor/blocs/schedule/booked_schedule/schedule_bloc.dart';
 import 'package:let_tutor/blocs/schedule/booked_schedule/schedule_event.dart';
 import 'package:let_tutor/configs/app_config.dart';
@@ -8,6 +8,7 @@ import 'package:let_tutor/data/models/country.dart';
 import 'package:let_tutor/data/models/schedule/booked_schedule.dart';
 import 'package:let_tutor/presentation/styles/custom_button.dart';
 import 'package:let_tutor/presentation/styles/custom_text_style.dart';
+import 'package:let_tutor/presentation/styles/theme.dart';
 import 'package:let_tutor/presentation/widgets/flag.dart';
 import 'package:let_tutor/presentation/widgets/separator_divider.dart';
 import 'package:let_tutor/presentation/widgets/tutor_avatar.dart';
@@ -43,7 +44,7 @@ class _BookedScheduleCardState extends State<BookedScheduleCard> {
     DateTime startTime = DateTime.fromMillisecondsSinceEpoch(
         widget.bookedSchedules.first.scheduleDetailInfo?.startPeriodTimestamp ??
             0);
-
+    locale = context.locale.languageCode;
     return Card(
       elevation: 5,
       shape: RoundedRectangleBorder(
@@ -80,7 +81,7 @@ class _BookedScheduleCardState extends State<BookedScheduleCard> {
             const SizedBox(
               height: 6,
             ),
-            _goMeetingButton(context),
+            _goMeetingButton(context, widget.bookedSchedules.first),
           ],
         ),
       ),
@@ -119,13 +120,13 @@ class _BookedScheduleCardState extends State<BookedScheduleCard> {
               Icon(
                 Icons.message_outlined,
                 size: 16,
-                color: Theme.of(context).primaryColor,
+                color: AppTheme.primaryColor,
               ),
               const SizedBox(width: 4),
               Text(
-                'Direct message',
+                'direct_message'.tr(),
                 style: CustomTextStyle.bodyRegular
-                    .copyWith(color: Theme.of(context).primaryColor),
+                    .copyWith(color: AppTheme.primaryColor),
               ),
             ],
           )
@@ -134,13 +135,14 @@ class _BookedScheduleCardState extends State<BookedScheduleCard> {
     );
   }
 
-  _goMeetingButton(BuildContext context) {
+  _goMeetingButton(BuildContext context, BookedSchedule bookedSchedule) {
     return Padding(
       padding: const EdgeInsets.all(8.0),
       child: MyElevatedButton(
-        text: 'Go to meeting',
+        text: 'go_to_meeting'.tr(),
         onPressed: () {
-          Routes.navigateTo(context, Routes.videoCallScreen);
+          Navigator.pushNamed(context, Routes.videoCallScreen,
+              arguments: bookedSchedule);
         },
         height: 45,
         width: double.infinity,
@@ -165,7 +167,7 @@ class _BookedScheduleCardState extends State<BookedScheduleCard> {
             const SizedBox(width: 14),
             const Icon(Icons.calendar_today_outlined, size: 22, weight: 2),
             const SizedBox(width: 12),
-            Text(DateFormat('EEE, dd MMM yyyy', locale).format(startTime),
+            Text(DateFormat('EEEE, dd MMM yyyy', locale).format(startTime),
                 style: CustomTextStyle.bodyLarge),
           ],
         ));
@@ -194,7 +196,7 @@ class _DetailLessonTimeState extends State<_DetailLessonTime> {
             .bookedSchedule.scheduleDetailInfo?.scheduleInfo?.tutorInfo?.name ??
         '';
     String time =
-        '${DateFormat('hh:mm a').format(startTime)} - ${DateFormat('hh:mm a').format(endTime)}';
+        '${DateFormat('hh:mm a', context.locale.languageCode).format(startTime)} - ${DateFormat('hh:mm a', context.locale.languageCode).format(endTime)}';
 
     return Column(
       children: [
@@ -239,7 +241,8 @@ class _DetailLessonTimeState extends State<_DetailLessonTime> {
                                       Text(tutorName,
                                           style: CustomTextStyle.headlineLarge),
                                       Text(
-                                          DateFormat('EEE, dd MMM yy')
+                                          DateFormat('EEEE, dd MMM yyyy',
+                                                  context.locale.languageCode)
                                               .format(startTime),
                                           style: CustomTextStyle.bodyRegular),
                                       Text(time,
@@ -249,14 +252,13 @@ class _DetailLessonTimeState extends State<_DetailLessonTime> {
                                 ],
                               ),
                               const SizedBox(height: 8),
-                              const Text(
-                                  'Are you sure you want to cancel this lesson?',
+                              Text('cancel_lesson_confirm'.tr(),
                                   style: CustomTextStyle.bodyLarge),
                             ],
                           ),
                           actions: [
                             MyOutlineButton(
-                              text: 'No',
+                              text: 'no'.tr(),
                               height: 25,
                               radius: 5,
                               onPressed: () => Navigator.pop(context, false),
@@ -264,7 +266,7 @@ class _DetailLessonTimeState extends State<_DetailLessonTime> {
                               textSize: 18,
                             ),
                             MyElevatedButton(
-                              text: 'Yes',
+                              text: 'yes'.tr(),
                               height: 25,
                               radius: 5,
                               onPressed: () => Navigator.pop(context, true),
@@ -327,10 +329,10 @@ class _DetailLessonTimeState extends State<_DetailLessonTime> {
                   ),
                   iconSize: 32,
                 ),
-                const Expanded(
+                Expanded(
                     child: Row(
                   children: [
-                    Text('Requests for lesson:',
+                    Text('requests_for_lesson'.tr(),
                         style: CustomTextStyle.bodyRegular),
                   ],
                 )),
@@ -341,9 +343,7 @@ class _DetailLessonTimeState extends State<_DetailLessonTime> {
               Padding(
                 padding: const EdgeInsets.only(left: 41, right: 6),
                 child: Text(
-                  widget.bookedSchedule.studentRequest ??
-                      'Currently there are no requests for this class. Please write down any requests for the teacher.',
-                ),
+                    widget.bookedSchedule.studentRequest ?? 'no_requests'.tr()),
               ),
           ],
         ));
@@ -358,21 +358,21 @@ class _DetailLessonTimeState extends State<_DetailLessonTime> {
           final result = await showDialog<bool>(
             context: context,
             builder: (context) => AlertDialog(
-              title: const Text('Request for Tutor'),
+              title: Text('requests_for_lesson'.tr()),
               content: TextField(
                 controller: textController,
                 maxLines: 5,
-                decoration: const InputDecoration(
-                  hintText: 'Enter your request here',
-                  border: OutlineInputBorder(),
+                decoration: InputDecoration(
+                  hintText: 'enter_request'.tr(),
+                  border: const OutlineInputBorder(),
                   contentPadding:
-                      EdgeInsets.symmetric(vertical: 8, horizontal: 8),
+                      const EdgeInsets.symmetric(vertical: 8, horizontal: 8),
                 ),
               ),
               actions: [
                 TextButton(
                   onPressed: () => Navigator.pop(context, false),
-                  child: const Text('Cancel'),
+                  child: Text('cancel'.tr()),
                 ),
                 TextButton(
                   onPressed: () {
@@ -383,14 +383,14 @@ class _DetailLessonTimeState extends State<_DetailLessonTime> {
                       ScaffoldMessenger.of(context)
                         ..hideCurrentSnackBar()
                         ..showSnackBar(
-                          const SnackBar(
-                            content: Text(
-                                'Please enter your request before sending'),
-                          ),
+                          SnackBar(
+                              content: Text(
+                            'enter_request_before_sending'.tr(),
+                          )),
                         );
                     }
                   },
-                  child: const Text('Send'),
+                  child: Text('send'.tr()),
                 ),
               ],
             ),

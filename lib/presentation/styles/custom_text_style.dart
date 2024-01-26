@@ -1,68 +1,117 @@
 import 'package:flutter/material.dart';
 
 class CustomTextStyle {
-  static const TextStyle headlineMedium = TextStyle(
-    fontSize: 18,
-    fontWeight: FontWeight.w500,
-    color: Colors.black,
-  );
+  static bool isLightTheme = true;
 
-  static const TextStyle headlineLarge = TextStyle(
-    fontSize: 22,
-    fontWeight: FontWeight.bold,
-    color: Colors.black,
-  );
+  static TextStyle get headlineMedium {
+    return TextStyle(
+      fontSize: 18,
+      fontWeight: FontWeight.w500,
+      color: isLightTheme ? Colors.black : Colors.white,
+    );
+  }
 
-  static const TextStyle headlineLargeWhite = TextStyle(
-    fontSize: 26,
-    fontWeight: FontWeight.w500,
-    color: Colors.white,
-  );
+  static TextStyle get headlineLarge {
+    return TextStyle(
+      fontSize: 22,
+      fontWeight: FontWeight.bold,
+      color: isLightTheme ? Colors.black : Colors.white,
+    );
+  }
 
-  static const TextStyle bodyRegular = TextStyle(
-    fontSize: 16,
-    fontWeight: FontWeight.normal,
-    color: Colors.black,
-  );
+  static TextStyle get headlineLargeWhite {
+    return const TextStyle(
+      fontSize: 26,
+      fontWeight: FontWeight.w500,
+      color: Colors.white,
+    );
+  }
 
-  static const TextStyle boldRegular = TextStyle(
-    fontSize: 16,
-    fontWeight: FontWeight.bold,
-    color: Colors.black,
-  );
+  static TextStyle get bodyRegular {
+    return TextStyle(
+      fontSize: 16,
+      fontWeight: FontWeight.normal,
+      color: isLightTheme ? Colors.black : Colors.white,
+    );
+  }
 
-  static TextStyle topHeadline = const TextStyle(
-    fontSize: 28,
-    fontWeight: FontWeight.bold,
-    color: Color(0xFF0058C6),
-  );
+  static TextStyle get boldRegular {
+    return TextStyle(
+      fontSize: 16,
+      fontWeight: FontWeight.bold,
+      color: isLightTheme ? Colors.black : Colors.white,
+    );
+  }
 
-  static const TextStyle titleLarge = TextStyle(
-    fontSize: 26,
-    fontWeight: FontWeight.bold,
-    color: Colors.black,
-  );
+  static TextStyle get topHeadline {
+    return TextStyle(
+        fontSize: 28,
+        fontWeight: FontWeight.bold,
+        color: isLightTheme ? const Color(0xFF0058C6) : Colors.white);
+  }
 
-  static const TextStyle initialNameOfTutor = TextStyle(
-    fontSize: 32,
-    fontWeight: FontWeight.bold,
-  );
+  static TextStyle get titleLarge {
+    return TextStyle(
+      fontSize: 26,
+      fontWeight: FontWeight.bold,
+      color: isLightTheme ? Colors.black : Colors.white,
+    );
+  }
 
-  static const TextStyle headlineOpps = TextStyle(
-    fontSize: 44,
-    fontWeight: FontWeight.w500,
-    color: Color.fromARGB(255, 98, 95, 95),
-  );
+  static TextStyle get initialNameOfTutor {
+    return TextStyle(
+      fontSize: 32,
+      fontWeight: FontWeight.bold,
+      color: isLightTheme ? Colors.black : Colors.white,
+    );
+  }
 
-  static const TextStyle timer = TextStyle(
-    fontSize: 16,
-    fontWeight: FontWeight.w500,
-    color: Color.fromARGB(255, 255, 255, 0),
-  );
+  static TextStyle get headlineOpps {
+    return TextStyle(
+      fontSize: 44,
+      fontWeight: FontWeight.w500,
+      color: isLightTheme ? Colors.black : Color.fromARGB(255, 98, 95, 95),
+    );
+  }
 
-  static const bodyLarge = TextStyle(
-    fontSize: 18,
-    fontWeight: FontWeight.w500,
-    color: Colors.black,
-  );
+  static TextStyle get timer {
+    return TextStyle(
+        fontSize: 16,
+        fontWeight: FontWeight.w500,
+        color: isLightTheme
+            ? const Color.fromARGB(255, 255, 255, 0)
+            : Colors.white);
+  }
+
+  static TextStyle get bodyLarge {
+    return TextStyle(
+      fontSize: 18,
+      fontWeight: FontWeight.w500,
+      color: isLightTheme ? Colors.black : Colors.white,
+    );
+  }
+
+  static TextStyle getHeadlineMedium(bool isLightTheme) {
+    return TextStyle(
+      fontSize: 18,
+      fontWeight: FontWeight.w500,
+      color: isLightTheme ? Colors.black : Colors.white,
+    );
+  }
+
+  static TextStyle getHeadlineLarge(bool isLightTheme) {
+    return TextStyle(
+      fontSize: 22,
+      fontWeight: FontWeight.bold,
+      color: isLightTheme ? Colors.black : Colors.white,
+    );
+  }
+
+  static TextStyle getTopHeadline(bool isLightTheme) {
+    return TextStyle(
+      fontSize: 28,
+      fontWeight: FontWeight.bold,
+      color: isLightTheme ? const Color(0xFF0058C6) : Colors.white,
+    );
+  }
 }

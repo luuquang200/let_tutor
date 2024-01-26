@@ -10,10 +10,10 @@ class CourseRepository {
   CourseRepository({CourseApiClient? courseApiClient})
       : _courseApiClient = courseApiClient ?? CourseApiClient();
 
-  Future<List<Course>> getCoursesList({int page = 1, int size = 100}) async {
+  Future<CourseResponse> getCoursesList({int page = 1, int size = 100}) async {
     CourseResponse courseResponse =
         await _courseApiClient.getCoursesList(page, size);
-    return courseResponse.rows;
+    return courseResponse;
   }
 
   Future<List<CourseCategory>> getCourseCategories() async {
@@ -25,5 +25,26 @@ class CourseRepository {
   Future<Course> getDetailCourse(String id) async {
     Course course = await _courseApiClient.getDetailCourse(id);
     return course;
+  }
+
+  Future<CourseResponse> searchCourses({
+    int page = 1,
+    int size = 100,
+    Map<String, dynamic> map = const {},
+  }) async {
+    CourseResponse courseResponse =
+        await _courseApiClient.searchCourses(page, size, map);
+    return courseResponse;
+  }
+
+  Future<List<Course>> searchEbooks({
+    int page = 1,
+    int size = 100,
+    int perPage = 20,
+    Map<String, dynamic> map = const {},
+  }) async {
+    CourseResponse courseResponse =
+        await _courseApiClient.searchEbooks(page, size, perPage, map);
+    return courseResponse.rows;
   }
 }

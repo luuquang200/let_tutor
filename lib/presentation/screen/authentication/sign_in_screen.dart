@@ -1,3 +1,4 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/flutter_svg.dart';
@@ -7,6 +8,7 @@ import 'package:let_tutor/blocs/auth/sign_in/sign_in_state.dart';
 import 'package:let_tutor/presentation/screen/authentication/widgets/app_logo.dart';
 import 'package:let_tutor/presentation/screen/authentication/widgets/custom_label.dart';
 import 'package:let_tutor/presentation/screen/authentication/widgets/custom_text_field.dart';
+import 'package:let_tutor/presentation/screen/authentication/widgets/social_login.dart';
 import 'package:let_tutor/presentation/styles/custom_button.dart';
 import 'package:let_tutor/data/repositories/authentication_repository.dart';
 import 'package:let_tutor/routes.dart';
@@ -46,7 +48,7 @@ class _SignInScreenState extends State<SignInScreen> {
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        const CustomLabel(text: 'Email'),
+                        CustomLabel(text: 'email'.tr()),
                         CustomTextFieldAuth(
                           hintText: 'mail@example.com',
                           controller: _emailController,
@@ -59,9 +61,9 @@ class _SignInScreenState extends State<SignInScreen> {
                           icon: Icons.mail,
                         ),
                         const SizedBox(height: 10),
-                        const CustomLabel(text: 'Password'),
+                        CustomLabel(text: 'password'.tr()),
                         CustomTextFieldAuth(
-                          hintText: 'password',
+                          hintText: 'password'.tr(),
                           controller: _passwordController,
                           obscureText: _obscureText,
                           onPressedHidePass: _togglePasswordVisibility,
@@ -77,7 +79,7 @@ class _SignInScreenState extends State<SignInScreen> {
                         _navigateToForgotPass(context),
                         _loginButton(context),
                         _labelLoginWithSocial(),
-                        _socialLoginButtons(),
+                        const SocialLogin(),
                         _navigateToSignUp(context),
                       ],
                     ),
@@ -99,9 +101,9 @@ class _SignInScreenState extends State<SignInScreen> {
       style: TextButton.styleFrom(
         padding: const EdgeInsets.only(top: 20, bottom: 15),
       ),
-      child: const Text(
-        'Forgot Password?',
-        style: TextStyle(fontSize: 18, fontWeight: FontWeight.normal),
+      child: Text(
+        'forgot_password'.tr(),
+        style: const TextStyle(fontSize: 18, fontWeight: FontWeight.normal),
       ),
     );
   }
@@ -110,10 +112,10 @@ class _SignInScreenState extends State<SignInScreen> {
     return Container(
       width: double.infinity,
       margin: const EdgeInsets.only(top: 30, bottom: 10),
-      child: const Text(
-        'Or continue with',
+      child: Text(
+        'or_continue_with'.tr(),
         textAlign: TextAlign.center,
-        style: TextStyle(
+        style: const TextStyle(
           fontSize: 18,
         ),
       ),
@@ -124,8 +126,8 @@ class _SignInScreenState extends State<SignInScreen> {
     return Row(
       mainAxisAlignment: MainAxisAlignment.center,
       children: [
-        const Text('Not a member yet?',
-            style: TextStyle(
+        Text('not_a_member_yet'.tr(),
+            style: const TextStyle(
               fontSize: 16,
               fontWeight: FontWeight.normal,
             )),
@@ -133,8 +135,8 @@ class _SignInScreenState extends State<SignInScreen> {
           onPressed: () {
             Routes.navigateToReplacement(context, Routes.signUpScreen);
           },
-          child: const Text('Sign Up',
-              style: TextStyle(
+          child: Text('sign_up'.tr(),
+              style: const TextStyle(
                 fontSize: 16,
                 fontWeight: FontWeight.normal,
               )),
@@ -143,33 +145,9 @@ class _SignInScreenState extends State<SignInScreen> {
     );
   }
 
-  Row _socialLoginButtons() {
-    return Row(
-      mainAxisAlignment: MainAxisAlignment.center,
-      children: [
-        IconButton(
-          onPressed: () {},
-          icon: SvgPicture.asset(
-            'assets/facebook-logo.svg',
-            width: 50,
-            height: 50,
-          ),
-        ),
-        IconButton(
-          onPressed: () {},
-          icon: SvgPicture.asset(
-            'assets/google-logo.svg',
-            width: 50,
-            height: 50,
-          ),
-        ),
-      ],
-    );
-  }
-
   MyElevatedButton _loginButton(BuildContext context) {
     return MyElevatedButton(
-      text: 'Login',
+      text: 'login'.tr(),
       height: 52,
       radius: 8,
       onPressed: () {
@@ -201,8 +179,8 @@ class _SignInScreenState extends State<SignInScreen> {
     } else if (state is SignInLoading) {
       ScaffoldMessenger.of(context).hideCurrentSnackBar();
       ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(
-          content: Text('Signing in...'),
+        SnackBar(
+          content: Text('signing_in'.tr()),
         ),
       );
     } else if (state is SignInSuccess) {

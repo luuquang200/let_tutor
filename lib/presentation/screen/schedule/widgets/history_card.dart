@@ -1,5 +1,6 @@
 import 'dart:developer';
 
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:let_tutor/configs/app_config.dart';
@@ -9,6 +10,7 @@ import 'package:let_tutor/presentation/screen/schedule/widgets/history_request.d
 import 'package:let_tutor/presentation/screen/schedule/widgets/history_review.dart';
 import 'package:let_tutor/presentation/styles/custom_button.dart';
 import 'package:let_tutor/presentation/styles/custom_text_style.dart';
+import 'package:let_tutor/presentation/styles/theme.dart';
 import 'package:let_tutor/presentation/widgets/flag.dart';
 import 'package:let_tutor/presentation/widgets/separator_divider.dart';
 import 'package:let_tutor/presentation/widgets/tutor_avatar.dart';
@@ -42,7 +44,9 @@ class _HistoryCardState extends State<HistoryCard> {
     String time =
         '${DateFormat('hh:mm a').format(startTime)} - ${DateFormat('hh:mm a').format(endTime)}';
 
-    String date = DateFormat('EEEE, dd MMM yyyy').format(startTime);
+    String date = DateFormat('EEEE, dd MMM yyyy', context.locale.languageCode)
+        .format(startTime);
+
     return Card(
       elevation: 5,
       shape: RoundedRectangleBorder(
@@ -75,7 +79,10 @@ class _HistoryCardState extends State<HistoryCard> {
             Row(
               children: [
                 _reportButton(context,
-                    imageUrl: imageUrl, tutorName: tutorName),
+                    imageUrl: imageUrl,
+                    tutorName: tutorName,
+                    time: time,
+                    date: date),
                 const SizedBox(width: 12),
                 _addRatingButton(context),
               ],
@@ -87,49 +94,53 @@ class _HistoryCardState extends State<HistoryCard> {
   }
 
   void _showReportDialog(BuildContext context,
-      {String imageUrl = '', String tutorName = ''}) {
+      {String imageUrl = '',
+      String tutorName = '',
+      String time = '',
+      String date = ''}) {
     final textController = TextEditingController();
     showDialog(
       context: context,
       builder: (context) => AlertDialog(
-        title: const Text('Report on Lesson'),
-        content: Column(
-          mainAxisSize: MainAxisSize.min,
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Row(
-              children: [
-                // _tutorAvatar(context, 32),
-                TutorAvatar(imageUrl: imageUrl, tutorName: tutorName),
-                const SizedBox(width: 16),
-                const Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text('Krystal', style: CustomTextStyle.headlineLarge),
-                    // Text('Lesson Time: '),
-                    Text('Monday, 31 Oct 2023'),
-                    Text('10:00 - 10:15 AM'),
-                  ],
-                ),
-              ],
-            ),
-            const SizedBox(height: 8),
-            const Text('What was the reason you reported on the lesson?',
-                style: CustomTextStyle.bodyRegular),
-            const SizedBox(height: 8),
-            TextField(
-              controller: textController,
-              decoration: const InputDecoration(
-                hintText: 'Enter your report here',
-                border: OutlineInputBorder(),
+        title: Text('report_on_lesson'.tr()),
+        content: SingleChildScrollView(
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Row(
+                children: [
+                  // _tutorAvatar(context, 32),
+                  TutorAvatar(imageUrl: imageUrl, tutorName: tutorName),
+                  const SizedBox(width: 16),
+                  Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(tutorName, style: CustomTextStyle.headlineLarge),
+                      // Text('Lesson Time: '),
+                      Text(date),
+                      Text(time),
+                    ],
+                  ),
+                ],
               ),
-              maxLines: 5,
-            ),
-          ],
+              const SizedBox(height: 8),
+              Text('report_reason'.tr(), style: CustomTextStyle.bodyRegular),
+              const SizedBox(height: 8),
+              TextField(
+                controller: textController,
+                decoration: InputDecoration(
+                  hintText: 'enter_report'.tr(),
+                  border: const OutlineInputBorder(),
+                ),
+                maxLines: 5,
+              ),
+            ],
+          ),
         ),
         actions: [
           MyOutlineButton(
-            text: 'Later',
+            text: 'later'.tr(),
             height: 25,
             radius: 5,
             onPressed: () => Navigator.pop(context),
@@ -137,7 +148,7 @@ class _HistoryCardState extends State<HistoryCard> {
             textSize: 18,
           ),
           MyElevatedButton(
-            text: 'Submit',
+            text: 'submit'.tr(),
             height: 25,
             radius: 5,
             onPressed: () => Navigator.pop(context),
@@ -181,13 +192,13 @@ class _HistoryCardState extends State<HistoryCard> {
               Icon(
                 Icons.message_outlined,
                 size: 16,
-                color: Theme.of(context).primaryColor,
+                color: AppTheme.primaryColor,
               ),
               const SizedBox(width: 4),
               Text(
-                'Direct message',
+                'direct_message'.tr(),
                 style: CustomTextStyle.bodyRegular
-                    .copyWith(color: Theme.of(context).primaryColor),
+                    .copyWith(color: AppTheme.primaryColor),
               ),
             ],
           )
@@ -204,16 +215,20 @@ class _HistoryCardState extends State<HistoryCard> {
   }
 
   _reportButton(BuildContext context,
-      {String imageUrl = '', String tutorName = ''}) {
+      {String imageUrl = '',
+      String tutorName = '',
+      String time = '',
+      String date = ''}) {
     return Expanded(
       child: TextButton(
         style: TextButton.styleFrom(foregroundColor: Colors.red),
         onPressed: () {
-          _showReportDialog(context, imageUrl: imageUrl, tutorName: tutorName);
+          _showReportDialog(context,
+              imageUrl: imageUrl, tutorName: tutorName, time: time, date: date);
         },
-        child: const Text(
-          'Report',
-          style: TextStyle(fontSize: 16, color: Colors.red),
+        child: Text(
+          'report'.tr(),
+          style: const TextStyle(fontSize: 16, color: Colors.red),
         ),
       ),
     );
@@ -225,9 +240,9 @@ class _HistoryCardState extends State<HistoryCard> {
         onPressed: () {
           Routes.navigateTo(context, Routes.writeReview);
         },
-        child: const Text(
-          'Add a rating',
-          style: TextStyle(fontSize: 16),
+        child: Text(
+          'add_rating'.tr(),
+          style: const TextStyle(fontSize: 16),
         ),
       ),
     );

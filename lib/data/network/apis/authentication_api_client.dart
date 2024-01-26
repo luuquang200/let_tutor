@@ -61,4 +61,20 @@ class AuthenticationApiClient {
       rethrow;
     }
   }
+
+  //signInWithGoogle(String accessToken) {}
+  Future<AuthenticationResponse> signInWithGoogle(String accessToken) async {
+    try {
+      final response = await DioClient.instance.post(
+        Endpoints.loginWithGoogle,
+        data: {'access_token': accessToken},
+      );
+      return response['access_token'];
+    } on DioException catch (e) {
+      throw DioExceptionHandler.fromDioError(e);
+    } catch (e) {
+      log('error when handling response from api: $e');
+      rethrow;
+    }
+  }
 }

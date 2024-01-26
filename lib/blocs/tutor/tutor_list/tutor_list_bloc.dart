@@ -7,7 +7,6 @@ import 'package:let_tutor/blocs/tutor/tutor_list/tutor_list_state.dart';
 import 'package:let_tutor/data/models/schedule/booked_schedule.dart';
 import 'package:let_tutor/data/models/tutors/learn_topic.dart';
 import 'package:let_tutor/data/models/tutors/test_preparation.dart';
-import 'package:let_tutor/data/models/user/user.dart';
 import 'package:let_tutor/data/repositories/schedule_repository.dart';
 import 'package:let_tutor/data/repositories/tutor_repository.dart';
 import 'package:let_tutor/data/repositories/user_repository.dart';
@@ -16,8 +15,8 @@ class TutorListBloc extends Bloc<TutorListEvent, TutorListState> {
   final TutorRepository tutorRepository;
   final ScheduleRepository scheduleRepository;
   final UserRepository userRepository;
-  final page = 1;
   final tutorPerPage = 12;
+  final page = 1;
   String? tutorName;
   bool isReset = false;
   String selectedNationality = "";
@@ -37,9 +36,21 @@ class TutorListBloc extends Bloc<TutorListEvent, TutorListState> {
 
   FutureOr<void> _onTutorListRequested(
       TutorListRequested event, Emitter<TutorListState> emit) async {
+    final currentState = state;
+
     emit(TutorListLoading());
     try {
-      final tutors = await tutorRepository.getTutors();
+      // Initialize with no filters
+      Map<String, dynamic> filters = {};
+
+      if (currentState is TutorListSuccess) {
+        filters = Map<String, dynamic>.from(currentState.filters);
+      }
+
+      final filteredTutors = await tutorRepository.searchTutor(
+          filters, event.page, tutorPerPage, tutorName);
+      int totalPage = (filteredTutors.count / tutorPerPage).ceil();
+
       List<LearnTopic> learnTopics = await tutorRepository.getLearnTopic();
       List<TestPreparation> testPreparations =
           await tutorRepository.getTestPreparation();
@@ -70,13 +81,19 @@ class TutorListBloc extends Bloc<TutorListEvent, TutorListState> {
         upcomingSchedule = BookedSchedule();
       }
 
-      // Initialize with no filters
-      final Map<String, dynamic> filters = {};
-
       int totalCall = await userRepository.getTotalCall();
 
-      emit(TutorListSuccess(tutors, filters, learnTopics, testPreparations,
-          isReset, selectedNationality, upcomingSchedule, totalCall));
+      emit(TutorListSuccess(
+          filteredTutors.rows,
+          filters,
+          learnTopics,
+          testPreparations,
+          isReset,
+          selectedNationality,
+          upcomingSchedule,
+          totalCall,
+          totalPage,
+          event.page));
     } catch (error) {
       log('error from tutor list bloc: $error');
       emit(TutorListFailure(error.toString()));
@@ -100,11 +117,14 @@ class TutorListBloc extends Bloc<TutorListEvent, TutorListState> {
 
         final filteredTutors = await tutorRepository.searchTutor(
             filters, page, tutorPerPage, tutorName);
+        int totalPage = (filteredTutors.count / tutorPerPage).ceil();
 
         emit(currentState.copyWith(
-            tutors: filteredTutors,
+            tutors: filteredTutors.rows,
             filters: filters,
+            totalPage: totalPage,
             isReset: isReset,
+            page: 1,
             selectedNationality: selectedNationality));
       }
     } catch (error) {
@@ -123,11 +143,14 @@ class TutorListBloc extends Bloc<TutorListEvent, TutorListState> {
         final filters = Map<String, dynamic>.from(currentState.filters);
         final filteredTutors = await tutorRepository.searchTutor(
             filters, page, tutorPerPage, tutorName);
+        int totalPage = (filteredTutors.count / tutorPerPage).ceil();
 
         emit(currentState.copyWith(
-            tutors: filteredTutors,
+            tutors: filteredTutors.rows,
             filters: filters,
             isReset: isReset,
+            page: 1,
+            totalPage: totalPage,
             selectedNationality: selectedNationality));
       }
     } catch (error) {
@@ -148,11 +171,14 @@ class TutorListBloc extends Bloc<TutorListEvent, TutorListState> {
 
         final filteredTutors = await tutorRepository.searchTutor(
             filters, page, tutorPerPage, tutorName);
+        int totalPage = (filteredTutors.count / tutorPerPage).ceil();
 
         emit(currentState.copyWith(
-            tutors: filteredTutors,
+            tutors: filteredTutors.rows,
             filters: filters,
             isReset: isReset,
+            totalPage: totalPage,
+            page: 1,
             selectedNationality: selectedNationality));
       }
     } catch (error) {
@@ -165,20 +191,26 @@ class TutorListBloc extends Bloc<TutorListEvent, TutorListState> {
     final currentState = state;
     emit(TutorListLoading());
     try {
-      final tutors = await tutorRepository.getTutors();
+      final Map<String, dynamic> filters = {}; // Initialize with no filters
+      final filteredTutors = await tutorRepository.searchTutor(
+          filters, page, tutorPerPage, tutorName);
+
+      int totalPage = (filteredTutors.count / tutorPerPage).ceil();
       List<LearnTopic> learnTopics = await tutorRepository.getLearnTopic();
       List<TestPreparation> testPreparations =
           await tutorRepository.getTestPreparation();
-      final Map<String, dynamic> filters = {}; // Initialize with no filters
+
       isReset = true;
 
       if (currentState is TutorListSuccess) {
         emit(currentState.copyWith(
-            tutors: tutors,
+            tutors: filteredTutors.rows,
             filters: filters,
             learnTopics: learnTopics,
             testPreparations: testPreparations,
             isReset: isReset,
+            totalPage: totalPage,
+            page: 1,
             selectedNationality: selectedNationality));
       }
 

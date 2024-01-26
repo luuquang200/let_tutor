@@ -8,10 +8,11 @@ abstract class CoursesListEvent extends Equatable {
 }
 
 class GetCoursesList extends CoursesListEvent {
-  const GetCoursesList();
+  const GetCoursesList(this.page);
+  final int page;
 
   @override
-  List<Object> get props => [];
+  List<Object> get props => [page];
 }
 
 class GetDetailCourse extends CoursesListEvent {
@@ -21,4 +22,40 @@ class GetDetailCourse extends CoursesListEvent {
 
   @override
   List<Object> get props => [id];
+}
+
+class GetCoursesListByCategory extends CoursesListEvent {
+  final String category;
+
+  const GetCoursesListByCategory(this.category);
+
+  @override
+  List<Object> get props => [category];
+}
+
+class GetCoursesListByLevel extends CoursesListEvent {
+  final String level;
+
+  const GetCoursesListByLevel(this.level);
+
+  @override
+  List<Object> get props => [level];
+}
+
+class GetCoursesListBySortLevel extends CoursesListEvent {
+  final String sortLevel;
+
+  const GetCoursesListBySortLevel(this.sortLevel);
+
+  @override
+  List<Object> get props => [sortLevel];
+}
+
+class GetCoursesListBySearch extends CoursesListEvent {
+  final String search;
+
+  const GetCoursesListBySearch(this.search);
+
+  @override
+  List<Object> get props => [search];
 }

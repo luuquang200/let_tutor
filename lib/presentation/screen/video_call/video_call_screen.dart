@@ -1,68 +1,86 @@
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
+import 'package:let_tutor/data/models/schedule/booked_schedule.dart';
+import 'package:let_tutor/presentation/styles/custom_button.dart';
+import 'package:let_tutor/routes.dart';
 
-class VideoCallScreen extends StatefulWidget {
-  const VideoCallScreen({super.key});
+class WaitingCallScreen extends StatefulWidget {
+  final BookedSchedule bookedSchedule;
+  const WaitingCallScreen({super.key, required this.bookedSchedule});
 
   @override
-  State<VideoCallScreen> createState() => _VideoCallScreenState();
+  State<WaitingCallScreen> createState() => _WaitingCallScreenState();
 }
 
-class _VideoCallScreenState extends State<VideoCallScreen> {
+class _WaitingCallScreenState extends State<WaitingCallScreen> {
+  late DateTime startTime;
+
   @override
   Widget build(BuildContext context) {
-    return const SafeArea(
+    startTime = DateTime.fromMillisecondsSinceEpoch(
+        widget.bookedSchedule.scheduleDetailInfo?.startPeriodTimestamp ?? 0);
+    String dateStart = DateFormat('EEE, dd MMM yy').format(startTime);
+    String timeStart = DateFormat('HH:mm').format(startTime);
+    return SafeArea(
       child: Scaffold(
         backgroundColor: Colors.black,
         body: Column(
           children: [
             Expanded(
               child: Center(
-                child: Text(
-                  '17:41:48 until lesson start (Mon, 31 Otb 23 18:30)',
-                  textAlign: TextAlign.center,
-                  style: TextStyle(fontSize: 20, color: Colors.white60),
+                child: Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: StreamBuilder<int>(
+                    stream:
+                        Stream.periodic(const Duration(seconds: 1), (i) => i),
+                    builder: (context, snapshot) {
+                      final countdownDuration =
+                          startTime.difference(DateTime.now());
+                      final countdownString =
+                          '${countdownDuration.inHours}:${(countdownDuration.inMinutes % 60).toString().padLeft(2, '0')}:${(countdownDuration.inSeconds % 60).toString().padLeft(2, '0')}';
+                      return Text(
+                        '$countdownString until lesson start ($dateStart $timeStart)',
+                        style: const TextStyle(
+                            fontSize: 24, color: Colors.white60),
+                      );
+                    },
+                  ),
                 ),
               ),
             ),
             Row(
               children: [
+                const SizedBox(width: 5),
                 Expanded(
-                    child: Icon(
-                  Icons.mic_rounded,
-                  color: Colors.white60,
-                )),
+                    child: MyElevatedButton(
+                        text: 'Cancel',
+                        color: Colors.white60,
+                        textColor: Colors.white,
+                        height: 48,
+                        radius: 8,
+                        onPressed: () {
+                          Navigator.pop(context);
+                        })),
+                const SizedBox(width: 10),
                 Expanded(
-                    child: Icon(
-                  Icons.video_call,
-                  color: Colors.white60,
-                )),
-                Expanded(
-                    child: Icon(
-                  Icons.screen_share_outlined,
-                  color: Colors.white60,
-                )),
-                Expanded(
-                    child: Icon(
-                  Icons.emergency_recording_outlined,
-                  color: Colors.white60,
-                )),
-                Expanded(
-                    child: Icon(
-                  Icons.front_hand,
-                  color: Colors.white60,
-                )),
-                Expanded(
-                    child: Icon(
-                  Icons.fullscreen_outlined,
-                  color: Colors.white60,
-                )),
-                Expanded(
-                    child: Icon(
-                  Icons.phone,
-                  color: Colors.red,
-                )),
+                    child: MyElevatedButton(
+                        text: 'Connect',
+                        height: 48,
+                        radius: 8,
+                        onPressed: () async {
+                          final routeContext = context;
+                          await Navigator.pushNamed(
+                              routeContext, Routes.meetingPage,
+                              arguments:
+                                  widget.bookedSchedule.studentMeetingLink);
+                          if (mounted) {
+                            Navigator.pop(routeContext);
+                          }
+                        })),
+                const SizedBox(width: 5),
               ],
-            )
+            ),
+            const SizedBox(height: 16),
           ],
         ),
       ),

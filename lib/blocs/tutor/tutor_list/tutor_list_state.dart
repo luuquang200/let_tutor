@@ -27,6 +27,8 @@ class TutorListSuccess extends TutorListState {
   final String selectedNationality;
   final BookedSchedule upcomingSchedule;
   final int totalCall;
+  final int totalPage;
+  final int page;
 
   const TutorListSuccess(
       this.tutors,
@@ -36,7 +38,9 @@ class TutorListSuccess extends TutorListState {
       this.isReset,
       this.selectedNationality,
       this.upcomingSchedule,
-      this.totalCall);
+      this.totalCall,
+      this.totalPage,
+      this.page);
 
   @override
   List<Object> get props => [
@@ -47,7 +51,9 @@ class TutorListSuccess extends TutorListState {
         isReset,
         selectedNationality,
         upcomingSchedule,
-        totalCall
+        totalCall,
+        totalPage,
+        page
       ];
 
   TutorListSuccess copyWith(
@@ -58,7 +64,9 @@ class TutorListSuccess extends TutorListState {
       bool? isReset,
       String? selectedNationality,
       BookedSchedule? upcomingSchedule,
-      int? totalCall}) {
+      int? totalCall,
+      int? totalPage,
+      int? page}) {
     return TutorListSuccess(
         tutors ?? this.tutors,
         filters ?? this.filters,
@@ -67,7 +75,9 @@ class TutorListSuccess extends TutorListState {
         isReset ?? this.isReset,
         selectedNationality ?? this.selectedNationality,
         upcomingSchedule ?? this.upcomingSchedule,
-        totalCall ?? this.totalCall);
+        totalCall ?? this.totalCall,
+        totalPage ?? this.totalPage,
+        page ?? this.page);
   }
 }
 

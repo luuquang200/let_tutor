@@ -1,6 +1,4 @@
-import 'dart:developer';
-
-import 'package:cached_network_image/cached_network_image.dart';
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:let_tutor/data/models/course/course.dart';
 import 'package:let_tutor/presentation/screen/courses/widgets/course_cover_image.dart';
@@ -10,16 +8,16 @@ class CourseCard extends StatelessWidget {
   final Course course;
   const CourseCard({super.key, required this.course});
 
-  static const Map<String, String> levels = {
-    '0': 'Any Level',
-    '1': 'Beginner',
-    '2': 'Upper-Beginner',
-    '3': 'Pre-Intermediate',
-    '4': 'Intermediate',
-    '5': 'Upper-Intermediate',
-    '6': 'Pre-Advanced',
-    '7': 'Advanced',
-    '8': 'Very Advanced'
+  static final Map<String, String> levels = {
+    '0': 'any_level'.tr(),
+    '1': 'beginner'.tr(),
+    '2': 'upper_beginner'.tr(),
+    '3': 'pre_intermediate'.tr(),
+    '4': 'intermediate'.tr(),
+    '5': 'upper_intermediate'.tr(),
+    '6': 'pre_advanced'.tr(),
+    '7': 'advanced'.tr(),
+    '8': 'very_advanced'.tr()
   };
 
   @override
@@ -35,13 +33,12 @@ class CourseCard extends StatelessWidget {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Text(course.name ?? 'Course name',
-                      style: CustomTextStyle.headlineLarge),
+                  Text(course.name ?? '', style: CustomTextStyle.headlineLarge),
                   const SizedBox(
                     height: 8,
                   ),
                   Text(
-                    course.description ?? 'Course description',
+                    course.description ?? '',
                     style: const TextStyle(
                         fontWeight: FontWeight.w400, color: Colors.grey),
                   ),
@@ -53,12 +50,12 @@ class CourseCard extends StatelessWidget {
                       Expanded(
                           child: Text(
                         levels[course.level] ?? '',
-                        style: TextStyle(fontSize: 18),
+                        style: const TextStyle(fontSize: 18),
                       )),
                       // length of the course
                       Text(
-                        '${course.topics?.length.toString() ?? '0'} lessons',
-                        style: TextStyle(fontSize: 18),
+                        '${course.topics?.length.toString() ?? '0'} ${'lesson'.tr()}',
+                        style: const TextStyle(fontSize: 18),
                       )
                     ],
                   ),

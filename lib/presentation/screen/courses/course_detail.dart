@@ -1,3 +1,4 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:let_tutor/blocs/courses/courses_list/courses_list_bloc.dart';
@@ -7,6 +8,7 @@ import 'package:let_tutor/data/models/user/user.dart';
 import 'package:let_tutor/presentation/screen/courses/widgets/course_cover_image.dart';
 import 'package:let_tutor/presentation/styles/custom_button.dart';
 import 'package:let_tutor/presentation/styles/custom_text_style.dart';
+import 'package:let_tutor/presentation/styles/theme.dart';
 import 'package:let_tutor/routes.dart';
 
 class CourseDetail extends StatefulWidget {
@@ -28,8 +30,9 @@ class _CourseDetailState extends State<CourseDetail> {
           Course course = state.course;
           return Scaffold(
             appBar: AppBar(
-              title: Text('Course Detail', style: CustomTextStyle.topHeadline),
-              iconTheme: IconThemeData(color: Theme.of(context).primaryColor),
+              title: Text('course_detail'.tr(),
+                  style: CustomTextStyle.topHeadline),
+              iconTheme: IconThemeData(color: AppTheme.primaryColor),
             ),
             body: SingleChildScrollView(
               child: Column(children: [
@@ -43,18 +46,18 @@ class _CourseDetailState extends State<CourseDetail> {
                       const SizedBox(height: 12),
                       _introductionInfo(course),
                       const SizedBox(height: 12),
-                      _dicoveryButton(),
+                      _dicoveryButton(course),
                       const SizedBox(height: 12),
-                      _sectionTitle(context, 'Overview'),
+                      _sectionTitle(context, 'overview'.tr()),
                       _courseOverview(course),
                       const SizedBox(height: 12),
-                      _sectionTitle(context, 'Experience Level'),
+                      _sectionTitle(context, 'experience_level'.tr()),
                       _expereinceLevel(course),
                       const SizedBox(height: 12),
-                      _sectionTitle(context, 'Course Length'),
+                      _sectionTitle(context, 'course_length'.tr()),
                       _courseLength(course),
                       const SizedBox(height: 12),
-                      _sectionTitle(context, 'List Of Topics'),
+                      _sectionTitle(context, 'list_of_topics'.tr()),
                       _topicsList(course),
                       _suggestTutors(course),
                       const SizedBox(height: 12),
@@ -66,10 +69,10 @@ class _CourseDetailState extends State<CourseDetail> {
           );
         } else if (state is CourseDetailLoadFailure) {
           return Scaffold(
-            body: Center(child: Text('Failed to load course detail')),
+            body: Center(child: Text('failed_to_load_course_detail'.tr())),
           );
         } else {
-          return Scaffold(
+          return const Scaffold(
             body: Center(child: CircularProgressIndicator()),
           );
         }
@@ -77,12 +80,15 @@ class _CourseDetailState extends State<CourseDetail> {
     );
   }
 
-  _dicoveryButton() {
+  _dicoveryButton(Course course) {
     return MyElevatedButton(
-      text: 'Discover',
+      text: 'discover'.tr(),
       height: 50,
       radius: 8,
-      onPressed: () {},
+      onPressed: () {
+        Navigator.pushNamed(context, Routes.topicDetail,
+            arguments: course.topics?[0]);
+      },
     );
   }
 
@@ -112,28 +118,28 @@ class _CourseDetailState extends State<CourseDetail> {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         const SizedBox(height: 12),
-        const Row(
+        Row(
           children: [
-            Icon(Icons.help_outline, color: Colors.red),
-            SizedBox(width: 8),
+            const Icon(Icons.help_outline, color: Colors.red),
+            const SizedBox(width: 8),
             Text(
-              'Why Take This Course?',
+              'why_take_this_course'.tr(),
               style: CustomTextStyle.headlineMedium,
             ),
           ],
         ),
         const SizedBox(height: 12),
         Padding(
-          padding: EdgeInsets.only(left: 32, right: 16),
+          padding: const EdgeInsets.only(left: 32, right: 16),
           child: Text(course.reason ?? ''),
         ),
         const SizedBox(height: 12),
-        const Row(
+        Row(
           children: [
-            Icon(Icons.help_outline, color: Colors.red),
-            SizedBox(width: 8),
+            const Icon(Icons.help_outline, color: Colors.red),
+            const SizedBox(width: 8),
             Text(
-              'What will you be able to do?',
+              'what_will_you_be_able_to_do'.tr(),
               style: CustomTextStyle.headlineMedium,
             ),
           ],
@@ -149,15 +155,15 @@ class _CourseDetailState extends State<CourseDetail> {
 
   _expereinceLevel(Course course) {
     Map<String, String> levels = {
-      '0': 'Any Level',
-      '1': 'Beginner',
-      '2': 'Upper-Beginner',
-      '3': 'Pre-Intermediate',
-      '4': 'Intermediate',
-      '5': 'Upper-Intermediate',
-      '6': 'Pre-Advanced',
-      '7': 'Advanced',
-      '8': 'Very Advanced'
+      '0': 'any_level'.tr(),
+      '1': 'beginner'.tr(),
+      '2': 'upper_beginner'.tr(),
+      '3': 'pre_intermediate'.tr(),
+      '4': 'intermediate'.tr(),
+      '5': 'upper_intermediate'.tr(),
+      '6': 'pre_advanced'.tr(),
+      '7': 'advanced'.tr(),
+      '8': 'very_advanced'.tr()
     };
     return Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
       const SizedBox(height: 12),
@@ -199,7 +205,8 @@ class _CourseDetailState extends State<CourseDetail> {
       itemBuilder: (context, index) {
         return GestureDetector(
           onTap: () {
-            Routes.navigateTo(context, Routes.topicDetail);
+            Navigator.pushNamed(context, Routes.topicDetail,
+                arguments: course.topics?[index]);
           },
           child: Padding(
             padding: const EdgeInsets.symmetric(vertical: 6, horizontal: 8),
@@ -222,7 +229,7 @@ class _CourseDetailState extends State<CourseDetail> {
     List<User> users = course.users ?? [];
     return Column(
       children: [
-        _sectionTitle(context, 'Suggested Tutors'),
+        _sectionTitle(context, 'suggested_tutors'.tr()),
         Padding(
           padding: const EdgeInsets.symmetric(horizontal: 26),
           child: ListView.builder(
@@ -241,7 +248,7 @@ class _CourseDetailState extends State<CourseDetail> {
                       Navigator.pushNamed(context, Routes.tutorDetail,
                           arguments: users[index].id ?? '');
                     },
-                    child: const Text('More Info'),
+                    child: Text('more_info'.tr()),
                   ),
                 ],
               );

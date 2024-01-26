@@ -21,7 +21,7 @@ class _TutorListScreenState extends State<TutorListScreen> {
         tutorRepository: TutorRepository(),
         scheduleRepository: ScheduleRepository(),
         userRepository: UserRepository(),
-      )..add(TutorListRequested()),
+      )..add(TutorListRequested(page: 1)),
       child: const TutorListPage(),
     );
   }

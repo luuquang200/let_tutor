@@ -1,3 +1,4 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:image_picker/image_picker.dart';
@@ -9,6 +10,7 @@ import 'package:let_tutor/data/repositories/tutor_repository.dart';
 import 'package:let_tutor/data/repositories/user_repository.dart';
 import 'package:let_tutor/presentation/screen/account/widgets/information_setting.dart';
 import 'package:let_tutor/presentation/styles/custom_text_style.dart';
+import 'package:let_tutor/presentation/styles/theme.dart';
 import 'package:let_tutor/presentation/widgets/custom_snack_bar.dart';
 import 'package:let_tutor/presentation/widgets/tutor_avatar.dart';
 
@@ -48,7 +50,7 @@ class _ProfileSettingScreenState extends State<ProfileSettingScreen> {
               ScaffoldMessenger.of(context).hideCurrentSnackBar();
               ScaffoldMessenger.of(context).showSnackBar(
                 CustomSnackBar(
-                  message: 'Updated successfully',
+                  message: 'updated_successfully'.tr(),
                   icon: Icons.check,
                   backgroundColor: Colors.green,
                 ),
@@ -65,8 +67,8 @@ class _ProfileSettingScreenState extends State<ProfileSettingScreen> {
             user = state.user;
             return Scaffold(
               appBar: AppBar(
-                title: Text('Profile', style: CustomTextStyle.topHeadline),
-                iconTheme: IconThemeData(color: Theme.of(context).primaryColor),
+                title: Text('profile'.tr(), style: CustomTextStyle.topHeadline),
+                iconTheme: AppTheme.iconTheme,
               ),
               body: SingleChildScrollView(
                 padding: const EdgeInsets.symmetric(vertical: 8, horizontal: 8),
@@ -80,8 +82,8 @@ class _ProfileSettingScreenState extends State<ProfileSettingScreen> {
               ),
             );
           } else {
-            return const Center(
-              child: Text('Failed to load account information'),
+            return Center(
+              child: Text('failed_to_load_account_information'.tr()),
             );
           }
         },
