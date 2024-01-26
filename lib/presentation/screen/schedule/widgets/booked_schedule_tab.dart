@@ -1,5 +1,6 @@
 import 'dart:developer';
 
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:let_tutor/blocs/schedule/booked_schedule/schedule_bloc.dart';
@@ -26,12 +27,12 @@ class BookedScheduleTab extends StatelessWidget {
           ScaffoldMessenger.of(context)
             ..hideCurrentSnackBar()
             ..showSnackBar(
-              const SnackBar(
+              SnackBar(
                 content: Row(
                   children: <Widget>[
-                    Icon(Icons.check_circle, color: Colors.white),
-                    SizedBox(width: 8.0),
-                    Text('Cancel schedule success !'),
+                    const Icon(Icons.check_circle, color: Colors.white),
+                    const SizedBox(width: 8.0),
+                    Text('cancel_schedule_success'.tr()),
                   ],
                 ),
                 backgroundColor: Colors.green,
@@ -48,8 +49,8 @@ class BookedScheduleTab extends StatelessWidget {
         } else if (state is ScheduleLoadSuccess) {
           log('load success ${state.schedules.length}');
           if (state.schedules.isEmpty || state.schedules.first.isEmpty) {
-            return const Center(
-              child: Text('You have no schedule'),
+            return Center(
+              child: Text('no_schedule'.tr()),
             );
           }
 
@@ -68,10 +69,9 @@ class BookedScheduleTab extends StatelessWidget {
             ),
           );
         } else if (state is ScheduleLoadFailure) {
-          return Text('Error: ${state.message}');
-        } else {
-          return const Text('Please click the button to load the schedules');
+          return Text('${'error'.tr()}: ${state.message}');
         }
+        return Container();
       },
     );
   }

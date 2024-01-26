@@ -1,3 +1,4 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:let_tutor/presentation/styles/custom_text_style.dart';
 
@@ -27,9 +28,9 @@ class _HistoryRequestState extends State<HistoryRequest> {
                 Expanded(
                   child: Row(
                     children: [
-                      Text('Requests for lesson:',
+                      Text('requests_for_lesson'.tr(),
                           style: CustomTextStyle.bodyRegular),
-                      SizedBox(width: 6),
+                      const SizedBox(width: 6),
                     ],
                   ),
                 ),
@@ -54,7 +55,7 @@ class _HistoryRequestState extends State<HistoryRequest> {
                 visible: isRequestExpanded,
                 child: Padding(
                     padding: const EdgeInsets.only(left: 28, right: 8),
-                    child: Text(widget.request ?? 'No request for lesson')))
+                    child: Text(widget.request ?? 'no_requests'.tr())))
           ],
         ));
   }

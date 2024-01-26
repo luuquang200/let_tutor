@@ -99,8 +99,8 @@ class TutorListPageState extends State<TutorListPage> {
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
-          Icon(Icons.warning_amber_rounded, size: 48, color: Colors.grey[400]),
-          Text('Sorry we can\'t find any tutor with this keywords',
+          const Icon(Icons.search_off_outlined, size: 64),
+          Text('no_tutor_found'.tr(),
               style: CustomTextStyle.bodyRegular
                   .copyWith(color: Colors.grey[400])),
           const SizedBox(height: 8),
@@ -128,22 +128,12 @@ class TutorListPageState extends State<TutorListPage> {
     );
   }
 
-  NumberPaginator _paginator() {
-    return NumberPaginator(
-      numberPages: 8,
-      onPageChange: (index) {
-        log(index.toString());
-        setState(() {});
-      },
-    );
-  }
-
   Widget _selectNationality() {
     final Map<String, Map<String, bool>> listNationalities = {
-      'Select nationality': {},
-      'Vietnamese Tutor': {'isVietNamese': true},
-      'Native English Tutor': {'isNative': true},
-      'Foreign Tutor': {'isVietNamese': false, 'isNative': false},
+      'select_nationality'.tr(): {},
+      'vietnamese_tutor'.tr(): {'isVietNamese': true},
+      'native_english_tutor'.tr(): {'isNative': true},
+      'foreign_tutor'.tr(): {'isVietNamese': false, 'isNative': false},
     };
     String selectedNationality = listNationalities.keys.first;
     return BlocBuilder<TutorListBloc, TutorListState>(
@@ -215,97 +205,18 @@ class TutorListPageState extends State<TutorListPage> {
         controller: controller,
         onChanged: (value) =>
             context.read<TutorListBloc>().add(FilterTutorsByName(value)),
-        decoration: const InputDecoration(
-          prefixIcon: Icon(Icons.type_specimen_outlined),
-          hintText: 'Enter a tutor name',
-          hintStyle: TextStyle(
+        decoration: InputDecoration(
+          prefixIcon: const Icon(Icons.type_specimen_outlined),
+          hintText: 'enter_tutor_name'.tr(),
+          hintStyle: const TextStyle(
             color: Color(0xFFB0B0B0),
           ),
-          border: OutlineInputBorder(
+          border: const OutlineInputBorder(
             borderSide: BorderSide(color: Colors.red, width: 1.0),
           ),
-          contentPadding: EdgeInsets.symmetric(vertical: 16.0),
+          contentPadding: const EdgeInsets.symmetric(vertical: 16.0),
         ),
       ),
-    );
-  }
-
-  Widget _selectAvailableDate() {
-    return TextField(
-      decoration: const InputDecoration(
-        prefixIcon: Icon(Icons.calendar_today),
-        hintText: 'dd/MM/yyyy',
-        hintStyle: TextStyle(
-          color: Color(0xFFB0B0B0),
-        ),
-        border: OutlineInputBorder(),
-        contentPadding: EdgeInsets.symmetric(vertical: 16.0),
-      ),
-      controller: dateController,
-      readOnly: true,
-      onTap: () async {
-        DateTime? selectedDate = await showDatePicker(
-          context: context,
-          initialDate: DateTime.now(),
-          firstDate: DateTime(1900),
-          lastDate: DateTime(2100),
-        );
-        if (selectedDate != null) {
-          dateController.text = DateFormat('dd/MM/yyyy').format(selectedDate);
-        }
-      },
-    );
-  }
-
-  Widget _selectStartTime() {
-    return TextField(
-      controller: startTimeController,
-      decoration: const InputDecoration(
-        prefixIcon: Icon(Icons.access_time),
-        hintText: 'Start time',
-        hintStyle: TextStyle(
-          color: Color(0xFFB0B0B0),
-        ),
-        border: OutlineInputBorder(),
-        contentPadding: EdgeInsets.symmetric(vertical: 16.0),
-      ),
-      readOnly: true,
-      onTap: () async {
-        TimeOfDay? selectedTime = await showTimePicker(
-          context: context,
-          initialTime: TimeOfDay.now(),
-          helpText: 'Select start time',
-        );
-        if (selectedTime != null && mounted) {
-          startTimeController.text = selectedTime.format(context);
-        }
-      },
-    );
-  }
-
-  Widget _selectEndTime() {
-    return TextField(
-      controller: endTimeController,
-      decoration: const InputDecoration(
-        prefixIcon: Icon(Icons.timelapse),
-        hintText: 'End time',
-        hintStyle: TextStyle(
-          color: Color(0xFFB0B0B0),
-        ),
-        border: OutlineInputBorder(),
-        contentPadding: EdgeInsets.symmetric(vertical: 16.0),
-      ),
-      readOnly: true,
-      onTap: () async {
-        TimeOfDay? selectedTime = await showTimePicker(
-          context: context,
-          initialTime: TimeOfDay.now(),
-          helpText: 'Select end time',
-        );
-        if (selectedTime != null && mounted) {
-          endTimeController.text = selectedTime.format(context);
-        }
-      },
     );
   }
 
@@ -364,9 +275,9 @@ class TutorListPageState extends State<TutorListPage> {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Padding(
-            padding: EdgeInsets.symmetric(vertical: 10),
+            padding: const EdgeInsets.symmetric(vertical: 10),
             child: Text(
-              'Find a tutor',
+              'find_a_tutor'.tr(),
               style: CustomTextStyle.headlineMedium,
             )),
         Row(
@@ -382,27 +293,8 @@ class TutorListPageState extends State<TutorListPage> {
             ),
           ],
         ),
-        Padding(
-          padding: EdgeInsets.symmetric(vertical: 12),
-          child: Text('Select available tutoring time:',
-              style: CustomTextStyle.headlineMedium),
-        ),
-        Row(
-          children: [Expanded(child: _selectAvailableDate())],
-        ),
         const SizedBox(height: 16),
-        Row(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          children: [
-            Expanded(
-              child: _selectStartTime(),
-            ),
-            const SizedBox(width: 10),
-            Expanded(child: _selectEndTime()),
-          ],
-        ),
-        const SizedBox(height: 16),
-        Text('Select speciality:', style: CustomTextStyle.headlineMedium),
+        Text('select_speciality'.tr(), style: CustomTextStyle.headlineMedium),
         const SizedBox(height: 8),
         Padding(
           padding: const EdgeInsets.symmetric(vertical: 8),
@@ -454,7 +346,7 @@ class TutorListPageState extends State<TutorListPage> {
                 style: OutlinedButton.styleFrom(
                   side: BorderSide(color: AppTheme.primaryColor, width: 1),
                 ),
-                child: Text('Reset Filters',
+                child: Text('reset_filters'.tr(),
                     style: TextStyle(color: AppTheme.primaryColor)),
               ),
             ],

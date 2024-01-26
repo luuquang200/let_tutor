@@ -1,5 +1,6 @@
 import 'dart:developer';
 
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:let_tutor/blocs/courses/courses_list/courses_list_bloc.dart';
@@ -61,8 +62,8 @@ class _CategoriesFilterState extends State<CategoriesFilter> {
               },
             );
           } else {
-            return const Center(
-              child: Text('Error'),
+            return Center(
+              child: Text('error'.tr()),
             );
           }
         });
@@ -71,7 +72,7 @@ class _CategoriesFilterState extends State<CategoriesFilter> {
   void ensureAllCategory(List<CourseCategory> categories) {
     if (!categories.any((category) => category.key == 'all')) {
       categories.insert(
-          0, CourseCategory(title: 'All categories', key: 'all', id: '0'));
+          0, CourseCategory(title: 'all_courses'.tr(), key: 'all', id: '0'));
     }
   }
 

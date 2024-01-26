@@ -1,3 +1,4 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:let_tutor/presentation/styles/custom_text_style.dart';
 
@@ -28,7 +29,7 @@ class _HistoryReviewState extends State<HistoryReview> {
                 Expanded(
                     child: Row(
                   children: [
-                    Text('Review from tutor:',
+                    Text('review_from_tutor'.tr(),
                         style: CustomTextStyle.bodyRegular),
                   ],
                 )),
@@ -56,7 +57,7 @@ class _HistoryReviewState extends State<HistoryReview> {
                 child: Padding(
                     padding: const EdgeInsets.only(left: 28, right: 8),
                     child: Text(
-                      widget.review ?? "Tutor haven't reviewed yet",
+                      widget.review ?? 'tutor_no_review'.tr(),
                     )))
           ],
         ));

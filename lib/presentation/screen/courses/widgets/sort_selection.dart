@@ -1,3 +1,4 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:let_tutor/blocs/courses/courses_list/courses_list_bloc.dart';
@@ -11,10 +12,10 @@ class SortSelection extends StatefulWidget {
 }
 
 class _SortSelectionState extends State<SortSelection> {
-  static const Map<String, String> sortOptions = {
-    'Sort by level': '',
-    'Level decreasing': 'DESC',
-    'Level increasing': 'ASC',
+  static Map<String, String> sortOptions = {
+    'sort_by_level'.tr(): '',
+    'level_decreasing'.tr(): 'DESC',
+    'level_increasing'.tr(): 'ASC',
   };
 
   @override

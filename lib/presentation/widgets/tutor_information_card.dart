@@ -1,3 +1,4 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:let_tutor/blocs/tutor/tutor_list/tutor_list_bloc.dart';
@@ -98,9 +99,9 @@ class TutorInformationCard extends StatelessWidget {
           const SizedBox(
             height: 16,
           ),
-          const Text(
-            "Specialities",
-            style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+          Text(
+            'specialities'.tr(),
+            style: const TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
           ),
           const SizedBox(
             height: 16,
@@ -134,7 +135,7 @@ class TutorInformationCard extends StatelessWidget {
           // icon: book tutor
           icon: Icon(Icons.edit_calendar, color: AppTheme.primaryColor),
           label: Text(
-            "Book",
+            'book'.tr(),
             style: TextStyle(color: AppTheme.primaryColor),
           ),
           style: OutlinedButton.styleFrom(

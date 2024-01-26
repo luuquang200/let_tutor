@@ -64,7 +64,7 @@ class CourseApiClient {
 
   // searchCourses(int page, int size, int perPage, Map<String, dynamic> map) {}
   Future<CourseResponse> searchCourses(
-      int page, int size, int perPage, Map<String, dynamic> map) async {
+      int page, int size, Map<String, dynamic> map) async {
     log('calling search courses api');
     try {
       var response = await DioClient.instance.get(
@@ -72,7 +72,6 @@ class CourseApiClient {
         queryParameters: {
           "page": page,
           "size": size,
-          "perPage": perPage,
           ...map,
         },
       );

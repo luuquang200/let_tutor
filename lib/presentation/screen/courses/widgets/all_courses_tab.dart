@@ -1,5 +1,6 @@
 import 'dart:developer';
 
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:let_tutor/blocs/courses/courses_list/courses_list_bloc.dart';
@@ -68,8 +69,8 @@ class _AllCoursesTabState extends State<AllCoursesTab> {
                 } else if (state is CoursesListLoading) {
                   return const LoadingIndicator();
                 } else if (state is CoursesListLoadFailure) {
-                  return const Center(
-                    child: Text('Error loading courses'),
+                  return Center(
+                    child: Text(state.message),
                   );
                 } else if (state is CoursesListLoadSuccess) {
                   int page = state.page;
@@ -80,27 +81,6 @@ class _AllCoursesTabState extends State<AllCoursesTab> {
                           scrollDirection: Axis.vertical,
                           itemCount: state.courses.length + 1,
                           itemBuilder: (context, index) {
-                            // return InkWell(
-                            // onTap: () {
-                            //   Navigator.push(
-                            //     context,
-                            //     MaterialPageRoute(
-                            //       builder: (context) => BlocProvider(
-                            //         create: (context) => CoursesListBloc(
-                            //             courseRepository: CourseRepository())
-                            //           ..add(GetDetailCourse(
-                            //               state.courses[index].id ?? '')),
-                            //         child: CourseDetail(
-                            //             courseId:
-                            //                 state.courses[index].id ?? ''),
-                            //       ),
-                            //     ),
-                            //   );
-                            // },
-                            // child: CourseCard(
-                            //   course: state.courses[index],
-                            // ),
-                            // );
                             if (index < state.courses.length) {
                               return InkWell(
                                 onTap: () {
@@ -138,12 +118,12 @@ class _AllCoursesTabState extends State<AllCoursesTab> {
                             }
                           },
                         )
-                      : const Center(
+                      : Center(
                           child: Column(
                             mainAxisAlignment: MainAxisAlignment.center,
                             children: [
-                              Icon(Icons.search_off_outlined, size: 64),
-                              Text('No courses found'),
+                              const Icon(Icons.search_off_outlined, size: 64),
+                              Text('no_courses_found'.tr()),
                             ],
                           ),
                         );

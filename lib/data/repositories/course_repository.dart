@@ -27,15 +27,13 @@ class CourseRepository {
     return course;
   }
 
-  // searchCourses(int i, int j, int perPage, Map<String, String> map) {}
   Future<CourseResponse> searchCourses({
     int page = 1,
     int size = 100,
-    int perPage = 20,
     Map<String, dynamic> map = const {},
   }) async {
     CourseResponse courseResponse =
-        await _courseApiClient.searchCourses(page, size, perPage, map);
+        await _courseApiClient.searchCourses(page, size, map);
     return courseResponse;
   }
 

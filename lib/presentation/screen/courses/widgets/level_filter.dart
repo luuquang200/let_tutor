@@ -1,3 +1,4 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:let_tutor/blocs/courses/courses_list/courses_list_bloc.dart';
@@ -8,16 +9,16 @@ class LevelFilter extends StatelessWidget {
   const LevelFilter({super.key});
 
   static String? selectedLevel;
-  static const List<String> levels = [
-    'Any level',
-    'Beginner',
-    'Upper-Beginner',
-    'Pre-Intermediate',
-    'Intermediate',
-    'Upper-Intermediate',
-    'Pre-Advanced',
-    'Advanced',
-    'Very Advanced'
+  static List<String> levels = [
+    'any_level'.tr(),
+    'beginner'.tr(),
+    'upper_beginner'.tr(),
+    'pre_intermediate'.tr(),
+    'intermediate'.tr(),
+    'upper_intermediate'.tr(),
+    'pre_advanced'.tr(),
+    'advanced'.tr(),
+    'very_advanced'.tr()
   ];
 
   @override

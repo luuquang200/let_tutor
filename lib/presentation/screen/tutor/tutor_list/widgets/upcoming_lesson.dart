@@ -76,9 +76,11 @@ class _UpcomingLessonState extends State<UpcomingLesson> {
                                   startTime.difference(DateTime.now());
                               final countdownString =
                                   '${countdownDuration.inHours}:${(countdownDuration.inMinutes % 60).toString().padLeft(2, '0')}:${(countdownDuration.inSeconds % 60).toString().padLeft(2, '0')}';
-                              return Text(
-                                'starts_in'.tr(args: [countdownString]),
-                                style: CustomTextStyle.timer,
+                              return Flexible(
+                                child: Text(
+                                  'starts_in'.tr(args: [countdownString]),
+                                  style: CustomTextStyle.timer,
+                                ),
                               );
                             },
                           ),

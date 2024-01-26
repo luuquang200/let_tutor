@@ -1,5 +1,6 @@
 import 'dart:developer';
 
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:intl/intl.dart';
@@ -30,15 +31,16 @@ class BookingPageState extends State<BookingPage> {
     return BlocConsumer<BookingBloc, BookingState>(
       listener: (context, state) {
         if (state is BookingSuccess) {
-          _showDialog('Success', state.message, Icons.check_circle_outline);
+          _showDialog(
+              'success'.tr(), state.message, Icons.check_circle_outline);
         } else if (state is BookingFailure) {
-          _showDialog('Failure', state.error, Icons.error_outline);
+          _showDialog('failure'.tr(), state.error, Icons.error_outline);
         }
       },
       builder: (context, state) {
         if (state is BookingLoadSuccess) {
           if (state.availableSlots.isEmpty) {
-            return const Text('No available date');
+            return const Text('no_available_date');
           }
 
           _selectedDate = state.selectedDate;
@@ -47,37 +49,40 @@ class BookingPageState extends State<BookingPage> {
           log('balance: ${state.balance}');
           return Scaffold(
             appBar: AppBar(
-                title: Text('Booking', style: CustomTextStyle.topHeadline),
+                title: Text('book'.tr(), style: CustomTextStyle.topHeadline),
                 iconTheme:
                     IconThemeData(color: Theme.of(context).primaryColor)),
             body: Padding(
               padding: const EdgeInsets.all(26.0),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  header(context, 'Booking date'),
-                  CalendarPicker(
-                      availableDate: state.availableSlots.keys.toList()),
-                  header(context, 'Booking time'),
-                  Padding(
-                      padding: const EdgeInsets.only(left: 10),
-                      child: state.availableSlots[_selectedDate] != null
-                          ? TimePicker(
-                              availableSlots:
-                                  state.availableSlots[_selectedDate]!,
-                              onChanged: (ScheduleSlot slot) {
-                                _selectedSlot = slot;
-                              },
-                            )
-                          : const Text('No available time on this date')),
-                  const SizedBox(height: 16),
-                  balanceInformation(state.balance),
-                  const SizedBox(height: 16),
-                  priceInformation(),
-                  const SizedBox(height: 16),
-                  Expanded(child: Container()),
-                  bookButton(state.balance),
-                ],
+              child: SingleChildScrollView(
+                child: Column(
+                  mainAxisSize: MainAxisSize.min,
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    header(context, 'booking_date'.tr()),
+                    CalendarPicker(
+                        availableDate: state.availableSlots.keys.toList()),
+                    header(context, 'booking_time'.tr()),
+                    Padding(
+                        padding: const EdgeInsets.only(left: 10),
+                        child: state.availableSlots[_selectedDate] != null
+                            ? TimePicker(
+                                availableSlots:
+                                    state.availableSlots[_selectedDate]!,
+                                onChanged: (ScheduleSlot slot) {
+                                  _selectedSlot = slot;
+                                },
+                              )
+                            : Text('no_available_time'.tr())),
+                    const SizedBox(height: 16),
+                    balanceInformation(state.balance),
+                    const SizedBox(height: 16),
+                    priceInformation(),
+                    const SizedBox(height: 16),
+                    Container(),
+                    bookButton(state.balance),
+                  ],
+                ),
               ),
             ),
           );
@@ -150,12 +155,12 @@ class BookingPageState extends State<BookingPage> {
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [
         Text(
-          'Price:',
+          'price'.tr(),
           style: CustomTextStyle.headlineMedium,
         ),
-        const Text(
-          '1 lesson',
-          style: TextStyle(fontSize: 18, color: Color(0xFF0058C6)),
+        Text(
+          'one_lesson'.tr(),
+          style: const TextStyle(fontSize: 18, color: Color(0xFF0058C6)),
         ),
       ],
     );
@@ -166,11 +171,11 @@ class BookingPageState extends State<BookingPage> {
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [
         Text(
-          'Balance:',
+          'balance'.tr(),
           style: CustomTextStyle.headlineMedium,
         ),
         Text(
-          'You have $balance lessons left',
+          'lessons_left'.tr(namedArgs: {'balance': balance.toString()}),
           style: const TextStyle(fontSize: 18, color: Color(0xFF0058C6)),
         ),
       ],
@@ -179,7 +184,7 @@ class BookingPageState extends State<BookingPage> {
 
   Widget bookButton(int balance) {
     return MyElevatedButton(
-        text: 'Book now',
+        text: 'book_now'.tr(),
         height: 50,
         radius: 8,
         onPressed: () {
@@ -194,75 +199,73 @@ class BookingPageState extends State<BookingPage> {
     showDialog(
       context: context,
       builder: (context) => AlertDialog(
-        title: const Text('Confirm Booking'),
-        content: Column(
-          mainAxisSize: MainAxisSize.min,
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                const Text(
-                  'Booking Date:',
-                ),
-                Text(
-                  DateFormat('E, d MMM yyyy').format(_selectedDate),
-                  style: const TextStyle(color: Color(0xFF0058C6)),
-                ),
-              ],
-            ),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                const Text(
-                  'Lesson Time: :',
-                ),
-                Text(
-                  _selectedSlot?.timeRange ?? '',
-                  style: const TextStyle(color: Color(0xFF0058C6)),
-                ),
-              ],
-            ),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                const Text(
-                  'Balance:',
-                ),
-                Text(
-                  '$balance lessons left',
-                  style: const TextStyle(color: Color(0xFF0058C6)),
-                ),
-              ],
-            ),
-            const Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                Text(
-                  'Price:',
-                ),
-                Text(
-                  '1 lesson',
-                  style: TextStyle(color: Color(0xFF0058C6)),
-                ),
-              ],
-            ),
-            const SizedBox(height: 8),
-            const Text('Request for Tutor:'),
-            const SizedBox(height: 8),
-            TextField(
-              controller: textController,
-              decoration: const InputDecoration(
-                hintText: 'Enter your request here',
-                border: OutlineInputBorder(),
+        title: Text('confirm_booking'.tr()),
+        content: SingleChildScrollView(
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Text(
+                    'booking_date'.tr(),
+                  ),
+                  Text(
+                    DateFormat('E, dd MMM yy', context.locale.languageCode)
+                        .format(_selectedDate),
+                    style: const TextStyle(color: Color(0xFF0058C6)),
+                  ),
+                ],
               ),
-              maxLines: 5,
-            ),
-          ],
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Text('booking_time'.tr()),
+                  Text(
+                    _selectedSlot?.timeRange ?? '',
+                    style: const TextStyle(color: Color(0xFF0058C6)),
+                  ),
+                ],
+              ),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Text('balance'.tr()),
+                  Text(
+                    'lessons_left'
+                        .tr(namedArgs: {'balance': balance.toString()}),
+                    style: const TextStyle(color: Color(0xFF0058C6)),
+                  ),
+                ],
+              ),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Text('price'.tr()),
+                  Text(
+                    'one_lesson'.tr(),
+                    style: const TextStyle(color: Color(0xFF0058C6)),
+                  ),
+                ],
+              ),
+              const SizedBox(height: 8),
+              Text('request_for_tutor'.tr()),
+              const SizedBox(height: 8),
+              TextField(
+                controller: textController,
+                decoration: InputDecoration(
+                  hintText: 'enter_request'.tr(),
+                  border: const OutlineInputBorder(),
+                ),
+                maxLines: 5,
+              ),
+            ],
+          ),
         ),
         actions: [
           MyOutlineButton(
-            text: 'Cancel',
+            text: 'cancel'.tr(),
             height: 25,
             radius: 5,
             onPressed: () => Navigator.pop(context),
@@ -270,7 +273,7 @@ class BookingPageState extends State<BookingPage> {
             textSize: 18,
           ),
           MyElevatedButton(
-            text: 'Book',
+            text: 'book'.tr(),
             height: 25,
             radius: 5,
             onPressed: () {

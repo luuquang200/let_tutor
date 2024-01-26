@@ -1,5 +1,6 @@
 import 'dart:developer';
 
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:let_tutor/blocs/tutor/tutor_detail/tutor_detail_bloc.dart';
@@ -47,8 +48,8 @@ class _TutorDetailPageState extends State<TutorDetailPage> {
 
           if (state.reportSuccess) {
             ScaffoldMessenger.of(context).showSnackBar(
-              const SnackBar(
-                content: Text('Report success !'),
+              SnackBar(
+                content: Text('report_success'.tr()),
                 backgroundColor: Colors.green,
               ),
             );
@@ -56,9 +57,9 @@ class _TutorDetailPageState extends State<TutorDetailPage> {
 
           if (state.updateFavoriteSuccess) {
             ScaffoldMessenger.of(context).showSnackBar(
-              const SnackBar(
+              SnackBar(
                 showCloseIcon: true,
-                content: Text('Update favorite success !'),
+                content: Text('update_favorite_success'.tr()),
                 backgroundColor: Colors.green,
               ),
             );
@@ -80,7 +81,8 @@ class _TutorDetailPageState extends State<TutorDetailPage> {
           Tutor tutor = state.tutor;
           return Scaffold(
             appBar: AppBar(
-              title: Text('Tutor Detail', style: CustomTextStyle.topHeadline),
+              title:
+                  Text('tutor_detail'.tr(), style: CustomTextStyle.topHeadline),
               iconTheme: IconThemeData(color: AppTheme.primaryColor),
             ),
             body: SingleChildScrollView(
@@ -103,13 +105,13 @@ class _TutorDetailPageState extends State<TutorDetailPage> {
 
                   // Education
                   const SizedBox(height: 16),
-                  Text('Education', style: CustomTextStyle.headlineMedium),
+                  Text('education'.tr(), style: CustomTextStyle.headlineMedium),
                   const SizedBox(height: 8),
                   _education(tutor.education ?? ''),
 
                   // Languages
                   const SizedBox(height: 16),
-                  Text('Languages', style: CustomTextStyle.headlineMedium),
+                  Text('languages'.tr(), style: CustomTextStyle.headlineMedium),
                   const SizedBox(height: 8),
                   _language(tutor.languages),
 
@@ -117,7 +119,8 @@ class _TutorDetailPageState extends State<TutorDetailPage> {
                   const SizedBox(
                     height: 16,
                   ),
-                  Text('Specialities', style: CustomTextStyle.headlineMedium),
+                  Text('specialities'.tr(),
+                      style: CustomTextStyle.headlineMedium),
                   const SizedBox(height: 8),
                   _specialities(tutor.specialties),
 
@@ -126,7 +129,7 @@ class _TutorDetailPageState extends State<TutorDetailPage> {
                     height: 10,
                   ),
                   Text(
-                    'Interests',
+                    'interests'.tr(),
                     style: CustomTextStyle.headlineMedium,
                   ),
                   Padding(
@@ -138,7 +141,7 @@ class _TutorDetailPageState extends State<TutorDetailPage> {
                     height: 16,
                   ),
                   Text(
-                    'Teaching Experience',
+                    'teaching_experience'.tr(),
                     style: CustomTextStyle.headlineMedium,
                   ),
                   Padding(
@@ -155,7 +158,7 @@ class _TutorDetailPageState extends State<TutorDetailPage> {
             ),
           );
         } else if (state is TutorDetailFailure) {
-          return Text('Error: ${state.error}');
+          return Text('error_state'.tr() + state.error);
         } else {
           return Container();
         }
@@ -219,7 +222,7 @@ class _TutorDetailPageState extends State<TutorDetailPage> {
         FavoriteButton(widget: widget),
         IconTextButton(
           icon: Icons.report_outlined,
-          text: 'Report',
+          text: 'report'.tr(),
           color: Theme.of(context).primaryColor,
           onTap: () {
             showDialog(
@@ -231,7 +234,7 @@ class _TutorDetailPageState extends State<TutorDetailPage> {
         ),
         IconTextButton(
           icon: Icons.rate_review_outlined,
-          text: 'Review',
+          text: 'review'.tr(),
           color: Theme.of(context).primaryColor,
           onTap: () {
             Navigator.pushNamed(context, Routes.tutorReviewScreen,
@@ -239,33 +242,6 @@ class _TutorDetailPageState extends State<TutorDetailPage> {
           },
         ),
       ],
-    );
-  }
-
-  _suggestedCourses() {
-    return ListView.builder(
-      shrinkWrap: true,
-      itemCount: 2,
-      itemBuilder: (context, index) {
-        return Row(
-          children: [
-            const SizedBox(
-              width: 10,
-            ),
-            const Text(
-              'Life in the Internet Age:',
-              style: TextStyle(fontWeight: FontWeight.bold),
-            ),
-            const SizedBox(
-              width: 5,
-            ),
-            TextButton(
-              onPressed: () {},
-              child: const Text('Link'),
-            )
-          ],
-        );
-      },
     );
   }
 
@@ -279,7 +255,7 @@ class _TutorDetailPageState extends State<TutorDetailPage> {
 
   _bookingButton() {
     return MyElevatedButton(
-        text: 'Book this tutor',
+        text: 'book_this_tutor'.tr(),
         height: 50,
         radius: 8,
         onPressed: () {
@@ -290,13 +266,6 @@ class _TutorDetailPageState extends State<TutorDetailPage> {
           );
         });
   }
-
-  // void _showReportDialog(BuildContext context) {
-  //   showDialog(
-  //     context: context,
-  //     builder: (context) => ReportDialog(tutorId: widget.tutorId),
-  //   );
-  // }
 
   String _getNameCountry(String codeOrName) {
     codeOrName = codeOrName.toUpperCase();
@@ -386,7 +355,7 @@ class FavoriteButton extends StatelessWidget {
             icon: state.tutor.isFavorite ?? false
                 ? Icons.favorite_rounded
                 : Icons.favorite_border_rounded,
-            text: 'Favorite',
+            text: 'favorite'.tr(),
             color: state.tutor.isFavorite ?? false
                 ? Colors.red
                 : Theme.of(context).primaryColor,
@@ -415,9 +384,9 @@ class ReportDialog extends StatefulWidget {
 
 class _ReportDialogState extends State<ReportDialog> {
   Map<String, bool> reportReasons = {
-    'This tutor is annoying me': false,
-    'This profile is pretending to be someone or is fake': false,
-    'Inappropriate profile photo': false,
+    'tutor_annoying'.tr(): false,
+    'fake_profile'.tr(): false,
+    'inappropriate_photo'.tr(): false,
   };
   TextEditingController textController = TextEditingController();
 
@@ -433,11 +402,11 @@ class _ReportDialogState extends State<ReportDialog> {
   Widget build(BuildContext context) {
     return SingleChildScrollView(
       child: AlertDialog(
-        title: const Row(
+        title: Row(
           children: [
-            Icon(Icons.warning),
-            SizedBox(width: 8),
-            Text('Report Tutor'),
+            const Icon(Icons.warning),
+            const SizedBox(width: 8),
+            Text('report_tutor'.tr()),
           ],
         ),
         content: SingleChildScrollView(
@@ -445,14 +414,12 @@ class _ReportDialogState extends State<ReportDialog> {
             mainAxisSize: MainAxisSize.min,
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Text("Help us understand what's happening:",
-                  style: CustomTextStyle.boldRegular),
               const SizedBox(height: 8),
               Column(
                 mainAxisSize: MainAxisSize.min,
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Text("Help us understand what's happening:",
+                  Text('help_us_understand'.tr(),
                       style: CustomTextStyle.boldRegular),
                   const SizedBox(height: 8),
                   Column(
@@ -474,14 +441,14 @@ class _ReportDialogState extends State<ReportDialog> {
                 ],
               ),
               const SizedBox(height: 16),
-              Text('Additional Information:',
+              Text('additional_information'.tr(),
                   style: CustomTextStyle.boldRegular),
               const SizedBox(height: 8),
               TextField(
                 controller: textController,
-                decoration: const InputDecoration(
-                  hintText: 'Enter your report here',
-                  border: OutlineInputBorder(),
+                decoration: InputDecoration(
+                  hintText: 'enter_report'.tr(),
+                  border: const OutlineInputBorder(),
                 ),
                 maxLines: 5,
               ),
@@ -490,7 +457,7 @@ class _ReportDialogState extends State<ReportDialog> {
         ),
         actions: [
           MyOutlineButton(
-            text: 'Cancel',
+            text: 'cancel'.tr(),
             height: 25,
             radius: 5,
             onPressed: () => Navigator.pop(context),
@@ -498,7 +465,7 @@ class _ReportDialogState extends State<ReportDialog> {
             textSize: 18,
           ),
           MyElevatedButton(
-            text: 'Submit',
+            text: 'submit'.tr(),
             height: 25,
             radius: 5,
             onPressed: () {

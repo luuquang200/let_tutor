@@ -1,3 +1,4 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:let_tutor/blocs/tutor/booking/booking_bloc.dart';
@@ -14,7 +15,7 @@ class CalendarPicker extends StatelessWidget {
     availableDate.sort((a, b) => a.compareTo(b));
 
     if (availableDate.isEmpty) {
-      return const Text("No available dates");
+      return Text('no_available_time'.tr());
     }
 
     DateTime lastDate = DateTime.now().add(const Duration(days: 365));

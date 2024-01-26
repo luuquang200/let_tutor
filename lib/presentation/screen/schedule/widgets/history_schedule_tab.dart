@@ -2,7 +2,6 @@ import 'dart:developer';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:let_tutor/blocs/schedule/booked_schedule/schedule_event.dart';
 import 'package:let_tutor/blocs/schedule/history_schedule/history_schedule_bloc.dart';
 import 'package:let_tutor/blocs/schedule/history_schedule/history_schedule_event.dart';
 import 'package:let_tutor/blocs/schedule/history_schedule/history_schedule_state.dart';
